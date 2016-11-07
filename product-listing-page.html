@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Helps with rendering on mobile devices -->
+  <!-- see: https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Product Listing Page</title>
+  <!--
+    Project Assignment 6: Product Listing Page
+
+    For Project Assignment 6 you will create a basic product listing page with a shopping cart at the bottom of the page. The product listing should display at least 10 different products with an Add to Cart button next to each. The shopping cart should display at least 3 products in the cart.
+
+    Each product must have name, description, price, and a photo (placeholder photos are OK to use - <img src="http://placehold.it/350x150">). For now, focus on creating an elegant shopping cart. Later, you will use JavaScript to add functionality.
+
+    Study one or more online shopping pages—such as Amazon.com (http://www.amazon.com/gp/goldbox) — to explore the details and layouts companies often use for product listings and shopping carts.
+
+    Also include:
+
+    A text input for entering a quantity, which should default to 1
+    A Remove button for removing the product from the shopping cart
+    An element, or set of elements, for displaying the total price of all products in the shopping cart.
+    A promo code text input and button for adding coupons or promo codes (special codes that reduce the final price)
+    A Keep Shopping button, with :hover and :active CSS variations.
+    A Checkout button, for proceeding to the next step.
+  -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,100,900,100italic,300italic,400italic,500italic,700italic,900italic' rel='stylesheet' type='text/css'>
+  <!-- http://fortawesome.github.io/Font-Awesome/ -->
+  <!-- https://github.com/FortAwesome/Font-Awesome -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../css/normalize.css">
+  <style type="text/css">
+
+    .wrapper {
+      border: 1px solid red;
+      box-sizing: border-box;
+    }
+    .wrapper * {
+      box-sizing: border-box;
+    }
+    .listing-container {
+      margin: 0 auto;
+      padding: 16px;
+      min-width: 254px;
+      display: flex;
+      flex-wrap: wrap;
+      text-align: center;
+      border: 1px solid black;
+    }
+    .listing-container .flex-item:last-child {
+      flex-grow: 20;
+    }
+    .listing-container .flex-item:last-child .item {
+      /*border: 1px solid red;*/
+      margin: 0 auto 0 0;
+    }
+    .clear-fix::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .flex-item {
+      flex-grow: 1;
+      /*border-top: 1px solid #aeaeae;
+      border-bottom: 1px solid #aeaeae;*/
+    }
+    .item {
+      margin: 0 auto 16px auto;
+      position: relative;
+      /*float: left;*/
+      /*display: inline-block;*/
+      font-family: "Robot", sans-serif;
+      font-size: 16px;
+      box-sizing: border-box;
+      width: 222px;
+      height: 400px;
+      max-height: 400px;
+      padding: 10px;
+      border: 1px solid #aeaeae;
+      text-align: center;
+    }
+    .img, .desc, .price, .price-sale, .see-detail, .see-detail button {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      /*border: 1px solid red;*/
+    }
+    .img {
+      width: 200px;
+      height: 200px;
+    }
+    .img img {
+      width: 200px;
+    }
+    .desc {
+      margin: 10px 0;
+      height: 86px;
+      overflow: auto;
+    }
+    .price, .price-sale {
+      height: 32px;
+      line-height: 32px;
+    }
+    .price-sale {
+      margin: 0 1em;
+    }
+    .price-sale span:first-child {
+      float: left;
+      color: red;
+      text-decoration: line-through;
+    }
+    .price-sale span:last-child {
+      float: right;
+    }
+    .see-detail {
+      margin: 10px 0;
+    }
+    .see-detail a {
+      display: inline-block;
+      font-size: 16px;
+      text-decoration: none;
+      color: rgb(0,0,0);
+      height: 32px;
+      line-height: 32px;
+      width: 100%;
+      border: none;
+      border-radius: 2px;
+      background-color: #f1c963;
+    }
+  </style>
+</head>
+<body>
+<div>
+  <ul>
+    <li><a href="https://www.coloradocyclist.com/campagnolo-super-record" target="_blank">Colorado Cyclist - Super Record</a></li>
+    <li><a href="http://www.amazon.com/gp/goldbox" target="_blank">Amazon listing page</a></li>
+    <li><a href="http://www.performancebike.com/bikes/SubCategory_10052_10551_400181_-1_400002_400910" target="_blank">Performance Bicycle - derailleurs listing</a></li>
+  </ul>
+</div>
+
+  <div class="wrapper">
+    <div class="listing-container clear-fix">
+
+      <div class="flex-item">
+        <div class="item">
+          <div class="img"><a href="#" ><img src="http://placehold.it/200x200"></a></div>
+          <div class="desc">Campagnolo Record 11 Cassette 11-25. Let's see how many characters I can fit in this space. Quite a few as it turns out. This is the last line.</div>
+          <div class="price-sale"><span>$123.45</span><span>$123.45</span></div>
+          <!--<div class="price">$xxx.xx</div>-->
+          <div class="see-detail"><a href="#">See details</a></div>
+        </div> <!-- end .item -->
+      </div> <!-- end .flex-item -->
+
+      <div class="flex-item">
+        <div class="item">
+          <div class="img"><a href="#" ><img src="http://placehold.it/200x200"></a></div>
+          <div class="desc">Campagnolo Record 11 Cassette 11-25. Let's see how many characters I can fit in this space. Quite a few as it turns out. This is the last line.</div>
+          <div class="price-sale"><span>$123.45</span><span>$123.45</span></div>
+          <!--<div class="price">$xxx.xx</div>-->
+          <div class="see-detail"><a href="#">See details</a></div>
+        </div> <!-- end .item -->
+      </div> <!-- end .flex-item -->
+
+      <div class="flex-item">
+        <div class="item">
+          <div class="img"><a href="#" ><img src="http://placehold.it/200x200"></a></div>
+          <div class="desc">Campagnolo Record 11 Cassette 11-25. Let's see how many characters I can fit in this space. Quite a few as it turns out. This is the last line.</div>
+          <div class="price-sale"><span>$123.45</span><span>$123.45</span></div>
+          <!--<div class="price">$xxx.xx</div>-->
+          <div class="see-detail"><a href="#">See details</a></div>
+        </div> <!-- end .item -->
+      </div> <!-- end .flex-item -->
+
+      <div class="flex-item">
+        <div class="item">
+          <div class="img"><a href="#" ><img src="http://placehold.it/200x200"></a></div>
+          <div class="desc">Campagnolo Record 11 Cassette 11-25. Let's see how many characters I can fit in this space. Quite a few as it turns out. This is the last line.</div>
+          <div class="price-sale"><span>$123.45</span><span>$123.45</span></div>
+          <!--<div class="price">$xxx.xx</div>-->
+          <div class="see-detail"><a href="#">See details</a></div>
+        </div> <!-- end .item -->
+      </div> <!-- end .flex-item -->
+
+      <div class="flex-item">
+        <div class="item">
+          <div class="img"><a href="#" ><img src="http://placehold.it/200x200"></a></div>
+          <div class="desc">Campagnolo Record 11 Cassette 11-25. Let's see how many characters I can fit in this space. Quite a few as it turns out. This is the last line.</div>
+          <div class="price-sale"><span>$123.45</span><span>$123.45</span></div>
+          <!--<div class="price">$xxx.xx</div>-->
+          <div class="see-detail"><a href="#">See details</a></div>
+        </div> <!-- end .item -->
+      </div> <!-- end .flex-item -->
+
+      <div class="flex-item">
+        <div class="item">
+          <div class="img"><a href="#" ><img src="http://placehold.it/200x200"></a></div>
+          <div class="desc">Campagnolo Record 11 Cassette 11-25. Let's see how many characters I can fit in this space. Quite a few as it turns out. This is the last line.</div>
+          <div class="price-sale"><span>$123.45</span><span>$123.45</span></div>
+          <!--<div class="price">$xxx.xx</div>-->
+          <div class="see-detail"><a href="#">See details</a></div>
+        </div> <!-- end .item -->
+      </div> <!-- end .flex-item -->
+
+      <div class="flex-item">
+        <div class="item">
+          <div class="img"><a href="#" ><img src="http://placehold.it/200x200"></a></div>
+          <div class="desc">Campagnolo Record 11 Cassette 11-25. Let's see how many characters I can fit in this space. Quite a few as it turns out. This is the last line.</div>
+          <div class="price-sale"><span>$123.45</span><span>$123.45</span></div>
+          <!--<div class="price">$xxx.xx</div>-->
+          <div class="see-detail"><a href="#">See details</a></div>
+        </div> <!-- end .item -->
+      </div> <!-- end .flex-item -->
+
+      <div class="flex-item">
+        <div class="item">
+          <div class="img"><a href="#" ><img src="http://placehold.it/200x200"></a></div>
+          <div class="desc">Campagnolo Record 11 Cassette 11-25. Let's see how many characters I can fit in this space. Quite a few as it turns out. This is the last line.</div>
+          <div class="price-sale"><span>$123.45</span><span>$123.45</span></div>
+          <!--<div class="price">$xxx.xx</div>-->
+          <div class="see-detail"><a href="#">See details</a></div>
+        </div> <!-- end .item -->
+      </div> <!-- end .flex-item -->
+
+    </div> <!-- end .listing-container -->
+
+  </div> <!-- end .wrapper -->
+</body>
+</html>

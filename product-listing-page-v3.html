@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- v3 remedies background image issues -->
+<head>
+  <meta charset="UTF-8">
+  <!-- Helps with rendering on mobile devices -->
+  <!-- see: https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Product Listing Page</title>
+  <!--
+    Project Assignment 6: Product Listing Page
+
+    For Project Assignment 6 you will create a basic product listing page with a shopping cart at the bottom of the page. The product listing should display at least 10 different products with an Add to Cart button next to each. The shopping cart should display at least 3 products in the cart.
+
+    Each product must have name, description, price, and a photo (placeholder photos are OK to use - <img src="http://placehold.it/350x150">). For now, focus on creating an elegant shopping cart. Later, you will use JavaScript to add functionality.
+
+    Study one or more online shopping pages—such as Amazon.com (http://www.amazon.com/gp/goldbox) — to explore the details and layouts companies often use for product listings and shopping carts.
+
+    Also include:
+
+    A text input for entering a quantity, which should default to 1
+    A Remove button for removing the product from the shopping cart
+    An element, or set of elements, for displaying the total price of all products in the shopping cart.
+    A promo code text input and button for adding coupons or promo codes (special codes that reduce the final price)
+    A Keep Shopping button, with :hover and :active CSS variations.
+    A Checkout button, for proceeding to the next step.
+  -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,100,900,100italic,300italic,400italic,500italic,700italic,900italic' rel='stylesheet' type='text/css'>
+  <!-- http://fortawesome.github.io/Font-Awesome/ -->
+  <!-- https://github.com/FortAwesome/Font-Awesome -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="../css/normalize.css">
+  <style type="text/css">
+    body * {
+      box-sizing: border-box;
+    }
+    .wrapper {
+      /*border: 1px solid red;*/
+      box-sizing: border-box;
+    }
+    .wrapper * {
+      box-sizing: border-box;
+    }
+    .listing-wrapper {
+      margin: 0 auto;
+      padding: 16px;
+      border-top: 2px solid rgb(0,0,0);
+      border-bottom: 2px solid rgb(0,0,0);
+    }
+    .listing-container {
+      margin: 0 auto;
+      padding: 0;
+      min-width: 310px;
+      display: flex;
+      flex-wrap: wrap;
+      text-align: center;
+      /*border: 1px dashed black;*/
+    }
+    .listing-container a {
+      text-decoration: none;
+      color: black;
+    }
+    .listing-container .flex-item:last-child {
+      flex-grow: 20;
+    }
+    .listing-container .flex-item:last-child .item-listing {
+      /*border: 1px solid red;*/
+      margin: 0 auto 0 0;
+    }
+    .clear-fix::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+    .flex-item {
+      flex-grow: 1;
+      /*border-top: 1px solid #aeaeae;
+      border-bottom: 1px solid #aeaeae;*/
+    }
+    .item-listing {
+      margin: 0 auto 16px auto;
+      position: relative;
+      float: left;
+      /*display: inline-block;*/
+      font-family: "Robot", sans-serif;
+      font-size: 16px;
+      box-sizing: border-box;
+      width: 286px;
+      height: 520px;
+      max-height: 520px;
+      padding: 16px;
+      border: 1px solid #aeaeae;
+      text-align: center;
+    }
+    .listing-container div.item-img-container {
+      /*border: 1px dashed green;*/
+      margin: 0 0 16px 0;
+      width: 252px;
+      height: 252px;
+      /*background-color: rgba(240,240,240,0.8);*/
+    }
+    img.item-img-listing {
+      width: 252px;
+      height: 252px;
+    }
+
+    div.item-info-listing {
+      margin: 0 0 16px 0;
+      /*border: 1px solid black;*/
+      height: 134px;
+    }
+    div.item-info-listing h4 {
+      margin: 0 0 8px 0;
+    }
+    div.item-info-listing p {
+      /*text-align: justify;*/
+      text-align: left;
+      border-radius: 2px;
+      margin: 0 0 8px 0;
+      padding: 4px 4px 0 4px;
+      height: 100px;
+      /*border: 1px solid #aeaeae;*/
+      border-top: 1px solid #aeaeae;
+      border-bottom: 1px solid #aeaeae;
+      overflow: auto;
+    }
+    div.item-info-listing .price-sale, div.item-info-listing .price {
+      margin: 0;
+      border: 1px solid red;
+    }
+    .price, .price-sale {
+      font-weight: bold;
+      /*margin-bottom: 16px;*/
+    }
+    .price-sale span[title="regular price"] {
+      /*border: 1px solid blue;*/
+      float: right;
+      color: red;
+      text-decoration: line-through;
+    }
+    .price-sale span[title="sale price"] {
+      /*border: 1px solid orange;*/
+      float: left;
+    }
+    button:hover {
+      cursor: pointer;
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+      box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+    }
+    button:active {
+
+    }
+    div.action-listing a, div.action-listing button, button.checkout, button.keep-shopping, div.action-cart a, div.action-cart button {
+      border: none;
+      /*border: 1px solid black;*/
+      text-decoration: none;
+      color: rgb(0,0,0);
+      padding: 8px 8px;
+      border-radius: 2px;
+      background-color: #f1c963; /* 67% */
+      box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+      transition: all 0.3s ease-out;
+    }
+    div.action-listing a:hover,
+    div.action-listing button:hover,
+    button.keep-shopping:hover,
+    button.checkout:hover,
+    div.action-cart a:hover,
+    div.action-cart button:hover {
+      box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+      background-color: rgb(246, 213, 122); /* 73% */
+    }
+    div.action-listing {
+      /*position: absolute;*/
+      border: 1px solid purple;
+      margin-top: 52px;
+    }
+    div.action-listing a {
+      /*display: inline;*/
+      float: left;
+    }
+    div.action-listing button {
+      /*display: inline;*/
+      float: right;
+    }
+
+    /* shopping cart styles */
+    .shopping-cart {
+      padding: 16px;
+    }
+    .shopping-cart input#promo-code {
+      border: 1px solid rgb(125,125,125);
+      height: 32px;
+      border-radius: 2px;
+      text-align: right;
+      padding: 0 4px;
+      margin-bottom: 16px;
+      margin-right: 16px;
+    }
+    .shopping-cart button {
+      background-color: rgb(241, 201, 99);
+    }
+    .shopping-cart button.keep-shopping,
+    .shopping-cart button.checkout {
+      margin-bottom: 16px;
+      margin-right: 16px;
+    }
+    .shopping-cart a {
+      color: black;
+    }
+    .shopping-cart .cart-header a:hover, .shopping-cart .cart-footer a:hover {
+      color: rgb(50,50,255);
+    }
+    .item-cart {
+      margin-top: 16px;
+      border-top: 1px solid #aeaeae;
+    }
+    .shopping-cart .flex-item .item-cart:last-child {
+      padding-bottom: 16px;
+      /*margin-bottom: 16px;*/
+      border-bottom: 1px solid #aeaeae;
+      border-bottom: 2px solid rgb(0,0,0);
+    }
+    .shopping-cart div.item-img-container {
+      /*border: 1px dashed green;*/
+      float: left;
+      margin: 16px 16px 8px 0;
+      width: 100px;
+      height: 100px;
+      /*background-color: rgba(240,240,240,0.8);*/
+    }
+    img.item-img-cart{
+      width: 100px;
+      height: 100px;
+    }
+    div.item-info-cart {
+      display: inline;
+    }
+    div.item-info-cart h4 {
+      margin: 16px 0;
+    }
+
+    div.action-cart {
+      margin-top: 16px ;
+    }
+    div.action-cart a.see-detail {
+      margin: 0 12px;
+    }
+    div.action-cart input.quantity {
+      border: 1px solid rgb(125,125,125);
+      border-radius: 2px;
+      height: 32px;
+      width: 58px;
+      text-align: center;
+    }
+    div.action-cart button.remove {
+      background-color: rgb(225,225,225);
+      border: 1px solid rgb(155,155,155);
+    }
+    div.action-cart button.remove:hover {
+      background-color: rgb(235,235,235);
+    }
+
+    footer {
+      border: 1px solid rgba(51, 51, 51, 0.85);
+      text-align: center;
+      color: rgb(245, 245, 245);
+      background-color: rgba(51, 51, 51, 0.85); /* #333 */
+      min-height: 50px;
+      /*line-height: 50px;*/
+      margin: 0;
+      padding: 0;
+    }
+
+    footer a {
+      color: rgb(245, 245, 245);
+    }
+
+    @media screen and (max-width:360px) {
+
+    }
+
+  </style>
+</head>
+<body>
+<div>
+  <p><strong>Inspirations:</strong></p>
+  <ul>
+    <li><a href="https://www.coloradocyclist.com/campagnolo-super-record" target="_blank">Colorado Cyclist - Super Record</a></li>
+    <li><a href="http://www.amazon.com/gp/goldbox" target="_blank">Amazon listing page</a></li>
+    <li><a href="http://www.performancebike.com/bikes/SubCategory_10052_10551_400181_-1_400002_400910" target="_blank">Performance Bicycle - derailleurs listing</a></li>
+    <li><a href="http://www.campagnolo.com/US/en/Mechanical_Groupsets/super_record/road" target="_blank">Campagnolo.com - super record</a></li>
+  </ul>
+</div>
+
+  <div class="wrapper">
+
+  <div class="listing-wrapper">
+  <h2>Product Listing</h2>
+
+    <div class="listing-container clear-fix">
+
+      <div class="flex-item">
+
+        <div class="item-listing">
+          <input type="hidden" name="item-sku" value="123456">
+
+          <div class="item-img-container">
+            <!-- <a href="#sku"><div class="item-img-listing" title="Campagnolo Super Record Brake Caliper image"></div></a> --> <!-- end .item-img-listing -->
+            <a href="#" ><img class="item-img-listing" src="images/super-record-brake-caliper.png"></a>
+          </div> <!-- end .item-img-container -->
+
+          <div class="item-info-listing">
+            <div class="desc">
+              <a href="#sku"><h4>Campagnolo Super Record Brake Caliper</h4></a>
+              <p tabindex="0">For a fast descent you need a safe and reliable braking system that is powerful and adjustable. The Super Record system guarantees shorter braking distance and complete control of breaking power thanks to our Skeleton™ arm design and new brake pads. In its standard version Campagnolo® offers the classic front brake Dual Pívot and rear brake Mono Pívot design to provide maximum braking power modulation. But for those looking for the maximum braking power, even at the rear, Campagnolo® offers the rear brake Dual Pívot option.</p>
+            </div>
+            <div class="price-sale clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">110.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">123.45</span></span></div>
+            <!-- <div class="price"><span title="regular price" tabindex="0">$<span class="item-regular-price">123.45</span></span></div> -->
+          </div> <!-- end .item-info-listing -->
+
+            <div class="action-listing clear-fix">
+              <a href="#sku" class="see-detail">See details</a>
+              <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+            </div>
+
+        </div> <!-- end .item-listing -->
+
+      </div> <!-- end .flex-item -->
+
+    </div> <!-- end .listing-container -->
+
+    </div> <!-- end .listing-wrapper -->
+
+    <div class="shopping-cart">
+
+      <div class="cart-header" id="cart-header">
+        <h2 tabindex="0">Shopping Cart</h2>
+        <h3 tabindex="0">Cart subtotal (<span id="cart-quantity">3</span> items): $<span id="cart-amount">357.50</span></h3>
+        <label for="promo-code">Promotional code:</label><br>
+        <input id="promo-code" type="text" name="promo-code">
+        <button class="keep-shopping"><i class="fa fa-arrow-left" aria-hidden="true"></i> Keep shopping</button>
+        <button class="checkout"><i class="fa fa-arrow-right" aria-hidden="true"></i> Proceed to checkout</button><br>
+        <a href="#cart-footer"><i class="fa fa-arrow-down" aria-hidden="true"></i> Go to bottom of cart</a>
+      </div> <!-- end .cart-header -->
+
+      <div class="flex-item">
+
+        <div class="item-cart">
+          <input class="sku" type="hidden" name="item-sku" value="123456">
+
+          <div class="item-img-container">
+            <!-- <div class="item-img-cart">
+              <a href="#" ><img src="images/super-record-brake-caliper.png"></a>
+            </div> --> <!-- end .item-img-cart -->
+            <a href="#" ><img class="item-img-cart" src="images/super-record-brake-caliper.png"></a>
+          </div>
+
+          <div class="item-info-cart clear-fix">
+            <div class="desc">
+              <h4>Campagnolo Super Record Brake Calipers</h4>
+              <p>For a fast descent you need a safe and reliable braking system that is powerful and adjustable. The Super Record system guarantees shorter braking distance and complete control of breaking power thanks to our Skeleton™ arm design and new brake pads. In its standard version Campagnolo® offers the classic front brake Dual Pívot and rear brake Mono Pívot design to provide maximum braking power modulation. But for those looking for the maximum braking power, even at the rear, Campagnolo® offers the rear brake Dual Pívot option.</p>
+            </div>
+            <div class="price-sale"><span title="sale price" tabindex="0">$<span class="item-sale-price">110.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">123.45</span></span></div>
+            <!-- <div class="price"><span title="regular price" tabindex="0">$<span class="item-regular-price">123.45</span></span></div> -->
+          </div> <!-- end .item-info-cart -->
+
+            <div class="action-cart">
+              <label>Quantity</label><br>
+              <input type="text" class="quantity" name="item-quantity" maxlength="3" pattern="^([0-9]{1,3})$">
+              <a href="#" class="see-detail">See details</a>
+              <button class="remove"><i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+            </div> <!-- end .action-cart -->
+
+        </div> <!-- end .item-cart -->
+
+      </div> <!-- end .flex-item -->
+
+      <div class="cart-footer" id="cart-footer">
+        <!-- <h2 tabindex="0">Shopping Cart</h2> -->
+        <h3 tabindex="0">Cart subtotal (<span id="cart-quantity">3</span> items): $<span id="cart-amount">357.50</span></h3>
+        <label for="promo-code">Promotional code:</label><br>
+        <input id="promo-code" type="text" name="promo-code">
+        <button class="keep-shopping"><i class="fa fa-arrow-left" aria-hidden="true"></i> Keep shopping</button>
+        <button class="checkout"><i class="fa fa-arrow-right" aria-hidden="true"></i> Proceed to checkout</button><br>
+        <a href="#cart-header"><i class="fa fa-arrow-up" aria-hidden="true"></i> Go to top of cart</a>
+      </div> <!-- end .cart-footer -->
+
+    </div> <!-- end .shopping-cart -->
+
+    <footer>
+      <p>&copy; 2016 - <script>document.write(new Date().getFullYear());</script> <a href="http://www.goodtiming.com/aboutme/" target="_blank" title="Robert T. Stewart / goodtiming.com">Robert T. Stewart / goodtiming.com</a></p>
+    </footer>
+
+  </div> <!-- end .wrapper -->
+</body>
+</html>
