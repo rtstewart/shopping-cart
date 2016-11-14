@@ -1,0 +1,289 @@
+/* || General setup */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  background-color: #a9a9a9;
+}
+
+body {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* || typography */
+
+h1 {
+  font-family: 'Sonsie One', cursive;
+  color: #2a2a2a;
+}
+
+h2, h3, p, input, li {
+  font-family: 'Open Sans', sans-serif;
+  color: #2a2a2a;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  color: red;
+  text-shadow: 1px 1px 2px white, 2px 2px 10px black;
+}
+
+h2 {
+  font-size: 1.75rem;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+p, li {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* || header layout */
+
+header {
+  margin-bottom: 10px;
+}
+
+#champ-stripe {
+  height: 50px;
+}
+
+#champ-stripe div {
+  height: 20%;
+}
+
+#champ-stripe div:first-child {
+  background-color: blue;
+  background-color: #0077ee;
+}
+#champ-stripe div:nth-child(2) {
+  background-color: red;
+}
+#champ-stripe div:nth-child(3) {
+  background-color: black;
+}
+#champ-stripe div:nth-child(4) {
+  background-color: yellow;
+}
+#champ-stripe div:last-child {
+  background-color: green;
+  background-color: #00aa00;
+}
+
+nav, article, aside, footer {
+  background-color: white;
+  /*padding: 1%;*/
+  padding: 12px;
+}
+
+nav {
+  /*border: 1px dashed blue;*/
+  position: relative;
+  height: 4rem;
+  background-color: #fff;
+  /*display: flex;*/
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  /*flex: 3;
+  display: flex;*/
+}
+
+nav li {
+  /*border: 1px dashed black;*/
+  /*display: inline; this was really unnecessary with display: flex on ul */
+  /*text-align: center;*/
+  /*flex: 0;*/
+  margin: 0 0.5rem 0 0;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  /*line-height: 2.1rem;*/
+  display: inline-block;
+}
+
+nav a {
+  display: block;
+  height: 100%;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: black;
+  padding: 0 0.5rem;
+}
+
+nav a:hover {
+  background-color: rgba(225,225,225,0.75);
+}
+
+/* hamburger */
+#hamburger {
+  /*border: 1px dashed green;*/
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+#hamburger a {
+  display: inline-block;
+  height: 4rem;
+  line-height: 4rem;
+  padding: 0 0.75rem;
+  font-size: 2rem;
+}
+
+nav form {
+  /*flex: 0 0 250px;
+  display: flex;*/
+  align-items: center;
+  /*height: 100%;*/
+  padding: 0 1rem;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+input {
+  font-size: 1rem;
+  height: 2rem;
+  /*line-height: 32px;*/
+}
+
+input[type="search"] {
+  /*flex: 4;*/
+}
+
+input[type="submit"] {
+  /*flex: 1;*/
+  margin-left: 0.1rem;
+  background: #333;
+  border: 0;
+  border-radius: 2px;
+  color: white;
+}
+
+/* || main layout */
+
+main {
+  display: flex;
+}
+
+article {
+  flex: 4;
+}
+
+aside {
+  flex: 1;
+  margin-left: 10px;
+  background-color: rgba(80,80,80,.9);
+  color: white;
+}
+
+aside ul {
+  padding-left: 1.5rem;
+}
+
+aside h2, aside li, aside a {
+  color: white;
+}
+
+aside li {
+  padding-bottom: 10px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 10px;
+  background-color: rgba(80,80,80,.9);
+}
+
+footer p {
+  color: white;
+}
+
+@media screen and (max-width:999px) {
+  main {
+    display: block;
+  }
+/*  nav ul {
+    flex-direction: column;
+    flex: 1;
+    opacity: 0;
+  }*/
+  aside {
+    margin: 10px 0 0 0;
+  }
+  aside ul {
+    list-style-type: none;
+    display: flex;
+    /*justify-content: center;*/
+    flex-wrap: wrap;
+  }
+  aside ul li {
+    /*text-align: center;*/
+    margin: 0 1rem;
+    /*display: inline;*/
+    flex: 1 1 auto;
+  }
+}
+
+@media screen and (max-width:915px) {
+  nav ul {
+    top: 50%;
+    /*transform: translateY(-50%);*/
+    top: 10.2rem;
+    left: 0;
+  }
+  nav ul li {
+    display: none;
+  }
+  nav ul a {
+    padding: 0 1rem;
+    background-color: rgba(0,0,0,.9);
+    color: white;
+    border-bottom: 1px solid white;
+  }
+  nav ul a:hover {
+    background-color: rgba(75,75,75,1);
+  }
+  #hamburger {
+    display: inline;
+  }
+  #hamburger:hover + ul li {
+    display: block;
+  }
+  nav ul:hover li {
+    display: block;
+  }
+}
+
+@media screen and (max-width:360px) {
+  h1 {
+    font-size: 2rem;
+  }
+  nav, article, aside, footer {
+    /*padding: 1%;*/
+    padding: 8px;
+  }
+}
