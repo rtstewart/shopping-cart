@@ -132,7 +132,8 @@ nav a {
 }
 
 nav a:hover {
-  background-color: rgba(225,225,225,0.75);
+  /*background-color: rgba(225,225,225,0.75);*/
+  color: #0077ee;
 }
 
 /* hamburger */
@@ -266,6 +267,7 @@ footer p {
   }
   nav ul a:hover {
     background-color: rgba(75,75,75,1);
+    color: white;
   }
   #hamburger {
     display: inline;
