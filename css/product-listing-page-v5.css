@@ -9,13 +9,12 @@ body * {
 .inspirations {
   margin: 16px;
 }
-.wrapper {
-  /*border: 1px solid red;*/
+/*.wrapper {
   box-sizing: border-box;
-}
-.wrapper * {
+}*/
+/*.wrapper * {
   box-sizing: border-box;
-}
+}*/
 .projects-home-link {
   display: block;
   margin: 32px auto;
@@ -58,13 +57,13 @@ div.item-info-listing h4 {
   margin: 16px 0;
 }
 
-div.item-info-listing .price.sale, div.item-info-listing .price {
+/*div.item-info-listing .price.sale,
+div.item-info-listing .price {
   margin: 16px 0;
-  /*border: 1px solid red;*/
-}
+}*/
 .price {
   font-weight: bold;
-  /*margin-bottom: 16px;*/
+  margin: 16px 0;
 }
 .price span[title="regular price"] {
 
@@ -74,7 +73,7 @@ div.item-info-listing .price.sale, div.item-info-listing .price {
   display: none;
   float: left;
 }
-/* if something is on sale, show the regular price to the right in red
+/* if something is on sale, show the regular price to the right in red-
     linethrough, and the sale price to the left where the regular price
     normally is
 */
@@ -106,7 +105,10 @@ button:hover {
 button:active {
 
 }
-div.action-listing a, div.action-listing button, button.checkout, button.keep-shopping, div.action-cart a, div.action-cart button {
+div.item-listing button,
+div.shopping-cart button,
+div.action-listing a,
+div.action-cart a {
   border: none;
   /*border: 1px solid black;*/
   text-decoration: none;
@@ -116,13 +118,19 @@ div.action-listing a, div.action-listing button, button.checkout, button.keep-sh
   background-color: #f1c963; /* 67% */
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
   transition: all 0.3s ease-out;
+  margin: 0 12px 16px 0;
 }
-div.action-listing a:hover,
+
+/*div.action-listing a:hover,
 div.action-listing button:hover,
 button.keep-shopping:hover,
 button.checkout:hover,
 div.action-cart a:hover,
-div.action-cart button:hover {
+div.action-cart button:hover*/
+div.item-listing button:hover,
+div.shopping-cart button:hover,
+div.action-listing a:hover,
+div.action-cart a:hover {
   box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
   background-color: rgb(246, 213, 122); /* 73% */
 }
@@ -183,14 +191,17 @@ div.action-cart {
   margin-top: 16px ;
 }
 div.action-cart a.see-detail {
-  margin: 0 12px;
+  /*margin: 0 12px;*/
+  margin: 0 12px 0 0;
 }
+div.action-listing input.quantity,
 div.action-cart input.quantity {
   border: 1px solid rgb(125,125,125);
   border-radius: 2px;
   height: 32px;
   width: 58px;
   text-align: center;
+  margin-right: 12px;
 }
 div.action-cart button.remove {
   background-color: rgb(225,225,225);
