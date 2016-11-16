@@ -1,3 +1,8 @@
+body {
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
 body * {
   box-sizing: border-box;
 }
@@ -44,7 +49,7 @@ body * {
 .listing-container h2 {
   text-align: center;
 }
-#show-cart {
+.show-cart-listing {
   position: fixed;
   z-index: 10;
   top: 1.25rem;
@@ -55,18 +60,18 @@ body * {
   font-size: 2.5rem;
   width: auto;
   border-radius: 2px;
-  transition: 0.5s all ease;
+  transition: 0.35s all ease;
 }
-#show-cart:hover {
+.show-cart-listing:hover {
   cursor: pointer;
   right: 0;
   padding: .25rem .75rem 0 .75rem;
   box-shadow: inset 0 0 6px 6px rgba(235, 174, 20, 0.9);
 }
-#show-cart:hover #cart-quantity-all {
+.show-cart-listing:hover .cart-quantity-all {
   transform: translate(calc(-50% - .75rem), calc(-50% - .25rem));
 }
-#cart-quantity-all {
+.cart-quantity-all-listing {
   position: absolute;
   transform: translate(calc(-50% - .25rem), calc(-50% - .25rem));
   width: 1.5rem;
@@ -77,7 +82,7 @@ body * {
   border: 1px solid black;
   font-size: 0.9rem;
   text-align: center;
-  transition: 0.5s all ease;
+  transition: 0.35s all ease;
 }
 .listing-container a {
   text-decoration: none;

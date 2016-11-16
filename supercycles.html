@@ -8,7 +8,11 @@
 
     <title>SuperCycles</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Sonsie+One" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,100,900,100italic,300italic,400italic,500italic,700italic,900italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="normalize.css">
+    <!-- http://fortawesome.github.io/Font-Awesome/ -->
+    <!-- https://github.com/FortAwesome/Font-Awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/product-listing-page-v5.css">
     <link rel="stylesheet" href="css/supercycles.css">
 
@@ -45,10 +49,13 @@
 
         <!-- A Search form is another commmon non-linear way to navigate through a website. -->
 
-        <form>
-          <input type="search" name="q" placeholder="Search ...">
-          <input type="submit" value="Go!">
+        <form action="javascript: void(0);">
+          <input type="search" name="q" size="20" placeholder="Search ...">
+          <!-- <input type="submit" value="Go!"> -->
+          <button><i class="fa fa-search" aria-hidden="true"></i></button>
         </form>
+
+        <div class="show-cart-main show-cart" title="Click to show cart"><div class="cart-quantity-all-main cart-quantity-all">0</div><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
 
       </nav>
 
