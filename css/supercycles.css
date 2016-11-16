@@ -18,6 +18,13 @@ body {
   margin: 0 auto;
 }
 
+/* not really necessary, but just to be explicit, since I will
+    be hiding/showing simulated dynamic content in <main> */
+main {
+  margin: 0;
+  padding: 0;
+}
+
 /* || typography */
 
 h1 {
