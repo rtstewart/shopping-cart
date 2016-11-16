@@ -22,39 +22,54 @@ body * {
   font-size: 16px;
   font-weight: bold;
 }
-.listing-container {
+.listing-container,
+.shopping-cart {
   /*padding: 16px;*/
   /*border: 1px dashed black;*/
+  margin: 0;
+  padding: 0;
 }
 .listing-container a {
   text-decoration: none;
   color: black;
 }
-.item-listing {
+.item-listing,
+.item-cart {
   margin-top: 16px;
-  padding: 16px;
+  /*padding: 16px;*/
+  padding: 8px 16px 8px 16px;
   /*margin: 16px;*/
   border-top: 1px solid #aeaeae;
-  border: 1px solid #9e9e9e;
+  /*border: 1px solid #9e9e9e;*/
 }
+
 div.item-img-container {
   /*border: 1px dashed green;*/
   float: left;
   margin: 0px 16px 8px 0;
-  width: 252px;
-  height: 252px;
+  width: 242px;
+  height: 242px;
   /*background-color: rgba(240,240,240,0.8);*/
 }
 img.item-img-listing {
-  width: 252px;
-  height: 252px;
+  /*border: 1px solid red;*/
+  width: 242px;
+  height: 242px;
 }
 div.item-info-listing {
   /*border: 1px solid red;*/
   /*display: inline;*/
 }
 div.item-info-listing h4 {
+  font-size: 1.1rem;
   margin: 16px 0;
+}
+.item-code {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+span.sku {
+  font-weight: normal;
 }
 
 /*div.item-info-listing .price.sale,
@@ -89,9 +104,11 @@ div.item-info-listing .price {
   float: left;
 }
 div.action-listing {
+  /*border: 1px solid red;*/
   /*margin-top: 40px;*/
   display: inline-block;
 }
+
 .listing-container a.see-detail,
 .listing-container button.add-to-cart {
   margin-bottom: 16px;
@@ -137,10 +154,18 @@ div.action-cart a:hover {
 
 /* shopping cart styles */
 .shopping-cart {
-  padding: 16px;
+  /*padding: 16px;*/
   border-top: 2px solid rgb(0,0,0);
 }
-.shopping-cart input#promo-code {
+.cart-header,
+.cart-footer {
+  padding: 16px;
+}
+/* this is not an issue in listing */
+.shopping-cart form {
+  display: inline-block;
+}
+.shopping-cart input.promo-code {
   border: 1px solid rgb(125,125,125);
   height: 32px;
   border-radius: 2px;
@@ -160,7 +185,8 @@ div.action-cart a:hover {
 .shopping-cart a {
   color: black;
 }
-.shopping-cart .cart-header a:hover, .shopping-cart .cart-footer a:hover {
+.shopping-cart .cart-header a:hover,
+.shopping-cart .cart-footer a:hover {
   color: rgb(50,50,255);
 }
 .item-cart {
@@ -168,32 +194,43 @@ div.action-cart a:hover {
   border-top: 1px solid #aeaeae;
 }
 
-.shopping-cart div.item-img-container {
+.item-cart div.item-img-container {
   /*border: 1px dashed green;*/
   float: left;
-  margin: 16px 16px 8px 0;
-  width: 100px;
-  height: 100px;
+  /*margin: 16px 16px 8px 0;*/
+  margin: 0px 16px 8px 0;
+  width: 90px;
+  height: 90px;
   /*background-color: rgba(240,240,240,0.8);*/
 }
 img.item-img-cart{
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
 }
+
+.item-cart span.sku {
+  white-space:nowrap;
+}
+
 div.item-info-cart {
   display: inline;
 }
+
 div.item-info-cart h4 {
   margin: 16px 0;
 }
 
 div.action-cart {
+  /*border: 1px solid orange;*/
+  position: relative;
   margin-top: 16px ;
 }
+
 div.action-cart a.see-detail {
   /*margin: 0 12px;*/
   margin: 0 12px 0 0;
 }
+
 div.action-listing input.quantity,
 div.action-cart input.quantity {
   border: 1px solid rgb(125,125,125);
@@ -203,13 +240,16 @@ div.action-cart input.quantity {
   text-align: center;
   margin-right: 12px;
 }
+
 div.action-cart button.remove {
   background-color: rgb(225,225,225);
   border: 1px solid rgb(155,155,155);
 }
+
 div.action-cart button.remove:hover {
   background-color: rgb(235,235,235);
 }
+
 .shopping-cart #cart-footer {
   margin-top: 16px;
   border-top: 2px solid rgb(0,0,0);
@@ -238,11 +278,32 @@ footer a {
 }
 
 @media screen and (max-width:360px) {
-  div.item-info-listing div.desc-text {
-    height: 120px;
-    overflow: auto;
+  .item-listing,
+  .item-cart {
+    padding: 8px 12px 0px 12px;
+  }
+
+  /* this is necessary to have the .desc-text display at the full
+      width of the .item-cart on small devices;
+      otherwise, the image "gets in the way" and prevents it from
+      being full width; this makes the .desc-text break below
+      the image;
+  */
+  div.item-info-cart div.desc-text {
+    clear: both;
+  }
+
+  div.item-info-listing div.desc-text,
+  div.item-info-cart div.desc-text {
+    height: 110px;
+    overflow-y: auto;
     border-top: 1px solid #9e9e9e;
     border-bottom: 1px solid #9e9e9e;
-    padding: 4px 0 0 0;
+    border-top: 1px solid #f1c963;
+    border-bottom: 1px solid #f1c963;
+    border-top: 1px solid #0077ee;
+    border-bottom: 1px solid #0077ee;
+    padding: 0 0 0 0;
   }
+
 }
