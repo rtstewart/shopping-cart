@@ -49,10 +49,17 @@ body * {
 .listing-container h2 {
   text-align: center;
 }
+/* https://css-tricks.com/scroll-fix-content/ */
 .show-cart-listing {
-  position: fixed;
+  display: inline-block;
+  /*position: fixed;*/
+  position: absolute;
+  /* sticky not supported in Android */
+  /*position: -webkit-sticky;
+  position: sticky;*/
   z-index: 10;
-  top: 1.25rem;
+  top: 1.25rem; /* this is the value to switch to for position: fixed; */
+  top: 5rem; /* this value should be where we want this to be when page is first loaded */
   right: -2rem;
   background-color: #f1c963;
   text-align: center;
@@ -61,6 +68,10 @@ body * {
   width: auto;
   border-radius: 2px;
   transition: 0.35s all ease;
+}
+.fix-show-cart {
+  position: fixed;
+  top: 1.25rem;
 }
 .show-cart-listing:hover {
   cursor: pointer;
@@ -126,7 +137,13 @@ div.item-info-listing h4 {
 span.sku {
   font-weight: normal;
 }
-
+.desc-text ul {
+  /*margin-left: 0;*/
+  padding-left: 0;
+}
+.desc-text ul li {
+  margin-left: 2rem;
+}
 /*div.item-info-listing .price.sale,
 div.item-info-listing .price {
   margin: 16px 0;
