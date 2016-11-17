@@ -1,3 +1,7 @@
+/* https://css-tricks.com/scroll-fix-content/ */
+/* https://developer.mozilla.org/en-US/docs/Web/Events/scroll */
+/* https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop */
+
 var showCart = document.querySelector('.show-cart-listing');
 
 window.addEventListener('scroll', function(e) {
