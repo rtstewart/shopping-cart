@@ -169,6 +169,19 @@ span.sku {
   margin: 16px 0;
 }
 
+.price:not(.sale) {
+  /*margin: 1rem 20rem 1rem 0;*/
+  /*color: blue;*/
+}
+
+.item-listing .price {
+  max-width: 500px;
+}
+
+.item-cart .price {
+  max-width: 400px;
+}
+
 .price span[title="regular price"] {
 
 }
@@ -249,14 +262,44 @@ div.action-cart a:hover {
   /*padding: 16px;*/
   border-top: 2px solid rgb(0,0,0);
 }
+
+.shopping-cart h2 {
+  text-align: center;
+}
+
 .cart-header,
 .cart-footer {
   padding: 16px;
 }
+
+.cart-header td,
+.cart-footer td {
+  vertical-align: bottom;
+  text-align: right;
+  padding: 0.25rem 0 0.25rem 0.25rem;
+}
+
+.cart-header td h3,
+.cart-footer td h3 {
+  font-size: 1.1rem;
+}
+
+.cart-header table tr:nth-child(2) td:nth-child(2),
+.cart-footer table tr:nth-child(2) td:nth-child(2) {
+  border-bottom: 1px solid gray;
+}
+
+.cart-header h3,
+.cart-footer h3 {
+  display: inline-block;
+  margin: 0;
+}
+
 /* this is not an issue in listing */
 .shopping-cart form {
   display: inline-block;
 }
+
 .shopping-cart input.promo-code {
   border: 1px solid rgb(125,125,125);
   height: 32px;
@@ -266,21 +309,26 @@ div.action-cart a:hover {
   margin-bottom: 16px;
   margin-right: 16px;
 }
+
 .shopping-cart button {
   background-color: rgb(241, 201, 99);
 }
+
 .shopping-cart button.keep-shopping,
 .shopping-cart button.checkout {
   margin-bottom: 16px;
   margin-right: 16px;
 }
+
 .shopping-cart a {
   color: black;
 }
+
 .shopping-cart .cart-header a:hover,
 .shopping-cart .cart-footer a:hover {
   color: rgb(50,50,255);
 }
+
 .item-cart {
   /*margin-top: 16px;*/
   border-top: 1px solid #9e9e9e;
@@ -295,6 +343,7 @@ div.action-cart a:hover {
   height: 90px;
   /*background-color: rgba(240,240,240,0.8);*/
 }
+
 img.item-img-cart{
   width: 100%;
   height: 100%;
@@ -340,6 +389,11 @@ div.action-cart button.remove {
 
 div.action-cart button.remove:hover {
   background-color: rgb(235,235,235);
+}
+
+.item-subtotal {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .shopping-cart #cart-footer {
