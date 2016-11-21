@@ -17,8 +17,20 @@ body * {
   display: block;
 }
 
+.showAnimate {
+  height: auto;
+  overflow: auto;
+  transition: 0.35s all ease;
+}
+
 .hide {
   display: none;
+}
+
+.hideAnimate {
+  height: 0;
+  overflow: hidden;
+  transition: 0.35s all ease;
 }
 
 .inspirations {
@@ -153,6 +165,10 @@ div.item-info-listing h4 {
 
 span.sku {
   font-weight: normal;
+}
+
+.desc-text {
+  transition: 0.35s all ease;
 }
 
 .desc-text ul {

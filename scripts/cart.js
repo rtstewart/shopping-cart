@@ -2,12 +2,38 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Node
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
 
+var cartHTML = '';
+
+var itemCartHTML = '';
+
+/* the main 2 pages to alternately display/hide */
+var productListing = document.querySelector('.listing-container');
+var cart = document.querySelector('.shopping-cart');
+
+/* cart header and footer action elements */
+var promoCodeInputArray = document.querySelectorAll('.shopping-cart .promo-code');
+var applyPromoButtonsArray = document.querySelectorAll('.shopping-cart .apply-promo');
+var keepShoppingButtonsArray = document.querySelectorAll('.shopping-cart .keep-shopping');
+var checkoutButtonsArray = document.querySelectorAll('.shopping-cart .checkout');
+
+/* cart item action elements */
 var updateCartButtonsArray = document.querySelectorAll('.action-cart .update');
 var removeButtonsArray = document.querySelectorAll('.action-cart .remove');
 var seeDetailsButtonsArray = document.querySelectorAll('.action-cart .see-detail');
 
+var i;
+
+/* set up listeners for keep shopping button press */
+for (i=0; i<keepShoppingButtonsArray.length; i++) {
+  keepShoppingButtonsArray[i].addEventListener('click', function(event) {
+    event.preventDefault();
+    cart.classList.add('hide');
+    productListing.classList.remove('hide');
+  });
+}
+
 /* Show Details/Hide Details */
-for (var i=0; i<seeDetailsButtonsArray.length; i++) {
+for (i=0; i<seeDetailsButtonsArray.length; i++) {
 
   seeDetailsButtonsArray[i].addEventListener('click', function(event) {
     event.preventDefault();
