@@ -62,6 +62,7 @@ body * {
 .show-cart-listing {
   /* position: fixed; keep this here for adjustments in that state */
   position: absolute;
+  border: none; /* for using <button> element */
   /* sticky not supported in Android and others I will enact with
       JavaScript adding/removing .fix-show-cart class below */
   /*position: -webkit-sticky;

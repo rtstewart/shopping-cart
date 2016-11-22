@@ -32,7 +32,7 @@ for (i=0; i<keepShoppingButtonsArray.length; i++) {
   });
 }
 
-/* Show Details/Hide Details */
+/* Show Details/Hide Details for cart items */
 for (i=0; i<seeDetailsButtonsArray.length; i++) {
 
   seeDetailsButtonsArray[i].addEventListener('click', function(event) {

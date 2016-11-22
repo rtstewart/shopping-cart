@@ -10,9 +10,10 @@
     <!-- https://github.com/mdn/learning-area/tree/master/html/introduction-to-html/document_and_website_structure -->
 
     <title>SuperCycles</title>
+    <link rel="icon" type="image/ico" href="images/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Sonsie+One" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500,700,100,100italic,300italic,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="normalize.css">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
     <!-- http://fortawesome.github.io/Font-Awesome/ -->
     <!-- https://github.com/FortAwesome/Font-Awesome -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -57,7 +58,7 @@
           <button><i class="fa fa-search" aria-hidden="true"></i></button>
         </form>
 
-        <div class="show-cart-main show-cart" title="Click to show cart"><div class="cart-quantity-all-main cart-quantity-all">0</div><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
+        <button class="show-cart-main show-cart" title="Click to show cart"><div class="cart-quantity-all-main cart-quantity-all">0</div><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 
       </nav>
 
@@ -67,21 +68,584 @@
     <main>
 
       <article>
-        <h2>Search Results</h2>
+        <div class="listing-container clear-fix">
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris. Maecenas congue ligula as quam viverra nec consectetur ant hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur.</p>
+          <h2>Product Listing</h2>
 
-        <h3>subsection</h3>
+          <button class="show-cart-listing show-cart" title="Click to show cart"><div class="cart-quantity-all-listing cart-quantity-all">0</div><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 
-        <p>Donec ut librero sed accu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor.</p>
+            <div data-sku="CA-R-0739" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-R-0739">
 
-        <p>Pelientesque auctor nisi id magna consequat sagittis. Curabitur dapibus, enim sit amet elit pharetra tincidunt feugiat nist imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros.</p>
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/record-road-front-hub.png" alt="Campagnolo Super Record Brake Calipers"></a>
+              </div>
 
-        <h3>Another subsection</h3>
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo Record Front Hub</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-R-0739</span></p>
+                  <div class="desc-text">
+                    <p>The new Record™ hubs have been substantially redesigned to exalt the qualities which made the previous ones famous and appreciated all over the world.</p>
+                    <p>The oversize body design has been accentuated and some parts have been lightened.
+                    The highly appreciated adjustable 15-ball bearings have remained unchanged and the ceramic ball kit is available as an option. The quick releases have been redesigned completely; they are now lighter and their operation is based on a symmetrical fulcrum lever. An evolutionary refinement to offer more demanding users the new plus ultra for performance and reliability.</p>
+                    <p>
+                      <ul><strong>Features:</strong>
+                        <li>32 holes</li>
+                        <li>Light alloy oversize axle and body</li>
+                        <li>Adjustable bearings</li>
+                        <li>Quick-release with aluminum lock nuts</li>
+                        <li>O.L.D.: 100mm</li>
+                        <li>Weight 116gm</li>
+                      </ul>
+                    </p>
+                  </div>
+                </div>
+                <div class="price sale clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">90.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">101.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
 
-        <p>Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum soclis natoque penatibus et manis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est.</p>
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
 
-        <p>Vivamus fermentum semper porta. Nunc diam velit, adipscing ut tristique vitae sagittis vel odio. Maecenas convallis ullamcorper ultricied. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, is fringille sem nunc vet mi.</p>
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-R-0740" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-R-0740">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/record-road-rear-hub.png" alt="Campagnolo Super Record Brake Calipers"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo Record Rear Hub</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-R-0740</span></p>
+                  <div class="desc-text">
+                    <p>The new Record™ hubs have been substantially redesigned to exalt the qualities which made the previous ones famous and appreciated all over the world.</p>
+                    <p>The oversize body design has been accentuated, some parts have been lightened, and the freewheel body is made entirely of light alloy. The highly appreciated adjustable 15-ball bearings have remained unchanged and the ceramic ball kit is available as an option. The quick releases have been redesigned completely; they are now lighter and their operation is based on a symmetrical fulcrum lever. An evolutionary refinement to offer more demanding users the new plus ultra for performance and reliability.</p>
+                    <p>
+                      <ul><strong>Features:</strong>
+                        <li>10 Speed</li>
+                        <li>32 holes</li>
+                        <li>Light alloy body, axle, and one-piece freewheel body, with Titanium pawls</li>
+                        <li>Adjustable bearings</li>
+                        <li>Quick-release with aluminum lock nuts</li>
+                        <li>Lockring thread 27x1</li>
+                        <li>O.L.D.: 130mm</li>
+                        <li>Weight 231gm</li>
+                      </ul>
+                    </p>
+                  </div>
+                </div>
+                <div class="price sale clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">137.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">199.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-SR-0789" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-SR-0789">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/super-record-brake-caliper.png" alt="Campagnolo Super Record Brake Calipers"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo Super Record Brake Calipers</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-SR-0789</span></p>
+                  <div class="desc-text">
+                    <p>For a fast descent you need a safe and reliable braking system that is powerful and adjustable. The Super Record system guarantees shorter braking distance and complete control of breaking power thanks to our Skeleton™ arm design and new brake pads.</p>
+                    <p>In its standard version Campagnolo® offers the classic front brake Dual Pívot and rear brake Mono Pívot design to provide maximum braking power modulation. But for those looking for the maximum braking power, even at the rear, Campagnolo® offers the rear brake Dual Pívot option.</p>
+                  </div>
+                </div>
+                <div class="price sale clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">299.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">355.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-SR-0765" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-SR-0765">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/super-record-ergopower-control.png" alt="Campagnolo Super Record Ergopower Controls"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo Super Record Ergopower Controls</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-SR-0765</span></p>
+                  <div class="desc-text">
+                    <p>Dominate your bike at every turn, relax on the long straights, and prepare for the final sprint: whatever your racing position, Ergopower™ controls, with the exclusive Campagnolo® mechanism, allows you to shift up 3 sprockets at a time and down 5 sprockets.
+                    </p>
+                    <p>The Super Record™ series Ergopower™ Ultra-Shift™ controls, now also available with red or white hoods, are the top product in terms of technology applied to ergonomics - all to the advantage of safety, speed and precision in using the controls.</p>
+                    <p>Make every movement natural, fast and precise. Your every wish is a command.
+                    </p>
+                  </div>
+                </div>
+                <div class="price sale clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">399.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">631.00</span></span></div>
+                <!-- <div class="price clear-fix"><span title="regular price" tabindex="0">$<span class="item-regular-price">123.45</span></span></div> -->
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-SR-0742" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-SR-0742">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/super-record-rear-derailleur.png" alt="Campagnolo Super Record Rear Derailleur"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo Super Record Rear Derailleur</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-SR-0742</span></p>
+                  <div class="desc-text">
+                    <p>The Campagnolo Super Record 11 Rear Derailleur features full carbon fiber upper and lower bodies, executing the commands from the Ergopower shifters with extreme precision. The cage pulleys are made of anti-vibration material to provide maximum smoothness and the parallelogram shape delivers more torsional rigidity than the old design, while ceramic bearings on the bottom pulleys ensure low friction and long life. The new shape of the external components enables the rear derailleur to move according to a different angle and the new internal design keeps the chain nearer the cassette to ensure better power transmission, greater and more secure traction, a better chain/sprocket interface and greater durability of components subject to wear and tear. An anodized aluminum fixing screw further reduces weight.</p>
+                  </div>
+                </div>
+                <div class="price sale clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">395.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">500.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-SR-0744" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-SR-0744">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/super-record-front-derailleur.png" alt="Campagnolo Super Record Front Derailleur"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo Super Record Front Derailleur</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-SR-0744</span></p>
+                  <div class="desc-text">
+                    <p>By optimizing the geometry and repositioning the pull of the cable, the Campagnolo Super Record 11 front derailleur now delivers faster and more precise shifting for unrivalled precision and speed. The stiff derailleur cage is made from a combination of aluminum and carbon fiber to provide longevity and light weight. Titanium screws and inserts further ensure lightness and long wear. The Super Record front derailleur with Ultra Shift geometries combined with the Campagnolo crankset and chain guarantee the best of shifting performance under any condition. The S2 (Secure Shifting System) version safeguards working of the drivetrain, guaranteeing maximum compatibility with frames on the market. Check with your frame manufacturer to determine which model is recommended. Use the Campagnolo Front Derailleur Adaptor Clamp with the braze-on derailleur for seat tube clamp applications.</p>
+                  </div>
+                </div>
+                <div class="price clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">135.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">175.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-SR-0775" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-SR-0775">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/super-record-crankset.png" alt="Campagnolo Super Record Crankset"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo Super Record Crankset</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-SR-0775</span></p>
+                  <div class="desc-text">
+                    <p>The maximum that you could ask for in performance and smoothness. The Super Record™ crankset is an extraordinary concentration of technology and performance: extremely high overall stiffness, extraordinary lightness, fast and precise shifting; the CULT™ system and the option with titanium axle, all this enhances even more the performance and uniqueness of this crankset.</p>
+                    <p>The use of unidirectional and multidirectional carbon fiber in the Ultra-Hollow structure gives the Campagnolo Super Record 11 Ultra-Torque Titanium Crankset rigidity and lightness. The titanium spindle is lighter than the standard Ultra-Torque spindle, saving 40 grams. Campagnolo's Extreme Performance Shifting System (XPSS) was specially developed to improve shift timing, and features a redesigned tooth profile to optimize their 11-speed operation. Thanks to the new chainring design, there are now eight sectors specialized for upshifting, and two diametrically opposed sectors for downshifting. This makes instantaneous and precise shifting possible both up and down. The ceramic bearings provide the best combination of smoothness, resistance to corrosion, and long life.</p>
+                  </div>
+                </div>
+                <div class="price sale clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">700.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">940.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-SR-0716" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-SR-0716">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/super-record-cassette.png" alt="Campagnolo Super Record Cassette"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo Super Record Cassette</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-SR-0716</span></p>
+                  <div class="desc-text">
+                    <p>Maximum performance and low noise, with no compromise on components. With this in mind, Campagnolo® engineers designed our Super Record™ sprockets with a double frame on the last two sprocket triplets. This results in a more solid and lighter frame, thanks to the use of titanium in the 6 larger sprockets. The Ultra-Shift™ teeth design has been upgraded to make shifting faster, with perfect synchronization, and to eliminate chain stress.</p>
+                    <p>Campagnolo's top-tier groupset features Ultra Shift technology, meaning each and every tooth of the Super Record 11 cassette is shaped to perform a specific function. Whether the chain is being lifted or lowered, Ultra Shift relieves pressure on the chain, the rear derailleur, and the cassette itself. This results in unbelievably quick and quiet shifting that you can rely on. The Super Record 11 Cassette is built with both titanium and steel, providing the perfect combination of lightness and durability. The six largest cogs are made out of titanium, lightening the cassette considerably. Because the smallest cogs see more use and thus wear faster, Campagnolo built these with a sturdy nickel/chrome-coated steel. In addition to shaving weight with the 6 Ti cogs, the Super Record 11 cassette features a lightweight alloy lockring and a splined aluminum frame, which also increases the overall torsional stiffness.</p>
+                  </div>
+                </div>
+                <div class="price clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">345.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">430.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-R-0791" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-R-0791">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/record-chain.png" alt="Campagnolo Record Chain"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo Record Chain</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-R-0791</span></p>
+                  <div class="desc-text">
+                    <p>Pros are the everyday testing ground for the chain fitted on all advanced Record™ 11 and Super Record™ 11 groups. Bike links and pins have been designed to adhere perfectly to gears and sprockets' teeth providing maximum fluidity, reduced friction and improved chain life.</p>
+                    <p>Campagnolo has lightened the weight of the hollow pins for the Record 11 chain, further reducing this super light, extremely strong chain. A proprietary Ni-PTFE anti-friction treatment makes each pedal stroke smooth and silent while lengthening the life of the chain. The Ultra-Link fastening system guarantees strength and seamless operation with the 11-speed sprockets.</p>
+                  </div>
+                </div>
+                <div class="price clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price"></span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">60.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-MD-1623" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-MD-1623">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/Campagnolo_corkscrew_bronze.png" alt="Campagnolo Corkscrew"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Campagnolo BIG Corkscrew</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-MD-1623</span></p>
+                  <div class="desc-text">
+                    <p>Campagnolo’s signature artisanship gives the corkscrew its very own distinctive, unique personality. Each stage of its manufacture takes place in Vicenza, in the hands of those who, for years, have used their experience to make Campagnolo products.</p><p>Quality materials and careful finishes accompany the sinuous shapes of its various parts. Each component is a characteristic feature of the Campagnolo brand. Like the screws, still today the heirs of a seventies Super Record crankset, an element that adorned the bikes of great names from the past – the likes of Merckx, Indurain and Gimondi.</p>
+                    <p>A telescopic, self-centering bell positions the screw exactly in the middle of the cork and once screwed down, the two levers pull the cork out easily and delicately. This means that the bottle does not get shaken, which would disturb the sediment typical of aged wines. The corkscrew has also been designed to never twist completely through the cork, thus preventing pieces of cork dropping into the wine.</p>
+                  </div>
+                </div>
+                <div class="price clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price"></span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">180.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+            <div data-sku="CA-MD-1645" class="item-listing">
+              <input class="sku" type="hidden" name="item-sku" value="CA-MD-1645">
+
+              <div class="item-img-container">
+                <!-- <div class="item-img-listing">
+                  <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+                </div> --> <!-- end .item-img-listing -->
+                <a href="#!" ><img class="item-img-listing" src="images/7223_n_GIALLO-tre4.png" alt="Campagnolo Corkscrew"></a>
+              </div>
+
+              <div class="item-info-listing">
+                <div class="desc">
+                  <h4>Yellow Campagnolo cycling cap - Classic Edition</h4>
+                  <p class="item-code">Item Code: <span class="sku">CA-MD-1645</span></p>
+                  <div class="desc-text">
+                    <p>Campagnolo brings back the original cycling cap in its most classic of shapes, recognizable the world over. Racing yellow and black logos are teamed with a rainbow strip, the symbol of races from yesteryear, of cycling by great champions.</p>
+                    <p>Over time, this object has become a distinctive element for the world of cycling and elsewhere, worn by various celebs during filming of many video clips and films.</p>
+                    <p>An element as sought after as it is copied all over the world, the original, the authentic, it is today only available from the Campagnolo online store.</p>
+                    <p>As for all the products that bear the Campagnolo brand, in this case too the top-quality fabric, finishes and manufacture make this version of the Campagnolo Classic Cap a must-have for all cycling fans.</p>
+                  </div>
+                </div>
+                <div class="price clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price"></span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">38.00</span></span></div>
+              </div> <!-- end .item-info-listing -->
+
+              <div class="action-listing">
+                <!-- <a href="#sku" class="see-detail">See details</a> -->
+                <form action="javascript: void(0);">
+                  <label>Quantity</label><br>
+                  <input class="quantity" type="number" min="1" max="99" size="2" value="1">
+                  <button class="add-to-cart"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart</button>
+                </form>
+              </div> <!-- end .action-listing -->
+
+            </div> <!-- end .item-listing -->
+
+        </div> <!-- end .listing-container -->
+
+        <div class="shopping-cart hide">
+
+          <div class="cart-header" id="cart-header">
+            <h2>Shopping Cart</h2>
+            <!-- <h3>Cart subtotal (<span class="cart-quantity">3</span> items): $<span class="cart-amount">1,314.00</span></h3> -->
+            <table>
+              <tr>
+                <td><h3>Cart subtotal (<span class="cart-quantity">83</span> items):</h3></td>
+                <td class="cart-subtotal">$1,314.00</td>
+              </tr>
+              <tr>
+                <td><h3>Promo Discount (<span class="promo-code">ITEMca-rc-0056</span>):</h3></td>
+                <td class="cart-promo-discount">-$75.00</td>
+              </tr>
+              <tr>
+                <td><h3>Cart Total:</h3></td>
+                <td><span class="cart-total">$1,239.00</span></td>
+              </tr>
+            </table>
+            <form action="javascript: void();">
+              <label for="promo-code-header">Promotional code:</label><br>
+              <input id="promo-code-header" class="promo-code" type="text" name="promo-code">
+              <button><i class="apply-promo fa fa-sign-in" aria-hidden="true"></i> Apply Promo</button>
+            </form>
+            <button class="keep-shopping"><i class="fa fa-arrow-left" aria-hidden="true"></i> Keep shopping</button>
+            <button class="checkout"><i class="fa fa-arrow-right" aria-hidden="true"></i> Proceed to checkout</button><br>
+            <a href="#cart-footer"><i class="fa fa-arrow-down" aria-hidden="true"></i> Go to bottom of cart</a>
+          </div> <!-- end .cart-header -->
+
+          <div data-sku="ca-sr-0765" class="item-cart">
+            <input class="sku" type="hidden" name="item-sku" value="ca-sr-0765">
+
+            <div class="item-img-container">
+              <!-- <div class="item-img-cart">
+                <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+              </div> --> <!-- end .item-img-cart -->
+              <a href="#!" ><img class="item-img-cart" src="images/super-record-ergopower-control.png" alt="Campagnolo Super Record Ergopower Controls"></a>
+            </div>
+
+            <div class="item-info-cart clear-fix">
+              <div class="desc">
+                <h4>Campagnolo Super Record Ergopower Controls</h4>
+                <p class="item-code">Item Code: <span class="sku">ca-sr-0765</span></p>
+                <div class="desc-text hide">
+                  <p>Dominate your bike at every turn, relax on the long straights, and prepare for the final sprint: whatever your racing position, Ergopower™ controls, with the exclusive Campagnolo® mechanism allows you to shift up 3 sprockets at a time and down 5 sprockets.
+                  <br>Make every movement natural, fast and precise.
+                  <br>The Super Record™ series Ergopower™ Ultra-Shift™ controls, now also available with red or white hoods, are the top product in terms of technology applied to ergonomics ? all to the advantage of safety, speed and precision in using the controls.
+                  <br>Your every wish is a command.</p>
+                </div>
+              </div>
+              <div class="price sale"><span title="sale price" tabindex="0">$<span class="item-sale-price">399.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">631.00</span></span></div>
+            </div> <!-- end .item-info-cart -->
+
+            <div class="action-cart">
+              <form action="javascript: void(0);">
+                <label>Quantity</label><br>
+                <!-- <input type="text" class="quantity" name="item-quantity" maxlength="3" pattern="^([0-9]{1,3})$" value="1"> -->
+                <input class="quantity" type="number" min="0" max="99" size="2">
+                <button class="update"><i class="fa fa-refresh" aria-hidden="true"></i> Update Cart</button>
+              </form>
+              <button class="remove"><i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+              <!-- <a href="#!" class="see-detail">See details</a> -->
+              <button class="see-detail">Show Details</button>
+            </div> <!-- end .action-cart -->
+
+            <div class="item-subtotal">
+              Item Subtotal: $<span>399.00</span>
+            </div>
+
+          </div> <!-- end .item-cart -->
+
+          <div data-sku="ca-sr-0775" class="item-cart">
+            <input class="sku" type="hidden" name="item-sku" value="ca-sr-0775">
+
+            <div class="item-img-container">
+              <!-- <div class="item-img-cart">
+                <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+              </div> --> <!-- end .item-img-cart -->
+              <a href="#!" ><img class="item-img-cart" src="images/super-record-crankset.png" alt="Campagnolo Super Record Crankset"></a>
+            </div>
+
+            <div class="item-info-cart clear-fix">
+              <div class="desc">
+                <h4>Campagnolo Super Record Crankset</h4>
+                <p class="item-code">Item Code: <span class="sku">ca-sr-0775</span></p>
+                <div class="desc-text hide">
+                  <p>The maximum that you could ask for in performance and smoothness. The Super Record™ crankset is an extraordinary concentration of technology and performance: extremely high overall stiffness, extraordinary lightness, fast and precise shifting; the CULT™ system and the option with titanium axle, all this enhances even more the performance and uniqueness of this crankset.</p>
+                </div>
+              </div>
+              <div class="price sale"><span title="sale price" tabindex="0">$<span class="item-sale-price">700.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">940.00</span></span></div>
+            </div> <!-- end .item-info-cart -->
+
+            <div class="action-cart">
+              <form action="javascript: void(0);">
+                <label>Quantity</label><br>
+                <!-- <input type="text" class="quantity" name="item-quantity" maxlength="3" pattern="^([0-9]{1,3})$" value="1"> -->
+                <input class="quantity" type="number" min="0" max="99" size="2">
+                <button class="update"><i class="fa fa-refresh" aria-hidden="true"></i> Update Cart</button>
+              </form>
+              <button class="remove"><i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+              <!-- <a href="#!" class="see-detail">See details</a> -->
+              <button class="see-detail">Show Details</button>
+            </div> <!-- end .action-cart -->
+
+            <div class="item-subtotal">
+              Item Subtotal: $<span>700.00</span>
+            </div>
+
+          </div> <!-- end .item-cart -->
+
+          <div data-sku="ca-md-1623" class="item-cart">
+            <input class="sku" type="hidden" name="item-sku" value="ca-md-1623">
+
+            <div class="item-img-container">
+              <!-- <div class="item-img-cart">
+                <a href="#!" ><img src="images/super-record-brake-caliper.png"></a>
+              </div> --> <!-- end .item-img-cart -->
+              <a href="#!" ><img class="item-img-cart" src="images/Campagnolo_corkscrew_bronze.png" alt="Campagnolo Corkscrew"></a>
+            </div>
+
+            <div class="item-info-cart clear-fix">
+              <div class="desc">
+                <h4>Campagnolo Corkscrew</h4>
+                <p class="item-code">Item Code: <span class="sku">ca-md-1623</span></p>
+                <div class="desc-text hide">
+                  <p>A telescopic, self-centering bell positions the screw exactly in the middle of the cork and once screwed down, the two levers pull the cork out easily and delicately.
+                  <br>This means that the bottle does not get shaken, which would disturb the sediment typical of aged wines. The corkscrew has also been designed to never twist completely through the cork, thus preventing pieces of cork dropping into the wine.</p>
+                </div>
+              </div>
+              <div class="price clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price">345.00</span></span><span title="regular price" tabindex="0">$<span class="item-regular-price">430.00</span></span></div>
+            </div> <!-- end .item-info-cart -->
+
+            <div class="action-cart">
+              <form action="javascript: void(0);">
+                <label>Quantity</label><br>
+                <!-- <input type="text" class="quantity" name="item-quantity" maxlength="3" pattern="^([0-9]{1,3})$" value="1"> -->
+                <input class="quantity" type="number" min="0" max="99" size="2">
+                <button class="update"><i class="fa fa-refresh" aria-hidden="true"></i> Update Cart</button>
+              </form>
+              <button class="remove"><i class="fa fa-times" aria-hidden="true"></i> Remove</button>
+              <!-- <a href="#!" class="see-detail">See details</a> -->
+              <button class="see-detail">Show Details</button>
+            </div> <!-- end .action-cart -->
+
+            <div class="item-subtotal">
+              Item Subtotal: $<span>430.00</span>
+            </div>
+
+          </div> <!-- end .item-cart -->
+
+          <div class="cart-footer" id="cart-footer">
+            <!-- <h2 tabindex="0">Shopping Cart</h2> -->
+            <!-- <h3>Cart subtotal before discount (<span class="cart-quantity">3</span> items): $<span class="cart-amount">1,314.00</span></h3>
+            <h3>Promo Discount (<span class="promo-code">ITEMca-rc-0056</span>): - $<span class="promo-discount">100.00</span></h3>
+            <h3>Cart Total: $<span class="cart-total"></span></h3> -->
+            <table>
+              <tr>
+                <td><h3>Cart subtotal (<span class="cart-quantity">83</span> items):</h3></td>
+                <td class="cart-subtotal">$1,314.00</td>
+              </tr>
+              <tr>
+                <td><h3>Promo Discount (<span class="promo-code">ITEMca-rc-0056</span>):</h3></td>
+                <td class="cart-promo-discount">-$75.00</td>
+              </tr>
+              <tr>
+                <td><h3>Cart Total:</h3></td>
+                <td><span class="cart-total">$1,239.00</span></td>
+              </tr>
+            </table>
+            <form action="javascript: void();">
+              <label for="promo-code-footer">Promotional code:</label><br>
+              <input id="promo-code-footer" class="promo-code" type="text" name="promo-code">
+              <button><i class="apply-promo fa fa-sign-in" aria-hidden="true"></i> Apply Promo</button>
+            </form>
+            <button class="keep-shopping"><i class="fa fa-arrow-left" aria-hidden="true"></i> Keep shopping</button>
+            <button class="checkout"><i class="fa fa-arrow-right" aria-hidden="true"></i> Proceed to checkout</button><br>
+            <a href="#cart-header"><i class="fa fa-arrow-up" aria-hidden="true"></i> Go to top of cart</a>
+          </div> <!-- end .cart-footer -->
+
+        </div> <!-- end .shopping-cart -->
       </article>
 
       <!-- the aside content can also be nested within the main content -->
@@ -102,6 +666,12 @@
     <footer>
       <p>© Copyright 2050 by SuperCycles. All rights reversed.</p>
     </footer>
+
+    <script src="scripts/scroll-then-fix.js" type="text/javascript"></script>
+    <script src="scripts/products.js" type="text/javascript"></script>
+    <script src="scripts/shopping.js" type="text/javascript"></script>
+    <script src="scripts/makeCartItemNode.js" type="text/javascript"></script>
+    <!-- <script src="scripts/cart.js" type="text/javascript"></script> -->
 
   </body>
 </html>
