@@ -128,9 +128,9 @@ for (i=0; i<addToCartButtonArray.length; i++) {
     /* create event listeners for action elements in this cart item
         NOW THAT IT IS IN THE DOM */
 
-    /* Update Cart button event listener and routine */
+    /* Update Cart button event listener and routine for this cart item */
 
-    /* Remove item button event listener and routine */
+    /* Remove item button event listener and routine for this cart item */
     var removeItemButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.remove');
 
     console.log('removeItemButton:', removeItemButton);
@@ -155,9 +155,15 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       cartTotalQuantityListing.innerHTML = cartNumItems.toString();
 
       if (cartNumItems == 0) {
+        /* cart is now empty */
+
         /* disable show cart buttons/widgets */
         showCartButtonInMain.disabled = true;
         showCartButtonInListing.disabled = true;
+
+        /* display product listing, and hide cart */
+        productListing.classList.remove('hide');
+        cartListing.classList.add('hide');
       }
 
       /* reset the listing for this item with regard to:
@@ -175,9 +181,27 @@ for (i=0; i<addToCartButtonArray.length; i++) {
 
       /* remove the cart item from the DOM */
       associatedCartItem.parentElement.removeChild(associatedCartItem);
-    });
+    }); /* END Remove item button event listener and routine for this cart item */
 
-    /* Show Details button event listener and routine */
+    /* Show Details button event listener and routine for this cart item */
+    var showDetailsButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.see-detail');
+    showDetailsButton.addEventListener('click', function(event) {
+      event.preventDefault();
+      /* get the sku data for this .item-cart */
+      var sku = this.parentElement.parentElement.dataset.sku;
+      var descriptiveTextDiv = document.querySelector('.item-cart[data-sku="' + sku + '"] .desc-text');
+      console.log(this.parentElement.parentElement.dataset.sku);
+
+      if (this.innerHTML == 'Show Details') {
+        descriptiveTextDiv.classList.remove('hide');
+        descriptiveTextDiv.classList.add('show');
+        this.innerHTML = 'Hide Details';
+      } else {
+        descriptiveTextDiv.classList.remove('show');
+        descriptiveTextDiv.classList.add('hide');
+        this.innerHTML = 'Show Details';
+      }
+    }); /* END Show Details button event listener and routine for this cart item */
 
     console.log('Adding:', quantity, ' of ', sku);
   })
@@ -192,7 +216,7 @@ function removeItemFromCartObj(sku) {
 
 }
 
-function removeItemButton(event) {
+function removeItemButtonAddEventListener(whichButton) {
 
 }
 
@@ -253,25 +277,25 @@ for (i=0; i<updateCartButtonsArray.length; i++) {
 
 
 /* Show Details/Hide Details for cart items */
-for (i=0; i<showDetailsButtonsArray.length; i++) {
+// for (i=0; i<showDetailsButtonsArray.length; i++) {
 
-  showDetailsButtonsArray[i].addEventListener('click', function(event) {
-    event.preventDefault();
-    /* get the sku data for this .item-cart */
-    var sku = this.parentElement.parentElement.dataset.sku;
-    var descriptiveTextDiv = document.querySelector('.item-cart[data-sku="' + sku + '"] .desc-text');
-    console.log(this.parentElement.parentElement.dataset.sku);
+//   showDetailsButtonsArray[i].addEventListener('click', function(event) {
+//     event.preventDefault();
+//     /* get the sku data for this .item-cart */
+//     var sku = this.parentElement.parentElement.dataset.sku;
+//     var descriptiveTextDiv = document.querySelector('.item-cart[data-sku="' + sku + '"] .desc-text');
+//     console.log(this.parentElement.parentElement.dataset.sku);
 
-    if (this.innerHTML == 'Show Details') {
-      descriptiveTextDiv.classList.remove('hide');
-      descriptiveTextDiv.classList.add('show');
-      this.innerHTML = 'Hide Details';
-    } else {
-      descriptiveTextDiv.classList.remove('show');
-      descriptiveTextDiv.classList.add('hide');
-      this.innerHTML = 'Show Details';
-    }
+//     if (this.innerHTML == 'Show Details') {
+//       descriptiveTextDiv.classList.remove('hide');
+//       descriptiveTextDiv.classList.add('show');
+//       this.innerHTML = 'Hide Details';
+//     } else {
+//       descriptiveTextDiv.classList.remove('show');
+//       descriptiveTextDiv.classList.add('hide');
+//       this.innerHTML = 'Show Details';
+//     }
 
-  });
+//   });
 
-} // end for (var i=0; i<seeDetailsButtonsArray.length; i++)
+// } // end for (var i=0; i<seeDetailsButtonsArray.length; i++)
