@@ -103,6 +103,42 @@ function checkCartItemsQuantity() {
 function updateCartSummary() {
 
 } // end function updateCartSummary()
+
+function removeCartItem(cartItem) {
+  // var associatedCartItem =  this.parentElement.parentElement;
+  // console.log('associatedCartItem:', associatedCartItem);
+
+  var sku = cartItem.dataset.sku;
+  delete cartItems[sku];
+
+  /* check cart and respond accordingly to total number of items */
+  checkCartItemsQuantity();
+
+  /* reset the listing for this item with regard to:
+      Quantity input value reset to 1,
+      Quantity input enabled,
+      "Item in cart" button text reset to "Add to cart",
+      Add to cart button enabled
+  */
+
+  var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
+  var associatedListingItemQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
+  var associatedListingItemAddToCartButton = associatedListingItem.querySelector('button.add-to-cart');
+
+  associatedListingItemQuantityInput.value = '1';
+  associatedListingItemQuantityInput.disabled = false;
+
+  associatedListingItemAddToCartButton.innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart';
+  associatedListingItemAddToCartButton.disabled = false;
+
+  /* remove the cart item from the DOM */
+  cartItem.parentElement.removeChild(cartItem);
+} // end function removeCartItem()
+
+function resetListingQtyAndButton(listingItem) {
+
+}
+
 /***********************************/
 /* above - cart-specific variables */
 /***********************************/
@@ -166,28 +202,37 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       var associatedQuantityInput = this.parentElement.querySelector('input.quantity');
       var associatedCartItem =  this.parentElement.parentElement.parentElement;
       var sku = associatedCartItem.dataset.sku;
+      var associatedCartItemSubtotalSpan = associatedCartItem.querySelector('div.item-subtotal span');
+
       var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
       var associatedListingQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
 
-      /* update cartItems object */
-      cartItems[sku] = associatedQuantityInput.value;
-
-      /* check cart and respond accordingly to total number of items */
-      checkCartItemsQuantity();
-
       /* update associated listing item quantity and Add to cart button */
-      if (associatedQuantityInput == 0) {
-        // removeCartItem(associatedCartItem);
+      if (associatedQuantityInput.value == '0') {
+        removeCartItem(associatedCartItem);
       } else {
-        associatedListingQuantityInput.value = associatedQuantityInput.value;
-      }
+          /* update cartItems object with non-zero value */
+          cartItems[sku] = associatedQuantityInput.value;
+          /* check cart and respond accordingly to total number of items */
+          checkCartItemsQuantity();
+          /* set associated listing quantity to the new non-zero value */
+          associatedListingQuantityInput.value = cartItems[sku];
+          /* update item subtotal in cart item */
+          if (products[sku].salePrice !== '') {
+            /* item is on sale */
+            associatedCartItemSubtotalSpan.innerHTML = cartItems[sku] * products[sku].salePrice;
+          } else {
+            /* item is not on sale */
+            associatedCartItemSubtotalSpan.innerHTML = cartItems[sku] * products[sku].price;
+          }
+      } // end if (associatedQuantityInput.value == '0')
 
     }); /* END Update Cart button event listener and routine for this cart item */
 
     /* Remove item button event listener and routine for this cart item */
     var removeItemButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.remove');
 
-    console.log('removeItemButton:', removeItemButton);
+    // console.log('removeItemButton:', removeItemButton);
 
     removeItemButton.addEventListener('click', function(event) {
       event.preventDefault();
@@ -273,7 +318,35 @@ function removeItemFromCartObj(sku) {
 
 }
 
-function removeItemButtonAddEventListener(whichButton) {
+function removeItemButtonAddEventListener(theButton) {
+
+  theButton.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      var associatedCartItem =  this.parentElement.parentElement;
+
+      var sku = associatedCartItem.dataset.sku;
+      delete cartItems[sku];
+
+      /* check cart and respond accordingly to total number of items */
+      checkCartItemsQuantity();
+
+      /* reset the listing for this item with regard to:
+          Quantity input value reset to 1,
+          Quantity input enabled,
+          "Item in cart" button text reset to "Add to cart",
+          Add to cart button enabled
+      */
+      var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
+      console.log('associatedListingItem:', associatedListingItem);
+      associatedListingItem.querySelector('input.quantity').value = '1';
+      associatedListingItem.querySelector('input.quantity').disabled = false;
+      associatedListingItem.querySelector('button.add-to-cart').innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart';
+      associatedListingItem.querySelector('button.add-to-cart').disabled = false;
+
+      /* remove the cart item from the DOM */
+      associatedCartItem.parentElement.removeChild(associatedCartItem);
+    });
 
 }
 

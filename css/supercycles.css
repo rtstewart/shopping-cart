@@ -256,6 +256,8 @@ aside {
   background-color: rgb(80,80,80);
   background-color: rgba(80,80,80,.9);
   color: white;
+  /* https://www.transparenttextures.com/asfalt-dark.html */
+  background: rgba(80,80,80,.5) url('../images/asfalt-dark.png') repeat center;
 }
 
 aside ul {
