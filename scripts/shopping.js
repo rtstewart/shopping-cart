@@ -71,7 +71,38 @@ var updateCartButtonsArray = document.querySelectorAll('.action-cart .update');
 var removeButtonsArray = document.querySelectorAll('.action-cart .remove');
 var showDetailsButtonsArray = document.querySelectorAll('.action-cart .see-detail');
 
+function checkCartItemsQuantity() {
+  /* this will check and update globally available things */
 
+  /* get total number of items in cartItems object */
+  var cartNumItems = 0;
+  for (key in cartItems) {
+    cartNumItems += parseInt(cartItems[key]);
+  }
+
+  /* update .cart-quantity-all in Supercycles, and widget in listing */
+  cartTotalQuantityMain.innerHTML = cartNumItems.toString();
+  cartTotalQuantityListing.innerHTML = cartNumItems.toString();
+
+  if (cartNumItems == 0) {
+    /* cart is now empty */
+
+    /* disable show cart buttons/widgets */
+    showCartButtonInMain.disabled = true;
+    showCartButtonInListing.disabled = true;
+
+    /* display product listing, and hide cart */
+    productListing.classList.remove('hide');
+    cartListing.classList.add('hide');
+  }
+
+  return cartNumItems;
+
+} // end function checkCartItemsQuantity()
+
+function updateCartSummary() {
+
+} // end function updateCartSummary()
 /***********************************/
 /* above - cart-specific variables */
 /***********************************/
@@ -129,6 +160,29 @@ for (i=0; i<addToCartButtonArray.length; i++) {
         NOW THAT IT IS IN THE DOM */
 
     /* Update Cart button event listener and routine for this cart item */
+    var updateCartButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.update');
+    updateCartButton.addEventListener('click', function(event) {
+
+      var associatedQuantityInput = this.parentElement.querySelector('input.quantity');
+      var associatedCartItem =  this.parentElement.parentElement.parentElement;
+      var sku = associatedCartItem.dataset.sku;
+      var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
+      var associatedListingQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
+
+      /* update cartItems object */
+      cartItems[sku] = associatedQuantityInput.value;
+
+      /* check cart and respond accordingly to total number of items */
+      checkCartItemsQuantity();
+
+      /* update associated listing item quantity and Add to cart button */
+      if (associatedQuantityInput == 0) {
+        // removeCartItem(associatedCartItem);
+      } else {
+        associatedListingQuantityInput.value = associatedQuantityInput.value;
+      }
+
+    }); /* END Update Cart button event listener and routine for this cart item */
 
     /* Remove item button event listener and routine for this cart item */
     var removeItemButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.remove');
@@ -141,30 +195,33 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       var associatedCartItem =  this.parentElement.parentElement;
       console.log('associatedCartItem:', associatedCartItem);
 
-      var sku = this.parentElement.parentElement.dataset.sku;
+      var sku = associatedCartItem.dataset.sku;
       delete cartItems[sku];
 
+      /* check cart and respond accordingly to total number of items */
+      checkCartItemsQuantity();
+
       /* get total number of items in cartItems object */
-      var cartNumItems = 0;
-      for (key in cartItems) {
-        cartNumItems += parseInt(cartItems[key]);
-      }
+      // var cartNumItems = 0;
+      // for (key in cartItems) {
+      //   cartNumItems += parseInt(cartItems[key]);
+      // }
 
-      /* update .cart-quantity-all in Supercycles, and widget in listing */
-      cartTotalQuantityMain.innerHTML = cartNumItems.toString();
-      cartTotalQuantityListing.innerHTML = cartNumItems.toString();
+      // /* update .cart-quantity-all in Supercycles, and widget in listing */
+      // cartTotalQuantityMain.innerHTML = cartNumItems.toString();
+      // cartTotalQuantityListing.innerHTML = cartNumItems.toString();
 
-      if (cartNumItems == 0) {
-        /* cart is now empty */
+      // if (cartNumItems == 0) {
+      //   /* cart is now empty */
 
-        /* disable show cart buttons/widgets */
-        showCartButtonInMain.disabled = true;
-        showCartButtonInListing.disabled = true;
+      //   /* disable show cart buttons/widgets */
+      //   showCartButtonInMain.disabled = true;
+      //   showCartButtonInListing.disabled = true;
 
-        /* display product listing, and hide cart */
-        productListing.classList.remove('hide');
-        cartListing.classList.add('hide');
-      }
+      //   /* display product listing, and hide cart */
+      //   productListing.classList.remove('hide');
+      //   cartListing.classList.add('hide');
+      // }
 
       /* reset the listing for this item with regard to:
           Quantity input value reset to 1,
