@@ -59,6 +59,14 @@ var cartItems = {};
 */
 var cartHeader = document.querySelector('div.cart-header');
 var cartFooter = document.querySelector('div.cart-footer');
+
+/* cart summary header/footer elements to update */
+var cartQuantitySpanArray = document.querySelectorAll('span.cart-quantity');
+var cartSubtotalTdArray = document.querySelectorAll('td.cart-subtotal');
+var cartPromoCodeSpanArray = document.querySelectorAll('span.promo-code');
+var cartPromoDiscountTdArray = document.querySelectorAll('td.cart-promo-discount');
+var cartTotalTdArray = document.querySelectorAll('.shopping-cart td.cart-total');
+
 var promoCodeInputArray = document.querySelectorAll('.shopping-cart .promo-code');
 var applyPromoButtonsArray = document.querySelectorAll('.shopping-cart .apply-promo');
 var keepShoppingButtonsArray = document.querySelectorAll('.shopping-cart .keep-shopping');
@@ -100,7 +108,41 @@ function checkCartItemsQuantity() {
 
 } // end function checkCartItemsQuantity()
 
+function getCartItemsQuantity() {
+  /* get total number of items in cartItems object */
+  var cartNumItems = 0;
+  for (key in cartItems) {
+    cartNumItems += parseInt(cartItems[key]);
+  }
+  return cartNumItems;
+}
+
 function updateCartSummary() {
+  var cartSubtotal = 0;
+  var promoDiscount = cartPromoDiscountTdArray[0].innerHTML.slice(2);
+  // console.log('promoDiscount:', promoDiscount);
+  var cartTotal = 0;
+  for (key in cartItems) {
+    if (products[key].salePrice == '') {
+      /* this item is not on sale */
+      cartSubtotal += cartItems[key] * products[key].price;
+      console.log('cartSubtotal:', cartSubtotal);
+    } else {
+      /* this item is on sale */
+      cartSubtotal += cartItems[key] * products[key].salePrice;
+      console.log('cartSubtotal:', cartSubtotal);
+    }
+  } // end for
+  cartTotal += cartSubtotal;
+  cartTotal -= promoDiscount;
+  for (i=0; i<cartQuantitySpanArray.length; i++) {
+
+    cartQuantitySpanArray[i].innerHTML = getCartItemsQuantity();
+
+    cartSubtotalTdArray[i].innerHTML = '$' + cartSubtotal.toFixed(2);
+
+    cartTotalTdArray[i].innerHTML = '$' + cartTotal.toFixed(2);
+  }
 
 } // end function updateCartSummary()
 
@@ -178,6 +220,9 @@ for (i=0; i<addToCartButtonArray.length; i++) {
     /* update cartItems object with new item addition */
     cartItems[sku] = quantity;
 
+    /* update cart summary header/footer */
+    updateCartSummary();
+
     /* get total number of items in cartItems object */
     var cartNumItems = 0;
     for (key in cartItems) {
@@ -220,10 +265,10 @@ for (i=0; i<addToCartButtonArray.length; i++) {
           /* update item subtotal in cart item */
           if (products[sku].salePrice !== '') {
             /* item is on sale */
-            associatedCartItemSubtotalSpan.innerHTML = cartItems[sku] * products[sku].salePrice;
+            associatedCartItemSubtotalSpan.innerHTML = (cartItems[sku] * products[sku].salePrice).toFixed(2).toString();
           } else {
             /* item is not on sale */
-            associatedCartItemSubtotalSpan.innerHTML = cartItems[sku] * products[sku].price;
+            associatedCartItemSubtotalSpan.innerHTML = (cartItems[sku] * products[sku].price).toFixed(2).toString();
           }
       } // end if (associatedQuantityInput.value == '0')
 
@@ -369,16 +414,16 @@ showCartButtonInListing.addEventListener('click', function(event) {
 /*******************************/
 
 /* set up listeners for Apply Promo buttons */
-for (i=0; i<applyPromoButtonsArray.length; i++) {
+// for (i=0; i<applyPromoButtonsArray.length; i++) {
 
-}
+// }
 
 /* event listener function for keep shopping button press */
-function keepShopping(clickEvent) {
-  clickEvent.preventDefault();
-  cartListing.classList.add('hide');
-  productListing.classList.remove('hide');
-}
+// function keepShopping(clickEvent) {
+//   clickEvent.preventDefault();
+//   cartListing.classList.add('hide');
+//   productListing.classList.remove('hide');
+// }
 for (i=0; i<keepShoppingButtonsArray.length; i++) {
   keepShoppingButtonsArray[i].addEventListener('click', function(event) {
     event.preventDefault();
@@ -388,20 +433,6 @@ for (i=0; i<keepShoppingButtonsArray.length; i++) {
 }
 
 /* cart item action elements */
-
-/* listeners for Update Cart buttons */
-for (i=0; i<updateCartButtonsArray.length; i++) {
-      /* update cart */
-    if (Object.keys(cartItems).length > 0) {
-      /* item may already be in cart */
-      for (var key in cart) {
-
-      }
-    } else {
-
-    }
-
-}
 
 /* listeners for Remove buttons */
 
