@@ -470,4 +470,9 @@ footer a {
     padding: 0 0 0 0;
   }
 
+  .shopping-cart .cart-header table br,
+  .shopping-cart .cart-footer table br{
+    display: block;
+  }
+
 }
