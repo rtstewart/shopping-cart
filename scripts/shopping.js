@@ -79,6 +79,11 @@ var updateCartButtonsArray = document.querySelectorAll('.action-cart .update');
 var removeButtonsArray = document.querySelectorAll('.action-cart .remove');
 var showDetailsButtonsArray = document.querySelectorAll('.action-cart .see-detail');
 
+/* for IE>8, can use this instead of jQuery $(document).ready(function() {...code}); : */
+// document.addEventListener("DOMContentLoaded", function() {
+//   showPromosAlert();
+// });
+
 function checkCartItemsQuantity() {
   /* this will check and update globally available things */
 
@@ -395,10 +400,23 @@ function removeItemButtonAddEventListener(theButton) {
 
 }
 
+function showPromosAlert() {
+  /* alert a promos message if the promos object is not empty */
+  if (Object.keys(promos).length > 0) {
+    var promoMsg = 'Today\'s promo codes and descriptions are as follows:';
+    for (var key in promos) {
+      promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
+    }
+    alert(promoMsg);
+  }
+}
+
 /* set up event listeners for show cart buttons/widgets */
 showCartButtonInMain.addEventListener('click', function(event) {
   productListing.classList.add('hide');
   cartListing.classList.remove('hide');
+  /* alert a promos message if the promos object is not empty */
+  // showPromosAlert();
 });
 /* this DOM element would normally be created dynamically when the listing
     page gets populated dynamically;
@@ -407,6 +425,8 @@ showCartButtonInMain.addEventListener('click', function(event) {
 showCartButtonInListing.addEventListener('click', function(event) {
   productListing.classList.add('hide');
   cartListing.classList.remove('hide');
+  /* alert a promos message if the promos object is not empty */
+  // showPromosAlert();
 });
 
 /*******************************/
@@ -460,3 +480,4 @@ for (i=0; i<keepShoppingButtonsArray.length; i++) {
 //   });
 
 // } // end for (var i=0; i<seeDetailsButtonsArray.length; i++)
+

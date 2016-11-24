@@ -1,3 +1,6 @@
+/* always create an empty promo object, even if not to be populated,
+    since it will be referenced;
+*/
 var promos = {};
 
 /*
@@ -23,15 +26,15 @@ var promos = {};
   - Only apply a promo code if it makes the total price less than the total price with the current promo code;
 */
 
-function Promo(promoCode, byMethod, byMethodDescription, percentOff) {
+function Promo(promoCode, byMethod, description, percentOff) {
   this.promoCode = promoCode;
   this.byMethod = byMethod;
-  this.byMethodDescription = byMethodDescription;
+  this.description = description;
   this.percentOff = percentOff;
 };
 
-function addPromo(promoCode, byMethod, byMethodDescription, percentOff) {
-  promos[promoCode] = new Promo(promoCode, byMethod, byMethodDescription, percentOff);
+function addPromo(promoCode, byMethod, description, percentOff) {
+  promos[promoCode] = new Promo(promoCode, byMethod, description, percentOff);
 };
 
 addPromo(
@@ -51,6 +54,50 @@ addPromo(
 addPromo(
   'TYPE-MERCHANDISE'
   , 'TYPE'
-  , 'This promo code will take 7% off of all items in the "merchandise" category.\n Such items have an item code of the form xx-MD-xxxx, where the "MD" indicates merchandise.\nYou can search for such items by category as well using "merchandise" as a filter.'
+  , 'This promo code will take 7% off of all items in the "merchandise" category.\nSuch items have an item code of the form xx-MD-xxxx, where the "MD" indicates merchandise.\nYou can search for such items by category as well using "merchandise" as a filter.'
   , '7'
 );
+
+function showPromosAlert() {
+  /* alert a promos message if the promos object is not empty */
+  if (Object.keys(promos).length > 0) {
+    var promoMsg = 'Today\'s promo codes and descriptions are as follows:';
+    for (var key in promos) {
+      promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
+    }
+    alert(promoMsg);
+  }
+}
+
+/* alert promotional code information when the document is finished loading */
+var checkDOMLoaded = setInterval(function() {
+  // console.log(new Date());
+  if (document.readyState == 'complete') {
+      clearInterval(checkDOMLoaded);
+      showPromosAlert();
+    }
+}, 1000);
+
+// console.log('document.readyState:', document.readyState);
+
+// ??
+// (function ready(fn) {
+//   //if (document.readyState != 'loading'){
+//   if (document.readyState == 'complete'){
+//     fn();
+//   } else {
+//     // document.addEventListener('DOMContentLoaded', fn);
+//   }
+// })(showPromosAlert);
+
+/* alert a promos message if the promos object is not empty */
+// if (Object.keys(promos).length > 0) {
+//   var promoMsg = (function() {
+//     var msg = 'Today\'s promo codes and descriptions are as follows:';
+//     for (var key in promos) {
+//       msg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
+//     }
+//     return msg;
+//   })();
+//   alert(promoMsg);
+// }
