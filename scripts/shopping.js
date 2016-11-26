@@ -1,6 +1,8 @@
-// https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes
-// https://developer.mozilla.org/en-US/docs/Web/API/Node
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+/*
+  https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes
+  https://developer.mozilla.org/en-US/docs/Web/API/Node
+  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+*/
 
 /* IMPORTANT NOTE: the following declarations and assignments are used because
     the listing information is already present;
@@ -52,6 +54,7 @@ var cartItems = {};
 // var cartTotal = 0;
 
 /* cart header and footer, and associated action elements */
+
 /* NOTE in our "mock" shopping scenario here, these elements already exist in
     the DOM so we can reference them already;
     Normally, they might be created dynamically and would have to be dealt with
@@ -122,12 +125,15 @@ function getCartItemsQuantity() {
   return cartNumItems;
 }
 
-function updateCartSummary() {
+function updateCartSummary(newPromoCode) {
   var cartSubtotal = 0;
-  var promoDiscount = cartPromoDiscountTdArray[0].innerHTML.slice(2);
+  // var promoDiscount = cartPromoDiscountTdArray[0].innerHTML.slice(2);
+  var existingPromoCode;
+  var existingPromoCodeDiscount = 0;
+  var newPromoCodeDiscount = 0;
   // console.log('promoDiscount:', promoDiscount);
   var cartTotal = 0;
-  for (key in cartItems) {
+  for (var key in cartItems) {
     if (products[key].salePrice == '') {
       /* this item is not on sale */
       cartSubtotal += cartItems[key] * products[key].price;
@@ -138,8 +144,55 @@ function updateCartSummary() {
       console.log('cartSubtotal:', cartSubtotal);
     }
   } // end for
+  /* get cart subtotal */
   cartTotal += cartSubtotal;
-  cartTotal -= promoDiscount;
+
+  /* calculate discount from existing used promo if any */
+  for (key in promos) {
+    if (promos[key].isUsed) {
+      existingPromoCode = key;
+      /* found a promo being used, so calculate the resulting discount */
+      switch (promos[key].type) {
+        case 'ITEM':
+          var discountedItemCode = key.slice(5);
+          var itemPrice;
+          console.log('discountedItemCode:', discountedItemCode);
+          if (products[discountedItemCode].salePrice == '') {
+            /* item is NOT also on sale */
+            itemPrice = products[discountedItemCode].price;
+          } else {
+            /* item IS also on sale */
+            itemPrice = products[discountedItemCode].salePrice;
+          }
+          existingPromoCodeDiscount = cartItems[discountedItemCode] * itemPrice * promos[key].percentOff * 0.01;
+          break;
+        case 'CART':
+          existingPromoCodeDiscount = cartSubtotal * promos[key].percentOff * 0.01;
+          break;
+        case 'TYPE':
+          var discountCategory = key.slice(5).toLowerCase();
+          for (var prodKey in cartItems) {
+            if (discountCategory == products[prodKey].category) {
+              if (products[prodKey].salePrice == '') {
+                /* item is NOT also on sale */
+                itemPrice = products[prodKey].price;
+              } else {
+                  /* item IS also on sale */
+                  itemPrice = products[prodKey].salePrice;
+              }
+              existingPromoCodeDiscount += cartItems[prodKey] * itemPrice * promos[key].percentOff * 0.01;
+            }
+          }
+          break;
+        default:
+          alert('Something went wrong with promo discount calculation.');
+      }
+
+    }
+  }
+  /* should now have the promoDiscount amount here */
+
+  // cartTotal -= promoDiscount;
   for (i=0; i<cartQuantitySpanArray.length; i++) {
 
     cartQuantitySpanArray[i].innerHTML = getCartItemsQuantity();
@@ -434,9 +487,49 @@ showCartButtonInListing.addEventListener('click', function(event) {
 /*******************************/
 
 /* set up listeners for Apply Promo buttons */
-// for (i=0; i<applyPromoButtonsArray.length; i++) {
+for (i=0; i<applyPromoButtonsArray.length; i++) {
+  applyPromoButtonsArray[i].addEventListener('click', function(event) {
+    event.preventDefault();
+    console.log('Apply Promo clicked!');
+    applyPromoCode(this);
+  });
+}
 
-// }
+function applyPromoCode(whichButton) {
+  /* doesn't matter which button was clicked (in header or footer), the same
+      action needs to occur, however, we'll need to grab the value of the
+      specific input field associated with the particular button pressed;
+  */
+  var associatedPromoInput = whichButton.parentElement.querySelector('input.promo-code');
+  console.log('whichButton:', whichButton, '\nassociatedPromoInput:', associatedPromoInput);
+  var inputPromoCode = '';
+  /* check if code is valid */
+  for (key in promos) {
+    /* upper case input value since all promos with alpha are upper case */
+    if (key == associatedPromoInput.value.toUpperCase()) {
+      inputPromoCode = associatedPromoInput.value;
+    }
+  }
+  if (inputPromoCode == '') {
+    alert(associatedPromoInput.value + ' is not a valid Promotional Code');
+    clickPromosAlert();
+  }
+  /* if here, have a valid promotional code */
+  /* see if it's already being used */
+  for (key in promos) {
+    if (promos[key].isUsed) {
+      alert('Promotional Code ' + key + ' is already being used.');
+      return;
+    }
+  }
+  /* now, we have a valid, currently unused, promo code;
+      we only allow the use of one at a time, but compare the cart total
+      when attempting to use a different one and accept if the cart total
+      will be less with the "new" promo;
+  */
+  updateCartSummary(inputPromoCode);
+
+}
 
 /* event listener function for keep shopping button press */
 // function keepShopping(clickEvent) {

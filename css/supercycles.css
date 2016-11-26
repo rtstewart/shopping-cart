@@ -269,7 +269,13 @@ aside h2, aside li, aside a {
 }
 
 aside li {
-  padding-bottom: 10px;
+  padding-bottom: 0.75rem;
+}
+
+aside li:first-child a {
+  color: yellow;
+  font-weight: bold;
+  text-shadow: 1px 1px 0 #c00;
 }
 
 footer {

@@ -31,11 +31,16 @@ function Promo(promoCode, byMethod, description, percentOff) {
   this.byMethod = byMethod;
   this.description = description;
   this.percentOff = percentOff;
+  this.isUsed = false;
 };
 
 function addPromo(promoCode, byMethod, description, percentOff) {
   promos[promoCode] = new Promo(promoCode, byMethod, description, percentOff);
 };
+
+/* NOTE: use all upper case for alpha characters in promo codes as this will
+    be an assumption when checking for valid promo codes;
+*/
 
 addPromo(
   'ITEM-CA-SR-0716'

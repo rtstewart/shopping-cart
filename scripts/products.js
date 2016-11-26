@@ -55,6 +55,10 @@ addProduct(
 );
 */
 
+/* NOTE: always use lower case for category since this will be assumed when
+    checking promos of 'TYPE' byMethod against category values in products {}
+*/
+
 /* build products{} */
 addProduct(
   'CA-R-0739'
