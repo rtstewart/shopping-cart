@@ -126,11 +126,18 @@ function getCartItemsQuantity() {
 }
 
 function updateCartSummary(newPromoCode) {
+  /* newPromoCode only gets sent in when it is valid, and currently not used;
+      it is not sent in when an item is added to the cart and this function
+      gets called;
+      so, newPromoCode could be undefined;
+  */
   var cartSubtotal = 0;
   // var promoDiscount = cartPromoDiscountTdArray[0].innerHTML.slice(2);
   var existingPromoCode;
   var existingPromoCodeDiscount = 0;
   var newPromoCodeDiscount = 0;
+  var appliedPromoCode;
+  var appliedPromoCodeDiscount;
   // console.log('promoDiscount:', promoDiscount);
   var cartTotal = 0;
   for (var key in cartItems) {
@@ -144,14 +151,17 @@ function updateCartSummary(newPromoCode) {
       console.log('cartSubtotal:', cartSubtotal);
     }
   } // end for
+
   /* get cart subtotal */
   cartTotal += cartSubtotal;
 
   /* calculate discount from existing used promo if any */
   for (key in promos) {
+    console.log('key:', key);
     if (promos[key].isUsed) {
+      /* found a promo already being used, so calculate the resulting discount */
       existingPromoCode = key;
-      /* found a promo being used, so calculate the resulting discount */
+
       switch (promos[key].type) {
         case 'ITEM':
           var discountedItemCode = key.slice(5);
@@ -185,22 +195,107 @@ function updateCartSummary(newPromoCode) {
           }
           break;
         default:
-          alert('Something went wrong with promo discount calculation.');
-      }
+          alert('Something went wrong with EXISTING promo discount calculation.');
+      } // end switch (promos[key].type)
 
-    }
+    } // end if (promos[key].isUsed)
+
+  } // end for (key in promos)
+
+  /* if newPromoCode is not undefined, it was supplied as valid and unused */
+  if (newPromoCode) {
+    switch (promos[newPromoCode].byMethod) {
+      // console.log(promos[newPromoCode]);
+      case 'ITEM':
+        discountedItemCode = newPromoCode.slice(5);
+        itemPrice = 0;
+        console.log('discountedItemCode:', discountedItemCode);
+        if (products[discountedItemCode].salePrice == '') {
+          /* item is NOT also on sale */
+          itemPrice = products[discountedItemCode].price;
+        } else {
+          /* item IS also on sale */
+          itemPrice = products[discountedItemCode].salePrice;
+        }
+        newPromoCodeDiscount = cartItems[discountedItemCode] * itemPrice * promos[newPromoCode].percentOff * 0.01;
+        break;
+      case 'CART':
+        newPromoCodeDiscount = cartSubtotal * promos[newPromoCode].percentOff * 0.01;
+        break;
+      case 'TYPE':
+        discountCategory = newPromoCode.slice(5).toLowerCase();
+        for (prodKey in cartItems) {
+          if (discountCategory == products[prodKey].category) {
+            if (products[prodKey].salePrice == '') {
+              /* item is NOT also on sale */
+              itemPrice = products[prodKey].price;
+            } else {
+                /* item IS also on sale */
+                itemPrice = products[prodKey].salePrice;
+            }
+            newPromoCodeDiscount += cartItems[prodKey] * itemPrice * promos[newPromoCode].percentOff * 0.01;
+          }
+        }
+        break;
+      default:
+        alert('Something went wrong with NEW promo discount calculation.');
+    } // end switch (promos[key].type)
   }
-  /* should now have the promoDiscount amount here */
 
-  // cartTotal -= promoDiscount;
+  /* should now have a promoDiscount amount here, if any;
+      now, to figure out if we have any or both promos,
+      and if so, which to use;
+  */
+  if (existingPromoCodeDiscount != 0 && newPromoCodeDiscount != 0) {
+    if (newPromoCodeDiscount > existingPromoCodeDiscount) {
+      /* apply new promo instead of existing */
+      promos[existingPromoCode].isUsed = false;
+      promos[newPromoCode].isUsed = true;
+      appliedPromoCode = newPromoCode;
+      appliedPromoCodeDiscount = newPromoCodeDiscount;
+    } else {
+      /* existing promo stays in effect */
+      appliedPromoCode = existingPromoCode;
+      appliedPromoCodeDiscount = existingPromoCodeDiscount;
+    }
+  } else if (existingPromoCodeDiscount == 0 && newPromoCodeDiscount == 0) {
+    /* no promo is applied */
+    appliedPromoCode = '';
+    appliedPromoCodeDiscount = 0;
+
+  } else if (existingPromoCodeDiscount == 0 && newPromoCodeDiscount != 0) {
+    promos[newPromoCode].isUsed = true;
+    appliedPromoCode = newPromoCode;
+    appliedPromoCodeDiscount = newPromoCodeDiscount;
+  } else if (existingPromoCodeDiscount != 0 && newPromoCodeDiscount == 0) {
+    promos[existingPromoCode].isUsed = true;
+    appliedPromoCode = existingPromoCode;
+    appliedPromoCodeDiscount = existingPromoCodeDiscount;
+  }
+
+  cartTotal -= appliedPromoCodeDiscount;
+
+  /* update cart summary fields */
   for (i=0; i<cartQuantitySpanArray.length; i++) {
+    /* since we have the same number of all elements in cart summary to be
+        updated, we will just use the length of cartQuantitySpanArray as
+        the reference limit value for the loop;
+    */
 
     cartQuantitySpanArray[i].innerHTML = getCartItemsQuantity();
 
     cartSubtotalTdArray[i].innerHTML = '$' + cartSubtotal.toFixed(2);
 
+    cartPromoCodeSpanArray[i].innerHTML = appliedPromoCode;
+
+    cartPromoDiscountTdArray[i].innerHTML = '-$' + appliedPromoCodeDiscount.toFixed(2);
+
     cartTotalTdArray[i].innerHTML = '$' + cartTotal.toFixed(2);
-  }
+
+    /* clear out promo code input field */
+    promoCodeInputArray[i].value = '';
+
+  } // end for
 
 } // end function updateCartSummary()
 
@@ -330,6 +425,8 @@ for (i=0; i<addToCartButtonArray.length; i++) {
           }
       } // end if (associatedQuantityInput.value == '0')
 
+      updateCartSummary();
+
     }); /* END Update Cart button event listener and routine for this cart item */
 
     /* Remove item button event listener and routine for this cart item */
@@ -348,6 +445,8 @@ for (i=0; i<addToCartButtonArray.length; i++) {
 
       /* check cart and respond accordingly to total number of items */
       checkCartItemsQuantity();
+
+      updateCartSummary();
 
       /* get total number of items in cartItems object */
       // var cartNumItems = 0;
@@ -386,6 +485,7 @@ for (i=0; i<addToCartButtonArray.length; i++) {
 
       /* remove the cart item from the DOM */
       associatedCartItem.parentElement.removeChild(associatedCartItem);
+
     }); /* END Remove item button event listener and routine for this cart item */
 
     /* Show Details button event listener and routine for this cart item */
@@ -507,12 +607,15 @@ function applyPromoCode(whichButton) {
   for (key in promos) {
     /* upper case input value since all promos with alpha are upper case */
     if (key == associatedPromoInput.value.toUpperCase()) {
+      /* found a valid promo code in promos corresponding to user input value */
       inputPromoCode = associatedPromoInput.value;
     }
   }
   if (inputPromoCode == '') {
     alert(associatedPromoInput.value + ' is not a valid Promotional Code');
+    /* alert available promos, if any */
     clickPromosAlert();
+    return;
   }
   /* if here, have a valid promotional code */
   /* see if it's already being used */
