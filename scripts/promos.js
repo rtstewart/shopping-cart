@@ -74,12 +74,21 @@ function showPromosAlert() {
   }
 }
 
+function playSound(){
+    var snd=document.getElementById('rejoice');
+    canPlayMP3 = (typeof snd.canPlayType === "function" && snd.canPlayType("audio/mpeg") !== "");
+    snd.src=canPlayMP3?'Hallelujah-Chorus-short.mp3':'Hallelujah-Chorus-short.ogg';
+    snd.load();
+    snd.play();
+}
+
 /* alert promotional code information when the document is finished loading */
 var checkDOMLoaded = setInterval(function() {
   // console.log(new Date());
   if (document.readyState == 'complete') {
       clearInterval(checkDOMLoaded);
       showPromosAlert();
+      playSound();
     }
 }, 1000);
 

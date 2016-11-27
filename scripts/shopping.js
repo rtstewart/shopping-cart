@@ -70,6 +70,7 @@ var cartPromoCodeSpanArray = document.querySelectorAll('span.promo-code');
 var cartPromoDiscountTdArray = document.querySelectorAll('td.cart-promo-discount');
 var cartTotalTdArray = document.querySelectorAll('.shopping-cart td.cart-total');
 
+var promoCodeAnchorArray = document.querySelectorAll('.shopping-cart .cart-header-footer form label a');
 var promoCodeInputArray = document.querySelectorAll('.shopping-cart .promo-code');
 var applyPromoButtonsArray = document.querySelectorAll('.shopping-cart .apply-promo');
 var keepShoppingButtonsArray = document.querySelectorAll('.shopping-cart .keep-shopping');
@@ -195,7 +196,7 @@ function updateCartSummary(newPromoCode) {
           }
           break;
         default:
-          alert('Something went wrong with EXISTING promo discount calculation.');
+          // alert('Something went wrong with EXISTING promo discount calculation.');
       } // end switch (promos[key].type)
 
     } // end if (promos[key].isUsed)
@@ -238,7 +239,7 @@ function updateCartSummary(newPromoCode) {
         }
         break;
       default:
-        alert('Something went wrong with NEW promo discount calculation.');
+        // alert('Something went wrong with NEW promo discount calculation.');
     } // end switch (promos[key].type)
   }
 
@@ -585,6 +586,14 @@ showCartButtonInListing.addEventListener('click', function(event) {
 /*******************************/
 /* formerly cart.js code below */
 /*******************************/
+
+/* set up event listeners for Promotional Code anchors */
+for (i=0; i<promoCodeAnchorArray.length; i++) {
+  promoCodeAnchorArray[i].addEventListener('click', function(event) {
+    event.preventDefault();
+    clickPromosAlert();
+  })
+}
 
 /* set up listeners for Apply Promo buttons */
 for (i=0; i<applyPromoButtonsArray.length; i++) {

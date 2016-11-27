@@ -27,7 +27,7 @@
 
   </head>
 
-  <body>
+  <body><audio id="rejoice"></audio>
 
     <header>
       <h1>SuperCycles</h1>
@@ -469,7 +469,7 @@
 
         <div class="shopping-cart hide">
 
-          <div class="cart-header" id="cart-header">
+          <div class="cart-header cart-header-footer" id="cart-header">
             <h2>Shopping Cart</h2>
             <!-- <h3>Cart subtotal (<span class="cart-quantity">3</span> items): $<span class="cart-amount">1,314.00</span></h3> -->
             <table>
@@ -487,7 +487,7 @@
               </tr>
             </table>
             <form action="javascript: void(0);">
-              <label for="promo-code-header">Promotional code:</label><br>
+              <label for="promo-code-header"><a href="#!">Promotional code:</a></label><br>
               <input id="promo-code-header" class="promo-code" type="text" name="promo-code">
               <button class="apply-promo"><i class="fa fa-sign-in" aria-hidden="true"></i> Apply Promo</button>
             </form>
@@ -496,7 +496,7 @@
             <a href="#cart-footer"><i class="fa fa-arrow-down" aria-hidden="true"></i> Go to bottom of cart</a>
           </div> <!-- end .cart-header -->
 
-          <div class="cart-footer" id="cart-footer">
+          <div class="cart-footer cart-header-footer" id="cart-footer">
             <!-- <h2 tabindex="0">Shopping Cart</h2> -->
             <!-- <h3>Cart subtotal before discount (<span class="cart-quantity">3</span> items): $<span class="cart-amount">1,314.00</span></h3>
             <h3>Promo Discount (<span class="promo-code">ITEMca-rc-0056</span>): - $<span class="promo-discount">100.00</span></h3>
@@ -516,7 +516,7 @@
               </tr>
             </table>
             <form action="javascript: void(0);">
-              <label for="promo-code-footer">Promotional code:</label><br>
+              <label for="promo-code-footer"><a href="#!">Promotional code:</a></label><br>
               <input id="promo-code-footer" class="promo-code" type="text" name="promo-code">
               <button class="apply-promo"><i class="fa fa-sign-in" aria-hidden="true"></i> Apply Promo</button>
             </form>
