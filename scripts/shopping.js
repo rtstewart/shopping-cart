@@ -139,6 +139,7 @@ function updateCartSummary(newPromoCode) {
   var newPromoCodeDiscount = 0;
   var appliedPromoCode;
   var appliedPromoCodeDiscount;
+  var numCartItems;
   // console.log('promoDiscount:', promoDiscount);
   var cartTotal = 0;
   for (var key in cartItems) {
@@ -158,16 +159,16 @@ function updateCartSummary(newPromoCode) {
 
   /* calculate discount from existing used promo if any */
   for (key in promos) {
-    console.log('key:', key);
+
     if (promos[key].isUsed) {
       /* found a promo already being used, so calculate the resulting discount */
       existingPromoCode = key;
 
-      switch (promos[key].type) {
+      switch (promos[key].byMethod) {
         case 'ITEM':
           var discountedItemCode = key.slice(5);
           var itemPrice;
-          console.log('discountedItemCode:', discountedItemCode);
+
           if (products[discountedItemCode].salePrice == '') {
             /* item is NOT also on sale */
             itemPrice = products[discountedItemCode].price;
@@ -206,11 +207,10 @@ function updateCartSummary(newPromoCode) {
   /* if newPromoCode is not undefined, it was supplied as valid and unused */
   if (newPromoCode) {
     switch (promos[newPromoCode].byMethod) {
-      // console.log(promos[newPromoCode]);
+
       case 'ITEM':
         discountedItemCode = newPromoCode.slice(5);
         itemPrice = 0;
-        console.log('discountedItemCode:', discountedItemCode);
         if (products[discountedItemCode].salePrice == '') {
           /* item is NOT also on sale */
           itemPrice = products[discountedItemCode].price;
@@ -283,7 +283,13 @@ function updateCartSummary(newPromoCode) {
         the reference limit value for the loop;
     */
 
-    cartQuantitySpanArray[i].innerHTML = getCartItemsQuantity();
+    // cartQuantitySpanArray[i].innerHTML = getCartItemsQuantity();
+    numCartItems = getCartItemsQuantity();
+    if (numCartItems == 1) {
+      cartQuantitySpanArray[i].innerHTML = numCartItems + ' item';
+    } else {
+      cartQuantitySpanArray[i].innerHTML = numCartItems + ' items';
+    }
 
     cartSubtotalTdArray[i].innerHTML = '$' + cartSubtotal.toFixed(2);
 
@@ -309,6 +315,9 @@ function removeCartItem(cartItem) {
 
   /* check cart and respond accordingly to total number of items */
   checkCartItemsQuantity();
+
+  /* update cart summary */
+  updateCartSummary();
 
   /* reset the listing for this item with regard to:
       Quantity input value reset to 1,
@@ -554,16 +563,16 @@ function removeItemButtonAddEventListener(theButton) {
 
 }
 
-function showPromosAlert() {
-  /* alert a promos message if the promos object is not empty */
-  if (Object.keys(promos).length > 0) {
-    var promoMsg = 'Today\'s promo codes and descriptions are as follows:';
-    for (var key in promos) {
-      promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
-    }
-    alert(promoMsg);
-  }
-}
+// function showPromosAlert() {
+//   /* alert a promos message if the promos object is not empty */
+//   if (Object.keys(promos).length > 0) {
+//     var promoMsg = 'Today\'s promo codes and descriptions are as follows:';
+//     for (var key in promos) {
+//       promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
+//     }
+//     alert(promoMsg);
+//   }
+// }
 
 /* set up event listeners for show cart buttons/widgets */
 showCartButtonInMain.addEventListener('click', function(event) {
@@ -610,14 +619,15 @@ function applyPromoCode(whichButton) {
       specific input field associated with the particular button pressed;
   */
   var associatedPromoInput = whichButton.parentElement.querySelector('input.promo-code');
-  console.log('whichButton:', whichButton, '\nassociatedPromoInput:', associatedPromoInput);
+  // console.log('whichButton:', whichButton, '\nassociatedPromoInput:', associatedPromoInput);
   var inputPromoCode = '';
+
   /* check if code is valid */
   for (key in promos) {
     /* upper case input value since all promos with alpha are upper case */
     if (key == associatedPromoInput.value.toUpperCase()) {
       /* found a valid promo code in promos corresponding to user input value */
-      inputPromoCode = associatedPromoInput.value;
+      inputPromoCode = associatedPromoInput.value.toUpperCase();
     }
   }
   if (inputPromoCode == '') {
@@ -626,13 +636,11 @@ function applyPromoCode(whichButton) {
     clickPromosAlert();
     return;
   }
-  /* if here, have a valid promotional code */
+  /* if here, have a valid promotional code - inputPromoCode */
   /* see if it's already being used */
-  for (key in promos) {
-    if (promos[key].isUsed) {
-      alert('Promotional Code ' + key + ' is already being used.');
-      return;
-    }
+  if (promos[inputPromoCode].isUsed) {
+    alert('Promotional Code ' + inputPromoCode + ' is already being used.');
+    return;
   }
   /* now, we have a valid, currently unused, promo code;
       we only allow the use of one at a time, but compare the cart total
@@ -641,7 +649,7 @@ function applyPromoCode(whichButton) {
   */
   updateCartSummary(inputPromoCode);
 
-}
+} // end function applyPromoCode(whichButton)
 
 /* event listener function for keep shopping button press */
 // function keepShopping(clickEvent) {

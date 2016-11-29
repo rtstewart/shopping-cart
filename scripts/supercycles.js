@@ -9,7 +9,10 @@ function clickPromosAlert() {
   /* alert a promos message if the promos object is not empty */
   var promoMsg;
   if (Object.keys(promos).length > 0) {
-    promoMsg = 'Today\'s promo codes and descriptions are as follows:';
+    var promoMsg = 'There are typically several types of promos available on any given day.'
+                  +'\nOnly one promo code can be applied to a purchase.'
+                  +'\nOf the promo codes you enter, the one giving the greatest discount will be applied.'
+                  +'\n\nToday\'s promo codes and descriptions are as follows:';
     for (var key in promos) {
       promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
     }

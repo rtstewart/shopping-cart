@@ -12,7 +12,7 @@
 var showCart = document.querySelector('.show-cart-listing');
 
 window.addEventListener('scroll', function(e) {
-  if (window.scrollY > 220) {
+  if (window.scrollY > 275) {
     if (window.innerWidth > 935) {
       showCart.classList.add('show-cart-lg-screen-fixed');
       showCart.classList.remove('show-cart-md-sm-screen-fixed');
@@ -31,7 +31,7 @@ window.addEventListener('scroll', function(e) {
 
 window.addEventListener('resize', function(e) {
   if (window.innerWidth > 935) {
-    if (window.scrollY > 220) {
+    if (window.scrollY > 275) {
         showCart.classList.add('show-cart-lg-screen-fixed');
         showCart.classList.remove('show-cart-md-sm-screen-fixed');
         showCart.classList.remove('show-cart-not-fixed');
@@ -40,7 +40,7 @@ window.addEventListener('resize', function(e) {
         showCart.classList.remove('show-cart-md-sm-screen-fixed');
         showCart.classList.remove('show-cart-lg-screen-fixed');
     }
-  } else if (window.scrollY > 220) {
+  } else if (window.scrollY > 275) {
       showCart.classList.add('show-cart-md-sm-screen-fixed');
       showCart.classList.remove('show-cart-not-fixed');
       showCart.classList.remove('show-cart-lg-screen-fixed');

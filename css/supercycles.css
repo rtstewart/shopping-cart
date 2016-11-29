@@ -214,16 +214,23 @@ nav button {
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),
               0 2px 10px 0 rgba(0,0,0,0.12);
 }
+
 .show-cart-main:hover {
   cursor: pointer;
   box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),
               0 4px 15px 0 rgba(0,0,0,0.15);
 }
+
 /* meant for button physically up re: material design; */
 .show-cart-main:hover:active {
   box-shadow: 0 8px 17px 0 rgba(0,0,0,0.20),
               0 6px 20px 0 rgba(0,0,0,0.18);
 }
+
+/* this is the small circular item in the upper left-hand corner
+    of .show-cart, that will contain the number of items in the
+    shopping cart;
+*/
 .cart-quantity-all-main {
   position: absolute;
   transform: translate(calc(-50% - .75rem), calc(-50% - .25rem));
@@ -255,15 +262,15 @@ article {
 }
 
 aside {
-  /*flex: 1;*/
+  /* ?? see first media query @ 935 */
+  padding-top: 0;
   position: absolute;
   right: 0;
   top: 0;
   height: 100%;
   width: calc(22%);
-  /*margin-left: 10px;*/
+  /*margin-left: 0.5rem;*/
   /*background-color: rgb(80,80,80);*/
-  /*background-color: rgba(80,80,80,.9);*/
   color: white;
   /* https://www.transparenttextures.com/asfalt-dark.html */
   background: rgb(100,100,100) url('../images/asfalt-dark.png') repeat center;
@@ -278,7 +285,8 @@ aside h2, aside li, aside a {
 }
 
 aside li {
-  padding-bottom: 0.75rem;
+  /*padding-bottom: 0.75rem;*/
+  margin-bottom: 0.75rem;
 }
 
 aside li:first-child a {
@@ -298,31 +306,7 @@ footer p {
   color: white;
 }
 
-@media screen and (max-width:999px) {
-  main {
-    /*display: block;*/
-  }
-/*  nav ul {
-    flex-direction: column;
-    flex: 1;
-    opacity: 0;
-  }*/
-  aside {
-    /*margin: 10px 0 0 0;*/
-  }
-  aside ul {
-    /*list-style-type: none;*/
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*flex-wrap: wrap;*/
-  }
-  aside ul li {
-    /*text-align: center;*/
-    /*margin: 0 1rem;*/
-    /*display: inline;*/
-    /*flex: 1 1 auto;*/
-  }
-}
+/* || media queries */
 
 @media screen and (max-width:935px) {
   nav ul {
@@ -355,13 +339,22 @@ footer p {
   }
 
   article {
-    float: none;
+    /* ?? commenting out float: none; returns desired margin around h2
+        of Product Listing, and Shopping Cart headers;
+
+        ?? using clear: both; resolved the issue */
+    /*float: none;*/
+    clear: both;
     width: 100%;
   }
 
   aside {
+    /* ?? */
+    clear: both;
     position: static;
-    width: 100%;
+    width: auto;
+    /* ?? */
+    padding-top: 0.25rem;
   }
 
   aside ul li {
@@ -369,15 +362,13 @@ footer p {
     margin: 0 1rem;
     margin: 0 1rem 1rem 0;
     display: inline;
-    /*flex: 1 1 auto;*/
   }
 
   aside ul li a {
+
   }
 
 }
-
-/* || media queries */
 
 @media screen and (max-width:400px) {
   h1 {
@@ -386,17 +377,22 @@ footer p {
 }
 
 @media screen and (max-width:370px) {
+
   h1 {
     font-size: 2rem;
   }
+
   #champ-stripe {
     height: 40px;
   }
+
   nav, article, aside, footer {
     /*padding: 1%;*/
-    padding: 8px;
+    /*padding: 8px;*/
   }
+
   nav input[type="search"] {
     width: 130px;
   }
+
 }

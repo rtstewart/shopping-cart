@@ -52,16 +52,11 @@ body * {
   padding: 0;
 }
 
-/* added for .show-cart-listing */
-.listing-container {
-  overflow-x: hidden;
-}
-
 .listing-container h2 {
   text-align: center;
 }
 
-/* common properties for hover state regardless of
+/* common properties regardless of
     fixed or absolute positioning */
 .show-cart-listing {
   border: none; /* for using <button> element */
@@ -77,38 +72,11 @@ body * {
 
 }
 
-/* https://css-tricks.com/scroll-fix-content/ */
-/* https://developer.mozilla.org/en-US/docs/Web/Events/scroll */
-/* https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop */
-.show-cart-listing {
-  /* position: fixed; keep this here for adjustments in that state */
-  /*position: absolute;*/
-  /*border: none;  for using <button> element */
-  /* sticky not supported in Android and others I will enact with
-      JavaScript adding/removing .fix-show-cart class below */
-  /*position: -webkit-sticky;
-  position: sticky;*/
-/*  z-index: 10;
-  top: 1.25rem; /* this is the value to switch to for position: fixed; */
-/*  top: 6rem;  this value should be where we want this to be when page is first loaded 
-  right: -2rem; half- hidden */
-/*  background-color: #f1c963;
-  text-align: center;
-  padding: .25rem 1.25rem 0 .25rem;
-  font-size: 2.5rem;
-  width: auto;  this works since position: fixed/absolute; collapses to content 
-  border-radius: 2px;
-  transition: 0.35s all ease;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),
-              0 2px 10px 0 rgba(0,0,0,0.12);*/
-}
-
 /* this is the initial class for .show-cart on page load */
 .show-cart-not-fixed {
   position: absolute;
-  /*z-index: 10;*/
   top: 1.25rem; /* this is the value to switch to for position: fixed; */
-  top: 6rem; /* this value should be where we want this to be when page is first loaded */
+  top: 5rem; /* this value should be where we want this to be when page is first loaded */
   right: -2rem;  /* half- hidden */
 }
 .show-cart-not-fixed:hover {
@@ -162,6 +130,10 @@ body * {
   transform: translate(calc(-50% - .75rem), calc(-50% - .25rem));
 }
 
+/* this is the small circular item in the upper left-hand corner
+    of .show-cart, that will contain the number of items in the
+    shopping cart;
+*/
 .cart-quantity-all-listing {
   position: absolute;
   transform: translate(calc(-50% - .25rem), calc(-50% - .25rem));
@@ -229,6 +201,13 @@ span.sku {
 .desc-text ul {
   /*margin-left: 0;*/
   padding-left: 0;
+  /* undecided on using below;
+      without it, sometimes ul will break around image;
+      with it, sometimes there may be significant vertical space
+      between description text and bottom of image since clear will
+      cause ul to break under image
+  */
+  /*clear: both;*/
 }
 
 .desc-text ul li {
@@ -240,21 +219,12 @@ span.sku {
   margin: 16px 0;
 }
 
-.price:not(.sale) {
-  /*margin: 1rem 20rem 1rem 0;*/
-  /*color: blue;*/
-}
-
 .item-listing .price {
   max-width: 500px;
 }
 
 .item-cart .price {
   max-width: 400px;
-}
-
-.price span[title="regular price"] {
-
 }
 
 /* hide sale price unless .price also has class .sale */
@@ -329,18 +299,22 @@ div.action-cart a:hover {
 }
 
 /* shopping cart styles */
+
 .shopping-cart {
   /*padding: 16px;*/
-  border-top: 2px solid rgb(0,0,0);
+  /*border-top: 2px solid rgb(0,0,0);*/
 }
 
 .shopping-cart h2 {
   text-align: center;
 }
 
-.cart-header,
+.cart-header {
+  padding: 0 1rem 1rem 1rem;
+}
+
 .cart-footer {
-  padding: 16px;
+  padding: 1rem 1rem 1rem 1rem;
 }
 
 .cart-header td,
@@ -398,14 +372,13 @@ div.action-cart a:hover {
 .cart-header-footer form label a {
   display: inline-block;
   text-decoration: underline;
-  color: #00e;
+  color: #0077ee;
   font-weight: bold;
   margin-bottom: 0.25rem;
 }
 
-.shopping-cart .cart-header a:hover,
-.shopping-cart .cart-footer a:hover {
-  color: rgb(50,50,255);
+.cart-header-footer form label a:hover {
+  color: #00aa00;
 }
 
 .item-cart {
@@ -497,10 +470,15 @@ footer a {
 }
 
 @media screen and (max-width:935px) {
+
+  /* .show-cart-listing is dealt with via JavaScript
+      since we have to contend with screen width
+      and vertical scroll position
+  */
   .show-cart-listing {
     /*right: 0;*/
     /*transform: translateX(-50%);*/
-}
+  }
 
 @media screen and (max-width:440px) {
   /* center image container */
@@ -512,14 +490,23 @@ footer a {
 
 @media screen and (max-width:360px) {
 
-/*  .show-cart-listing:hover {
-     fully expose
-    right: 0;
-  }*/
+  /* .show-cart-listing is dealt with via JavaScript
+    since we have to contend with screen width
+    and vertical scroll position
+*/
+  .show-cart-listing:hover {
+    /* fully expose */
+    /*right: 0;*/
+  }
 
   .item-listing,
   .item-cart {
     padding: 8px 12px 0px 12px;
+  }
+
+  div.item-img-container {
+    width: 202px;
+    height: 202px;
   }
 
   /* this is necessary to have the .desc-text display at the full
@@ -536,12 +523,8 @@ footer a {
   div.item-info-cart div.desc-text {
     height: 110px;
     overflow-y: auto;
-    border-top: 1px solid #9e9e9e;
-    border-bottom: 1px solid #9e9e9e;
     border-top: 1px solid #f1c963;
     border-bottom: 1px solid #f1c963;
-   /* border-top: 1px solid #0077ee;
-    border-bottom: 1px solid #0077ee;*/
     padding: 0 0 0 0;
   }
 
