@@ -52,8 +52,29 @@ body * {
   padding: 0;
 }
 
+/* added for .show-cart-listing */
+.listing-container {
+  overflow-x: hidden;
+}
+
 .listing-container h2 {
   text-align: center;
+}
+
+/* common properties for hover state regardless of
+    fixed or absolute positioning */
+.show-cart-listing {
+  border: none; /* for using <button> element */
+  background-color: #f1c963;
+  text-align: center;
+  padding: .25rem 1.25rem 0 .25rem;
+  font-size: 2.5rem;
+  width: auto; /* this works since position: fixed/absolute; collapses to content */
+  border-radius: 2px;
+  transition: 0.25s all ease;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),
+              0 2px 10px 0 rgba(0,0,0,0.12);
+
 }
 
 /* https://css-tricks.com/scroll-fix-content/ */
@@ -61,25 +82,56 @@ body * {
 /* https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop */
 .show-cart-listing {
   /* position: fixed; keep this here for adjustments in that state */
-  position: absolute;
-  border: none; /* for using <button> element */
+  /*position: absolute;*/
+  /*border: none;  for using <button> element */
   /* sticky not supported in Android and others I will enact with
       JavaScript adding/removing .fix-show-cart class below */
   /*position: -webkit-sticky;
   position: sticky;*/
-  z-index: 10;
+/*  z-index: 10;
   top: 1.25rem; /* this is the value to switch to for position: fixed; */
-  top: 5rem; /* this value should be where we want this to be when page is first loaded */
-  right: -2rem; /* partially hidden */
-  background-color: #f1c963;
+/*  top: 6rem;  this value should be where we want this to be when page is first loaded 
+  right: -2rem; half- hidden */
+/*  background-color: #f1c963;
   text-align: center;
   padding: .25rem 1.25rem 0 .25rem;
   font-size: 2.5rem;
-  width: auto; /* this works since position: fixed/absolute; collapses to content */
+  width: auto;  this works since position: fixed/absolute; collapses to content 
   border-radius: 2px;
   transition: 0.35s all ease;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),
-              0 2px 10px 0 rgba(0,0,0,0.12);
+              0 2px 10px 0 rgba(0,0,0,0.12);*/
+}
+
+/* this is the initial class for .show-cart on page load */
+.show-cart-not-fixed {
+  position: absolute;
+  /*z-index: 10;*/
+  top: 1.25rem; /* this is the value to switch to for position: fixed; */
+  top: 6rem; /* this value should be where we want this to be when page is first loaded */
+  right: -2rem;  /* half- hidden */
+}
+.show-cart-not-fixed:hover {
+  right: 0;
+}
+
+.show-cart-lg-screen-fixed {
+  position: fixed;
+  top: 1.25rem;
+  right: calc(22% - 2rem);
+}
+.show-cart-lg-screen-fixed:hover {
+  right: 22%;
+}
+
+.show-cart-md-sm-screen-fixed {
+  position: fixed;
+  top: 1.25rem;
+  right: -2rem;
+}
+
+.show-cart-md-sm-screen-fixed:hover {
+  right: 0;
 }
 
 /* this class, along with scroll-then-fix.js, will allow
@@ -89,9 +141,11 @@ body * {
   top: 1.25rem;
 }
 
+/* common properties for hover state regardless of
+    fixed or absolute positioning */
 .show-cart-listing:hover {
   cursor: pointer;
-  right: 0; /* fully expose */
+  /*right: 0;   fully expose */
   padding: .25rem .75rem 0 .75rem;
   box-shadow: inset 0 0 6px 6px rgba(235, 174, 20, 0.9);
   box-shadow: inset 0 0 6px 6px rgba(235, 174, 20, 0.9),
@@ -435,10 +489,17 @@ footer {
   /*line-height: 50px;*/
   margin: 0;
   padding: 0;
+  clear: both;
 }
 
 footer a {
   color: rgb(245, 245, 245);
+}
+
+@media screen and (max-width:935px) {
+  .show-cart-listing {
+    /*right: 0;*/
+    /*transform: translateX(-50%);*/
 }
 
 @media screen and (max-width:440px) {
@@ -450,6 +511,12 @@ footer a {
 }
 
 @media screen and (max-width:360px) {
+
+/*  .show-cart-listing:hover {
+     fully expose
+    right: 0;
+  }*/
+
   .item-listing,
   .item-cart {
     padding: 8px 12px 0px 12px;

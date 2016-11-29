@@ -66,14 +66,14 @@
     </header>
 
     <!-- Here is our page's main content -->
-    <main>
+    <main class="clear-fix">
 
       <article>
         <div class="listing-container clear-fix">
 
           <h2>Product Listing</h2>
 
-          <button class="show-cart-listing show-cart" title="Click to show cart"><div class="cart-quantity-all-listing cart-quantity-all">0</div><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
+          <button class="show-cart-listing show-cart show-cart-not-fixed" title="Click to show cart"><div class="cart-quantity-all-listing cart-quantity-all">0</div><i class="fa fa-shopping-cart" aria-hidden="true"></i></button>
 
             <div data-sku="CA-R-0739" class="item-listing">
               <input class="sku" type="hidden" name="item-sku" value="CA-R-0739">
@@ -531,7 +531,7 @@
       <!-- the aside content can also be nested within the main content -->
       <aside>
         <h2>Related</h2>
-
+        <hr>
         <ul>
           <!-- first child should remain Promos -->
           <li><a href="#!">Promos</a></li>

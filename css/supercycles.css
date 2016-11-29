@@ -59,7 +59,7 @@ p, li {
 /* || header layout */
 
 header {
-  margin-bottom: 10px;
+  margin-bottom: 0.5rem;
 }
 
 #champ-stripe {
@@ -86,7 +86,7 @@ header {
 
 nav, article, aside, footer {
   background-color: white;
-  padding: 12px;
+  padding: 0.75rem;
 }
 
 nav {
@@ -242,22 +242,31 @@ nav button {
 /* || main layout */
 
 main {
-  display: flex;
+  /*display: flex;*/
+  position: relative;
 }
 
 article {
-  flex: 4;
+  /*flex: 4;*/
+  /* ?? removing float: left; decreases space above "Product Listing" */
+  float: left;
+  width: 78%;
   padding: 0;
 }
 
 aside {
-  flex: 1;
-  margin-left: 10px;
-  background-color: rgb(80,80,80);
-  background-color: rgba(80,80,80,.9);
+  /*flex: 1;*/
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: calc(22%);
+  /*margin-left: 10px;*/
+  /*background-color: rgb(80,80,80);*/
+  /*background-color: rgba(80,80,80,.9);*/
   color: white;
   /* https://www.transparenttextures.com/asfalt-dark.html */
-  background: rgba(80,80,80,.5) url('../images/asfalt-dark.png') repeat center;
+  background: rgb(100,100,100) url('../images/asfalt-dark.png') repeat center;
 }
 
 aside ul {
@@ -280,9 +289,9 @@ aside li:first-child a {
 
 footer {
   text-align: center;
-  margin-top: 10px;
-  background-color: rgb(80,80,80);
-  background-color: rgba(80,80,80,.9);
+  margin-top: 0.5rem;
+  background-color: rgb(100,100,100);
+  /*background-color: rgba(80,80,80,.9);*/
 }
 
 footer p {
@@ -291,7 +300,7 @@ footer p {
 
 @media screen and (max-width:999px) {
   main {
-    display: block;
+    /*display: block;*/
   }
 /*  nav ul {
     flex-direction: column;
@@ -299,19 +308,19 @@ footer p {
     opacity: 0;
   }*/
   aside {
-    margin: 10px 0 0 0;
+    /*margin: 10px 0 0 0;*/
   }
   aside ul {
-    list-style-type: none;
-    display: flex;
+    /*list-style-type: none;*/
+    /*display: flex;*/
     /*justify-content: center;*/
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
   }
   aside ul li {
     /*text-align: center;*/
-    margin: 0 1rem;
+    /*margin: 0 1rem;*/
     /*display: inline;*/
-    flex: 1 1 auto;
+    /*flex: 1 1 auto;*/
   }
 }
 
@@ -344,6 +353,28 @@ footer p {
   nav ul:hover li {
     display: block;
   }
+
+  article {
+    float: none;
+    width: 100%;
+  }
+
+  aside {
+    position: static;
+    width: 100%;
+  }
+
+  aside ul li {
+    /*text-align: center;*/
+    margin: 0 1rem;
+    margin: 0 1rem 1rem 0;
+    display: inline;
+    /*flex: 1 1 auto;*/
+  }
+
+  aside ul li a {
+  }
+
 }
 
 /* || media queries */

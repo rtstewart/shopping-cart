@@ -82,15 +82,22 @@ function playSound(){
     snd.play();
 }
 
-/* alert promotional code information when the document is finished loading */
-var checkDOMLoaded = setInterval(function() {
-  // console.log(new Date());
-  if (document.readyState == 'complete') {
-      clearInterval(checkDOMLoaded);
-      showPromosAlert();
-      playSound();
-    }
-}, 1000);
+/* alert promotional code information when
+    the document is finished loading */
+window.addEventListener('load', function(e) {
+  showPromosAlert();
+});
+
+/* alert promotional code information when
+    the document is finished loading */
+// var checkDOMLoaded = setInterval(function() {
+//   // console.log(new Date());
+//   if (document.readyState == 'complete') {
+//       clearInterval(checkDOMLoaded);
+//       showPromosAlert();
+//       // playSound();
+//     }
+// }, 1000);
 
 // console.log('document.readyState:', document.readyState);
 

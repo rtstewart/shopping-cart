@@ -3,7 +3,7 @@ var promosAnchor = document.querySelector('aside ul li a:first-child');
 promosAnchor.addEventListener('click', function(event) {
   event.preventDefault();
   clickPromosAlert();
-})
+});
 
 function clickPromosAlert() {
   /* alert a promos message if the promos object is not empty */
