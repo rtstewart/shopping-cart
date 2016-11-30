@@ -69,7 +69,7 @@ var cartTotalTdArray = document.querySelectorAll('.shopping-cart td.cart-total')
 
 /* cart summary header/footer elements that will need event listeners */
 var promoCodeAnchorArray = document.querySelectorAll('.shopping-cart .cart-header-footer form label a');
-var promoCodeInputArray = document.querySelectorAll('.shopping-cart .promo-code');
+var promoCodeInputArray = document.querySelectorAll('.shopping-cart input.promo-code');
 var applyPromoButtonsArray = document.querySelectorAll('.shopping-cart .apply-promo');
 var keepShoppingButtonsArray = document.querySelectorAll('.shopping-cart .keep-shopping');
 var checkoutButtonsArray = document.querySelectorAll('.shopping-cart .checkout');
@@ -271,16 +271,31 @@ function updateCartSummary(newPromoCode) {
     appliedPromoCodeDiscount = existingPromoCodeDiscount;
   }
 
+  /* apply promo discount, if any, to cartTotal */
   cartTotal -= appliedPromoCodeDiscount;
+  console.log('About to enter new if test.');
+  console.log(Boolean(newPromoCode && appliedPromoCodeDiscount == 0));
+  /* correct evaluation of below condition relies on appliedPromoCodeDiscount
+      to be initialized with no value, i.e., var appliedPromoCodeDiscount;
+  */
+  if (newPromoCode && newPromoCodeDiscount == 0) {
+    alert('Sorry, no discount could be applied for promo code:\n\n' + newPromoCode);
+  }
+
+  if (newPromoCode && newPromoCodeDiscount > 0 && newPromoCodeDiscount <= existingPromoCodeDiscount) {
+    // alert('Sorry, no greater discount could be applied for promo code:\n\n' + newPromoCode);
+    alert('Sorry, no greater discount could be applied for promo code: ' + newPromoCode
+          + '\n\n' + existingPromoCode + ' discount is $' + existingPromoCodeDiscount.toFixed(2)
+          + '\n\n' + newPromoCode + ' discount would be $' + newPromoCodeDiscount.toFixed(2));
+  }
 
   /* update cart summary fields */
+  numCartItems = getCartItemsQuantity();
   for (i=0; i<cartQuantitySpanArray.length; i++) {
     /* since we have the same number of all elements in cart summary to be
         updated, we will just use the length of cartQuantitySpanArray as
         the reference limit value for the loop;
     */
-
-    numCartItems = getCartItemsQuantity();
     if (numCartItems == 1) {
       cartQuantitySpanArray[i].innerHTML = numCartItems + ' item';
     } else {
@@ -297,6 +312,7 @@ function updateCartSummary(newPromoCode) {
 
     /* clear out promo code input field */
     promoCodeInputArray[i].value = '';
+    console.log('promoCodeInputArray[' + i + '].value =', promoCodeInputArray[i].value);
 
   } // end for
 
@@ -522,17 +538,6 @@ function removeItemButtonAddEventListener(theButton) {
 
 }
 
-// function showPromosAlert() {
-//   /* alert a promos message if the promos object is not empty */
-//   if (Object.keys(promos).length > 0) {
-//     var promoMsg = 'Today\'s promo codes and descriptions are as follows:';
-//     for (var key in promos) {
-//       promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
-//     }
-//     alert(promoMsg);
-//   }
-// }
-
 /* set up event listeners for show cart buttons/widgets */
 showCartButtonInMain.addEventListener('click', function(event) {
   productListing.classList.add('hide');
@@ -590,7 +595,7 @@ function applyPromoCode(whichButton) {
     }
   }
   if (inputPromoCode == '') {
-    alert(associatedPromoInput.value + ' is not a valid Promotional Code');
+    alert('Sorry, "' + associatedPromoInput.value + '", is not a valid Promotional Code');
     /* alert available promos, if any */
     clickPromosAlert();
     return;
