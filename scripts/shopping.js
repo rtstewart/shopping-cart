@@ -49,9 +49,6 @@ var key; // loop variable for objects
     }
 */
 var cartItems = {};
-// var numCartItems = 0;
-// var cartSubtotal = 0;
-// var cartTotal = 0;
 
 /* cart header and footer, and associated action elements */
 
@@ -63,13 +60,14 @@ var cartItems = {};
 var cartHeader = document.querySelector('div.cart-header');
 var cartFooter = document.querySelector('div.cart-footer');
 
-/* cart summary header/footer elements to update */
+/* cart summary header/footer elements that will need to be updated */
 var cartQuantitySpanArray = document.querySelectorAll('span.cart-quantity');
 var cartSubtotalTdArray = document.querySelectorAll('td.cart-subtotal');
 var cartPromoCodeSpanArray = document.querySelectorAll('span.promo-code');
 var cartPromoDiscountTdArray = document.querySelectorAll('td.cart-promo-discount');
 var cartTotalTdArray = document.querySelectorAll('.shopping-cart td.cart-total');
 
+/* cart summary header/footer elements that will need event listeners */
 var promoCodeAnchorArray = document.querySelectorAll('.shopping-cart .cart-header-footer form label a');
 var promoCodeInputArray = document.querySelectorAll('.shopping-cart .promo-code');
 var applyPromoButtonsArray = document.querySelectorAll('.shopping-cart .apply-promo');
@@ -83,17 +81,12 @@ var updateCartButtonsArray = document.querySelectorAll('.action-cart .update');
 var removeButtonsArray = document.querySelectorAll('.action-cart .remove');
 var showDetailsButtonsArray = document.querySelectorAll('.action-cart .see-detail');
 
-/* for IE>8, can use this instead of jQuery $(document).ready(function() {...code}); : */
-// document.addEventListener("DOMContentLoaded", function() {
-//   showPromosAlert();
-// });
-
 function checkCartItemsQuantity() {
   /* this will check and update globally available things */
 
   /* get total number of items in cartItems object */
   var cartNumItems = 0;
-  for (key in cartItems) {
+  for (var key in cartItems) {
     cartNumItems += parseInt(cartItems[key]);
   }
 
@@ -120,7 +113,7 @@ function checkCartItemsQuantity() {
 function getCartItemsQuantity() {
   /* get total number of items in cartItems object */
   var cartNumItems = 0;
-  for (key in cartItems) {
+  for (var key in cartItems) {
     cartNumItems += parseInt(cartItems[key]);
   }
   return cartNumItems;
@@ -133,28 +126,27 @@ function updateCartSummary(newPromoCode) {
       so, newPromoCode could be undefined;
   */
   var cartSubtotal = 0;
-  // var promoDiscount = cartPromoDiscountTdArray[0].innerHTML.slice(2);
   var existingPromoCode;
   var existingPromoCodeDiscount = 0;
   var newPromoCodeDiscount = 0;
   var appliedPromoCode;
   var appliedPromoCodeDiscount;
   var numCartItems;
-  // console.log('promoDiscount:', promoDiscount);
   var cartTotal = 0;
+  var discountedItemCode;
+  var itemPrice;
+  var discountCategory;
   for (var key in cartItems) {
     if (products[key].salePrice == '') {
       /* this item is not on sale */
       cartSubtotal += cartItems[key] * products[key].price;
-      console.log('cartSubtotal:', cartSubtotal);
     } else {
       /* this item is on sale */
       cartSubtotal += cartItems[key] * products[key].salePrice;
-      console.log('cartSubtotal:', cartSubtotal);
     }
   } // end for
 
-  /* get cart subtotal */
+  /* assign cart total prior to discount calculations */
   cartTotal += cartSubtotal;
 
   /* calculate discount from existing used promo if any */
@@ -166,23 +158,24 @@ function updateCartSummary(newPromoCode) {
 
       switch (promos[key].byMethod) {
         case 'ITEM':
-          var discountedItemCode = key.slice(5);
-          var itemPrice;
-
-          if (products[discountedItemCode].salePrice == '') {
-            /* item is NOT also on sale */
-            itemPrice = products[discountedItemCode].price;
-          } else {
-            /* item IS also on sale */
-            itemPrice = products[discountedItemCode].salePrice;
+          discountedItemCode = key.slice(5);
+          /* only look to apply the discount if the item exists in the car */
+          if (cartItems[discountedItemCode]) {
+            if (products[discountedItemCode].salePrice == '') {
+              /* item is NOT also on sale */
+              itemPrice = products[discountedItemCode].price;
+            } else {
+              /* item IS also on sale */
+              itemPrice = products[discountedItemCode].salePrice;
+            }
+            existingPromoCodeDiscount = cartItems[discountedItemCode] * itemPrice * promos[key].percentOff * 0.01;
           }
-          existingPromoCodeDiscount = cartItems[discountedItemCode] * itemPrice * promos[key].percentOff * 0.01;
           break;
         case 'CART':
           existingPromoCodeDiscount = cartSubtotal * promos[key].percentOff * 0.01;
           break;
         case 'TYPE':
-          var discountCategory = key.slice(5).toLowerCase();
+          discountCategory = key.slice(5).toLowerCase();
           for (var prodKey in cartItems) {
             if (discountCategory == products[prodKey].category) {
               if (products[prodKey].salePrice == '') {
@@ -210,15 +203,19 @@ function updateCartSummary(newPromoCode) {
 
       case 'ITEM':
         discountedItemCode = newPromoCode.slice(5);
-        itemPrice = 0;
-        if (products[discountedItemCode].salePrice == '') {
-          /* item is NOT also on sale */
-          itemPrice = products[discountedItemCode].price;
-        } else {
-          /* item IS also on sale */
-          itemPrice = products[discountedItemCode].salePrice;
-        }
-        newPromoCodeDiscount = cartItems[discountedItemCode] * itemPrice * promos[newPromoCode].percentOff * 0.01;
+        /* only look to apply the discount if the item exists in the car */
+        if (cartItems[discountedItemCode]) {
+
+          if (products[discountedItemCode].salePrice == '') {
+            /* item is NOT also on sale */
+            itemPrice = products[discountedItemCode].price;
+          } else {
+            /* item IS also on sale */
+            itemPrice = products[discountedItemCode].salePrice;
+          }
+          newPromoCodeDiscount = cartItems[discountedItemCode] * itemPrice * promos[newPromoCode].percentOff * 0.01;
+
+        } // end if (cartItems[discountedItemCode])
         break;
       case 'CART':
         newPromoCodeDiscount = cartSubtotal * promos[newPromoCode].percentOff * 0.01;
@@ -283,7 +280,6 @@ function updateCartSummary(newPromoCode) {
         the reference limit value for the loop;
     */
 
-    // cartQuantitySpanArray[i].innerHTML = getCartItemsQuantity();
     numCartItems = getCartItemsQuantity();
     if (numCartItems == 1) {
       cartQuantitySpanArray[i].innerHTML = numCartItems + ' item';
@@ -307,8 +303,10 @@ function updateCartSummary(newPromoCode) {
 } // end function updateCartSummary()
 
 function removeCartItem(cartItem) {
-  // var associatedCartItem =  this.parentElement.parentElement;
-  // console.log('associatedCartItem:', associatedCartItem);
+
+  var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
+  var associatedListingItemQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
+  var associatedListingItemAddToCartButton = associatedListingItem.querySelector('button.add-to-cart');
 
   var sku = cartItem.dataset.sku;
   delete cartItems[sku];
@@ -325,11 +323,6 @@ function removeCartItem(cartItem) {
       "Item in cart" button text reset to "Add to cart",
       Add to cart button enabled
   */
-
-  var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
-  var associatedListingItemQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
-  var associatedListingItemAddToCartButton = associatedListingItem.querySelector('button.add-to-cart');
-
   associatedListingItemQuantityInput.value = '1';
   associatedListingItemQuantityInput.disabled = false;
 
@@ -338,6 +331,7 @@ function removeCartItem(cartItem) {
 
   /* remove the cart item from the DOM */
   cartItem.parentElement.removeChild(cartItem);
+
 } // end function removeCartItem()
 
 function resetListingQtyAndButton(listingItem) {
@@ -347,17 +341,6 @@ function resetListingQtyAndButton(listingItem) {
 /***********************************/
 /* above - cart-specific variables */
 /***********************************/
-
-// for (var i=0; i<addToCartButtonArray.length; i++) {
-//   addToCartButtonArray[i].addEventListener('click',
-//     (function(i) {
-//       return function(event) {
-//         event.preventDefault();
-//         console.log('Adding:',itemQuantityArray[i].value);
-//       };
-//     })(i)
-//   );
-// } // end for
 
 for (i=0; i<addToCartButtonArray.length; i++) {
   addToCartButtonArray[i].addEventListener('click', function(event) {
@@ -442,8 +425,6 @@ for (i=0; i<addToCartButtonArray.length; i++) {
     /* Remove item button event listener and routine for this cart item */
     var removeItemButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.remove');
 
-    // console.log('removeItemButton:', removeItemButton);
-
     removeItemButton.addEventListener('click', function(event) {
       event.preventDefault();
 
@@ -457,28 +438,6 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       checkCartItemsQuantity();
 
       updateCartSummary();
-
-      /* get total number of items in cartItems object */
-      // var cartNumItems = 0;
-      // for (key in cartItems) {
-      //   cartNumItems += parseInt(cartItems[key]);
-      // }
-
-      // /* update .cart-quantity-all in Supercycles, and widget in listing */
-      // cartTotalQuantityMain.innerHTML = cartNumItems.toString();
-      // cartTotalQuantityListing.innerHTML = cartNumItems.toString();
-
-      // if (cartNumItems == 0) {
-      //   /* cart is now empty */
-
-      //   /* disable show cart buttons/widgets */
-      //   showCartButtonInMain.disabled = true;
-      //   showCartButtonInListing.disabled = true;
-
-      //   /* display product listing, and hide cart */
-      //   productListing.classList.remove('hide');
-      //   cartListing.classList.add('hide');
-      // }
 
       /* reset the listing for this item with regard to:
           Quantity input value reset to 1,
