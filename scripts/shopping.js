@@ -97,6 +97,13 @@ function checkCartItemsQuantity() {
   if (cartNumItems == 0) {
     /* cart is now empty */
 
+    /* with nothing in cart, if a promo code is set as used, make it unused */
+    for (key in promos) {
+      if (promos[key].isUsed) {
+        promos[key].isUsed = false;
+      }
+    }
+
     /* disable show cart buttons/widgets */
     showCartButtonInMain.disabled = true;
     showCartButtonInListing.disabled = true;
@@ -106,6 +113,52 @@ function checkCartItemsQuantity() {
     cartListing.classList.add('hide');
   }
 
+  if (cartNumItems > 0) {
+    /* test to see if any currently used promo code exists,
+        and if so, see if it now applies to anything in the
+        cart now that item(s) have been removed/changed;
+    */
+    for (key in promos) {
+      /* see if anything in cart applies to it */
+      if (promos[key].isUsed) {
+        /* found a promo already being used, so calculate the resulting discount */
+
+        switch (promos[key].byMethod) {
+          case 'ITEM':
+            var discountedItemCode = key.slice(5);
+            /* if this specific item (discountedItemCode) does not exist in
+                cart anymore, then set the promo code to unused/false;
+            */
+            if (!cartItems[discountedItemCode]) {
+              promos[key].isUsed = false;
+            }
+            break;
+          case 'CART':
+            /* if anything is left in cart, this promo code will apply,
+                so don't do anything with its used/unused property;
+            */
+            break;
+          case 'TYPE':
+            var discountCategory = key.slice(5).toLowerCase();
+            /* set to unused, then see if something in cart uses it */
+            promos[key].isUsed = false;
+            for (var prodKey in cartItems) {
+              if (discountCategory == products[prodKey].category) {
+                promos[key].isUsed = true;
+              }
+            }
+            break;
+          default:
+            // alert('Something went wrong with EXISTING promo discount calculation.');
+        } // end switch (promos[key].byMethod)
+
+      } // end if (promos[key].isUsed)
+
+    } // end for (var key in promos)
+
+  } // end if (cartNumItems > 0)
+
+  /* just in case I want to retrieve the numerical result */
   return cartNumItems;
 
 } // end function checkCartItemsQuantity()
@@ -191,7 +244,7 @@ function updateCartSummary(newPromoCode) {
           break;
         default:
           // alert('Something went wrong with EXISTING promo discount calculation.');
-      } // end switch (promos[key].type)
+      } // end switch (promos[key].byMethod)
 
     } // end if (promos[key].isUsed)
 
@@ -237,7 +290,7 @@ function updateCartSummary(newPromoCode) {
         break;
       default:
         // alert('Something went wrong with NEW promo discount calculation.');
-    } // end switch (promos[key].type)
+    } // end switch (promos[key].byMethod)
   }
 
   /* should now have a promoDiscount amount here, if any;
@@ -273,10 +326,9 @@ function updateCartSummary(newPromoCode) {
 
   /* apply promo discount, if any, to cartTotal */
   cartTotal -= appliedPromoCodeDiscount;
-  console.log('About to enter new if test.');
-  console.log(Boolean(newPromoCode && appliedPromoCodeDiscount == 0));
-  /* correct evaluation of below condition relies on appliedPromoCodeDiscount
-      to be initialized with no value, i.e., var appliedPromoCodeDiscount;
+
+  /* correct evaluation of below condition relies on newPromoCodeDiscount
+      to be initialized to zero;
   */
   if (newPromoCode && newPromoCodeDiscount == 0) {
     alert('Sorry, no discount could be applied for promo code:\n\n' + newPromoCode);
@@ -327,7 +379,8 @@ function removeCartItem(cartItem) {
   var sku = cartItem.dataset.sku;
   delete cartItems[sku];
 
-  /* check cart and respond accordingly to total number of items */
+  /* check cart and respond accordingly to total number of items,
+      and also type of item(s) with regard to promo code; */
   checkCartItemsQuantity();
 
   /* update cart summary */
