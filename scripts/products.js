@@ -69,8 +69,8 @@ addProduct(
   ,'component'
   ,'Road Racing'
   ,'Record'
-  ,'101.00'
-  ,'90.00'
+  ,'100.00'
+  ,''
 );
 
 addProduct(
@@ -83,7 +83,7 @@ addProduct(
   , 'Road Racing'
   , 'Record'
   , '199.00'
-  , '137.00'
+  , ''
 );
 
 addProduct(
@@ -96,7 +96,7 @@ addProduct(
   , 'Road Racing'
   , 'Super Record'
   , '355.00'
-  , '299.00'
+  , ''
 );
 
 addProduct(
@@ -109,7 +109,7 @@ addProduct(
   , 'Road Racing'
   , 'Super Record'
   , '631.00'
-  , '399.00'
+  , '500.00'
 );
 
 addProduct(
@@ -135,7 +135,7 @@ addProduct(
   , 'Road Racing'
   , 'Super Record'
   , '175.00'
-  , '135.00'
+  , ''
 );
 
 addProduct(
@@ -148,7 +148,7 @@ addProduct(
   , 'Road Racing'
   , 'Super Record'
   , '940.00'
-  , '700.00'
+  , '740.00'
 );
 
 addProduct(
@@ -161,7 +161,7 @@ addProduct(
   , 'Road Racing'
   , 'Super Record'
   , '430.00'
-  , '345.00'
+  , ''
 );
 
 addProduct(
@@ -187,7 +187,7 @@ addProduct(
   , ''
   , ''
   , '180.00'
-  , ''
+  , '165.00'
 );
 
 addProduct(
