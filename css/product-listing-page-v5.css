@@ -69,13 +69,11 @@ body * {
   transition: 0.25s all ease;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),
               0 2px 10px 0 rgba(0,0,0,0.12);
-
 }
 
 /* this is the initial class for .show-cart on page load */
 .show-cart-not-fixed {
   position: absolute;
-  top: 1.25rem; /* this is the value to switch to for position: fixed; */
   top: 5rem; /* this value should be where we want this to be when page is first loaded */
   right: -2rem;  /* half- hidden */
 }
@@ -97,7 +95,6 @@ body * {
   top: 1.25rem;
   right: -2rem;
 }
-
 .show-cart-md-sm-screen-fixed:hover {
   right: 0;
 }
@@ -309,33 +306,29 @@ div.action-cart a:hover {
   text-align: center;
 }
 
-.cart-header {
+#cart-header {
   padding: 0 1rem 1rem 1rem;
 }
 
-.cart-footer {
+#cart-footer {
   padding: 1rem 1rem 1rem 1rem;
 }
 
-.cart-header td,
-.cart-footer td {
+.cart-header-footer td {
   vertical-align: bottom;
   text-align: right;
   padding: 0.25rem 0 0.25rem 0.25rem;
 }
 
-.cart-header td h3,
-.cart-footer td h3 {
+.cart-header-footer td h3 {
   font-size: 1.1rem;
 }
 
-.cart-header table tr:nth-child(2) td:nth-child(2),
-.cart-footer table tr:nth-child(2) td:nth-child(2) {
+.cart-header-footer table tr:nth-child(2) td:nth-child(2) {
   border-bottom: 1px solid gray;
 }
 
-.cart-header h3,
-.cart-footer h3 {
+.cart-header-footer h3 {
   display: inline-block;
   margin: 0;
 }

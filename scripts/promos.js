@@ -77,7 +77,7 @@ function showPromosAlert() {
   }
 }
 
-function playSound(){
+function playSound() {
     var snd=document.getElementById('rejoice');
     canPlayMP3 = (typeof snd.canPlayType === "function" && snd.canPlayType("audio/mpeg") !== "");
     snd.src=canPlayMP3?'Hallelujah-Chorus-short.mp3':'Hallelujah-Chorus-short.ogg';
@@ -87,21 +87,22 @@ function playSound(){
 
 /* alert promotional code information when
     the document is finished loading */
-window.addEventListener('load', function(e) {
-  showPromosAlert();
-});
+// window.addEventListener('load', function(e) {
+//   showPromosAlert();
+// });
 
-/* KEEP THIS for use in lieu of above */
+/* KEEP THIS for use in lieu of above; the above seems to
+    execute before all resources are finished loading; */
 /* alert promotional code information when
     the document is finished loading */
-// var checkDOMLoaded = setInterval(function() {
-//   // console.log(new Date());
-//   if (document.readyState == 'complete') {
-//       clearInterval(checkDOMLoaded);
-//       showPromosAlert();
-//       // playSound();
-//     }
-// }, 1000);
+var checkDOMLoaded = setInterval(function() {
+  // console.log(new Date());
+  if (document.readyState == 'complete') {
+      clearInterval(checkDOMLoaded);
+      showPromosAlert();
+      // playSound();
+    }
+}, 1000);
 
 // console.log('document.readyState:', document.readyState);
 

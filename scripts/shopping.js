@@ -57,8 +57,8 @@ var cartItems = {};
     Normally, they might be created dynamically and would have to be dealt with
     more like the cart items below with regard to event listeners and so forth.
 */
-var cartHeader = document.querySelector('div.cart-header');
-var cartFooter = document.querySelector('div.cart-footer');
+var cartHeader = document.querySelector('#cart-header');
+var cartFooter = document.querySelector('#cart-footer');
 
 /* cart summary header/footer elements that will need to be updated */
 var cartQuantitySpanArray = document.querySelectorAll('span.cart-quantity');
@@ -75,14 +75,253 @@ var keepShoppingButtonsArray = document.querySelectorAll('.shopping-cart .keep-s
 var checkoutButtonsArray = document.querySelectorAll('.shopping-cart .checkout');
 
 /* cart item action elements - these will have to dealt with as they are
-    actually added to the DOM
-*/
+    actually added to the DOM */
 var updateCartButtonsArray = document.querySelectorAll('.action-cart .update');
 var removeButtonsArray = document.querySelectorAll('.action-cart .remove');
 var showDetailsButtonsArray = document.querySelectorAll('.action-cart .see-detail');
 
+/* set up event listeners for show cart buttons/widgets */
+showCartButtonInMain.addEventListener('click', function(event) {
+  productListing.classList.add('hide');
+  cartListing.classList.remove('hide');
+});
+/* this DOM element would normally be created dynamically when the listing
+    page gets populated dynamically;
+    in our case, it exists on initial page load, so we can reference it;
+*/
+showCartButtonInListing.addEventListener('click', function(event) {
+  productListing.classList.add('hide');
+  cartListing.classList.remove('hide');
+});
+
+/* add event listeners for Add to cart buttons */
+for (i=0; i<addToCartButtonArray.length; i++) {
+
+  addToCartButtonArray[i].addEventListener('click', function(event) {
+
+    /* a <button> element by default will be treated as submit, so ... */
+    event.preventDefault();
+
+    var sku = this.parentElement.parentElement.parentElement.dataset.sku;
+    var associatedQuantityInput = this.parentElement.querySelector('.quantity');
+
+    /* change text on Add to Cart button, and disable it and the associated input */
+    var quantity = associatedQuantityInput.value;
+    this.innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Item in cart';
+    /* disable button and input */
+    associatedQuantityInput.disabled = true;
+    this.disabled = true;
+
+    /* create and add item node to cart */
+    var nodeToInsert = makeCartItemNode(sku, quantity);
+    /* https://developer.mozilla.org/en-US/docs/Web/API/Node/insertBefore */
+    cartListing.insertBefore(nodeToInsert, cartFooter);
+
+    /* update cartItems object with new item addition */
+    cartItems[sku] = quantity;
+
+    /* update cart summary header/footer */
+    updateCartSummary();
+
+    /* get total number of items in cartItems object */
+    var cartNumItems = 0;
+    for (key in cartItems) {
+      cartNumItems += parseInt(cartItems[key]);
+    }
+
+    /* update .cart-quantity-all in Supercycles, and "widget" in listing */
+    cartTotalQuantityMain.innerHTML = cartNumItems.toString();
+    cartTotalQuantityListing.innerHTML = cartNumItems.toString();
+
+    /* enable show cart buttons/widgets */
+    showCartButtonInMain.disabled = false;
+    showCartButtonInListing.disabled = false;
+
+    /* create event listeners for action elements in this cart item
+        NOW THAT IT IS IN THE DOM */
+
+    /* Update Cart button event listener and routine for this cart item */
+    var updateCartButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.update');
+    updateCartButton.addEventListener('click', function(event) {
+
+      var associatedQuantityInput = this.parentElement.querySelector('input.quantity');
+      var associatedCartItem =  this.parentElement.parentElement.parentElement;
+      var sku = associatedCartItem.dataset.sku;
+      var associatedCartItemSubtotalSpan = associatedCartItem.querySelector('div.item-subtotal span');
+
+      var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
+      var associatedListingQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
+
+      /* update associated listing item quantity and Add to cart button */
+      if (associatedQuantityInput.value == '0') {
+        removeCartItem(associatedCartItem);
+      } else {
+          /* update cartItems object with non-zero value */
+          cartItems[sku] = associatedQuantityInput.value;
+          /* check cart and respond accordingly to total number of items */
+          checkCartItemsQuantity();
+          /* set associated listing quantity to the new non-zero value */
+          associatedListingQuantityInput.value = cartItems[sku];
+          /* update item subtotal in cart item */
+          if (products[sku].salePrice !== '') {
+            /* item is on sale */
+            associatedCartItemSubtotalSpan.innerHTML = (cartItems[sku] * products[sku].salePrice).toFixed(2).toString();
+          } else {
+            /* item is not on sale */
+            associatedCartItemSubtotalSpan.innerHTML = (cartItems[sku] * products[sku].price).toFixed(2).toString();
+          }
+      } // end if (associatedQuantityInput.value == '0')
+
+      updateCartSummary();
+
+    }); /* END Update Cart button event listener and routine for this cart item */
+
+    /* Remove item button event listener and routine for this cart item */
+    var removeItemButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.remove');
+
+    removeItemButton.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      var associatedCartItem =  this.parentElement.parentElement;
+      console.log('associatedCartItem:', associatedCartItem);
+
+      var sku = associatedCartItem.dataset.sku;
+      delete cartItems[sku];
+
+      /* check cart and respond accordingly to total number of items */
+      checkCartItemsQuantity();
+
+      updateCartSummary();
+
+      /* reset the listing for this item with regard to:
+          Quantity input value reset to 1,
+          Quantity input enabled,
+          "Item in cart" button text reset to "Add to cart",
+          Add to cart button enabled
+      */
+      var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
+      console.log('associatedListingItem:', associatedListingItem);
+      associatedListingItem.querySelector('input.quantity').value = '1';
+      associatedListingItem.querySelector('input.quantity').disabled = false;
+      associatedListingItem.querySelector('button.add-to-cart').innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart';
+      associatedListingItem.querySelector('button.add-to-cart').disabled = false;
+
+      /* remove the cart item from the DOM */
+      associatedCartItem.parentElement.removeChild(associatedCartItem);
+
+    }); /* END Remove item button event listener and routine for this cart item */
+
+    /* Show Details button event listener and routine for this cart item */
+    var showDetailsButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.see-detail');
+    showDetailsButton.addEventListener('click', function(event) {
+      event.preventDefault();
+      /* get the sku data for this .item-cart */
+      var sku = this.parentElement.parentElement.dataset.sku;
+      var descriptiveTextDiv = document.querySelector('.item-cart[data-sku="' + sku + '"] .desc-text');
+      console.log(this.parentElement.parentElement.dataset.sku);
+
+      if (this.innerHTML == 'Show Details') {
+        descriptiveTextDiv.classList.remove('hide');
+        descriptiveTextDiv.classList.add('show');
+        this.innerHTML = 'Hide Details';
+      } else {
+        descriptiveTextDiv.classList.remove('show');
+        descriptiveTextDiv.classList.add('hide');
+        this.innerHTML = 'Show Details';
+      }
+    }); /* END Show Details button event listener and routine for this cart item */
+
+    console.log('Adding:', quantity, ' of ', sku);
+
+  }); // end addToCartButtonArray[i].addEventListener
+
+} // end for (i=0; i<addToCartButtonArray.length; i++)
+
+/* cart items put in the DOM when page is loaded */
+/* set up event listeners for Promotional Code anchors */
+for (i=0; i<promoCodeAnchorArray.length; i++) {
+  promoCodeAnchorArray[i].addEventListener('click', function(event) {
+    event.preventDefault();
+    /* clickPromosAlert is in supercycles.js */
+    clickPromosAlert();
+  })
+}
+
+/* set up listeners for Apply Promo buttons */
+for (i=0; i<applyPromoButtonsArray.length; i++) {
+  applyPromoButtonsArray[i].addEventListener('click', function(event) {
+    event.preventDefault();
+    console.log('Apply Promo clicked!');
+    applyPromoCode(this);
+  });
+}
+
+/* event listener function for Keep Shopping buttons */
+for (i=0; i<keepShoppingButtonsArray.length; i++) {
+  keepShoppingButtonsArray[i].addEventListener('click', function(event) {
+    event.preventDefault();
+    cartListing.classList.add('hide');
+    productListing.classList.remove('hide');
+  });
+}
+
+/* event listener function for Proceed to Checkout buttons */
+for (i=0; i<checkoutButtonsArray.length; i++) {
+  checkoutButtonsArray[i].addEventListener('click', function(event) {
+    event.preventDefault();
+    // cartListing.classList.add('hide');
+    // checkout.classList.remove('hide');
+    justTesting();
+    playSound();
+    // var stallAlert = setTimeout(justTesting, 26000);
+  });
+}
+
+function justTesting() {
+  alert('Hallelujah! You decided to buy something.\n\nJust wanted to test your curiosity ;-)');
+}
+
+function applyPromoCode(whichButton) {
+  /* doesn't matter which button was clicked (in header or footer), the same
+      action needs to occur, however, we'll need to grab the value of the
+      specific input field associated with the particular button pressed;
+  */
+  var associatedPromoInput = whichButton.parentElement.querySelector('input.promo-code');
+  // console.log('whichButton:', whichButton, '\nassociatedPromoInput:', associatedPromoInput);
+  var inputPromoCode = '';
+
+  /* check if code is valid */
+  for (key in promos) {
+    /* upper case input value since all promos with alpha are upper case */
+    if (key == associatedPromoInput.value.toUpperCase()) {
+      /* found a valid promo code in promos corresponding to user input value */
+      inputPromoCode = associatedPromoInput.value.toUpperCase();
+    }
+  }
+  if (inputPromoCode == '') {
+    alert('Sorry, "' + associatedPromoInput.value + '", is not a valid Promotional Code');
+    /* alert available promos, if any */
+    clickPromosAlert();
+    return;
+  }
+  /* if here, have a valid promotional code - inputPromoCode */
+  /* see if it's already being used */
+  if (promos[inputPromoCode].isUsed) {
+    alert('Promotional Code ' + inputPromoCode + ' is already being used.');
+    return;
+  }
+  /* now, we have a valid, currently unused, promo code;
+      we only allow the use of one at a time, but compare the cart total
+      when attempting to use a different one and accept if the cart total
+      will be less with the "new" promo;
+  */
+  updateCartSummary(inputPromoCode);
+
+} // end function applyPromoCode(whichButton)
+
 function checkCartItemsQuantity() {
-  /* this will check and update globally available things */
+  /* this will check and update globally available things that
+      need to be checked/updated when cartItems changes; */
 
   /* get total number of items in cartItems object */
   var cartNumItems = 0;
@@ -90,7 +329,7 @@ function checkCartItemsQuantity() {
     cartNumItems += parseInt(cartItems[key]);
   }
 
-  /* update .cart-quantity-all in Supercycles, and widget in listing */
+  /* update .cart-quantity-all in Supercycles, and "widget" in listing */
   cartTotalQuantityMain.innerHTML = cartNumItems.toString();
   cartTotalQuantityListing.innerHTML = cartNumItems.toString();
 
@@ -328,7 +567,7 @@ function updateCartSummary(newPromoCode) {
   cartTotal -= appliedPromoCodeDiscount;
 
   /* correct evaluation of below condition relies on newPromoCodeDiscount
-      to be initialized to zero;
+      to be initialized to zero in var declaration;
   */
   if (newPromoCode && newPromoCodeDiscount == 0) {
     alert('Sorry, no discount could be applied for promo code:\n\n' + newPromoCode);
@@ -383,7 +622,7 @@ function removeCartItem(cartItem) {
       and also type of item(s) with regard to promo code; */
   checkCartItemsQuantity();
 
-  /* update cart summary */
+  /* update cart summary - must be left after checkCartItemsQuantity(); */
   updateCartSummary();
 
   /* reset the listing for this item with regard to:
@@ -403,168 +642,17 @@ function removeCartItem(cartItem) {
 
 } // end function removeCartItem()
 
-function resetListingQtyAndButton(listingItem) {
+/* currently not used */
+function removeItemButtonEventListenerFn(forButton) {
 
-}
+  /*  use:
+      someRemoveItemButton.addEventListener('click'), removeItemButtonEventListenerFn(someRemoveItemButton));
+  */
 
-/***********************************/
-/* above - cart-specific variables */
-/***********************************/
-
-for (i=0; i<addToCartButtonArray.length; i++) {
-  addToCartButtonArray[i].addEventListener('click', function(event) {
-
-    /* a button element by default will be treated as submit, so ... */
-    event.preventDefault();
-
-    var sku = this.parentElement.parentElement.parentElement.dataset.sku;
-    var associatedQuantityInput = this.parentElement.querySelector('.quantity');
-
-    /* change text on Add to Cart button, and disable it and the associated input */
-    var quantity = associatedQuantityInput.value;
-    this.innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Item in cart';
-    /* disable button and input */
-    associatedQuantityInput.disabled = true;
-    this.disabled = true;
-
-    /* create and add item node to cart */
-    var nodeToInsert = makeCartItemNode(sku, quantity);
-    /* https://developer.mozilla.org/en-US/docs/Web/API/Node/insertBefore */
-    cartListing.insertBefore(nodeToInsert, cartFooter);
-
-    /* update cartItems object with new item addition */
-    cartItems[sku] = quantity;
-
-    /* update cart summary header/footer */
-    updateCartSummary();
-
-    /* get total number of items in cartItems object */
-    var cartNumItems = 0;
-    for (key in cartItems) {
-      cartNumItems += parseInt(cartItems[key]);
-    }
-
-    /* update .cart-quantity-all in Supercycles, and widget in listing */
-    cartTotalQuantityMain.innerHTML = cartNumItems.toString();
-    cartTotalQuantityListing.innerHTML = cartNumItems.toString();
-
-    /* enable show cart buttons/widgets */
-    showCartButtonInMain.disabled = false;
-    showCartButtonInListing.disabled = false;
-
-    /* create event listeners for action elements in this cart item
-        NOW THAT IT IS IN THE DOM */
-
-    /* Update Cart button event listener and routine for this cart item */
-    var updateCartButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.update');
-    updateCartButton.addEventListener('click', function(event) {
-
-      var associatedQuantityInput = this.parentElement.querySelector('input.quantity');
-      var associatedCartItem =  this.parentElement.parentElement.parentElement;
-      var sku = associatedCartItem.dataset.sku;
-      var associatedCartItemSubtotalSpan = associatedCartItem.querySelector('div.item-subtotal span');
-
-      var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
-      var associatedListingQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
-
-      /* update associated listing item quantity and Add to cart button */
-      if (associatedQuantityInput.value == '0') {
-        removeCartItem(associatedCartItem);
-      } else {
-          /* update cartItems object with non-zero value */
-          cartItems[sku] = associatedQuantityInput.value;
-          /* check cart and respond accordingly to total number of items */
-          checkCartItemsQuantity();
-          /* set associated listing quantity to the new non-zero value */
-          associatedListingQuantityInput.value = cartItems[sku];
-          /* update item subtotal in cart item */
-          if (products[sku].salePrice !== '') {
-            /* item is on sale */
-            associatedCartItemSubtotalSpan.innerHTML = (cartItems[sku] * products[sku].salePrice).toFixed(2).toString();
-          } else {
-            /* item is not on sale */
-            associatedCartItemSubtotalSpan.innerHTML = (cartItems[sku] * products[sku].price).toFixed(2).toString();
-          }
-      } // end if (associatedQuantityInput.value == '0')
-
-      updateCartSummary();
-
-    }); /* END Update Cart button event listener and routine for this cart item */
-
-    /* Remove item button event listener and routine for this cart item */
-    var removeItemButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.remove');
-
-    removeItemButton.addEventListener('click', function(event) {
+  return function(event) {
       event.preventDefault();
 
-      var associatedCartItem =  this.parentElement.parentElement;
-      console.log('associatedCartItem:', associatedCartItem);
-
-      var sku = associatedCartItem.dataset.sku;
-      delete cartItems[sku];
-
-      /* check cart and respond accordingly to total number of items */
-      checkCartItemsQuantity();
-
-      updateCartSummary();
-
-      /* reset the listing for this item with regard to:
-          Quantity input value reset to 1,
-          Quantity input enabled,
-          "Item in cart" button text reset to "Add to cart",
-          Add to cart button enabled
-      */
-      var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
-      console.log('associatedListingItem:', associatedListingItem);
-      associatedListingItem.querySelector('input.quantity').value = '1';
-      associatedListingItem.querySelector('input.quantity').disabled = false;
-      associatedListingItem.querySelector('button.add-to-cart').innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart';
-      associatedListingItem.querySelector('button.add-to-cart').disabled = false;
-
-      /* remove the cart item from the DOM */
-      associatedCartItem.parentElement.removeChild(associatedCartItem);
-
-    }); /* END Remove item button event listener and routine for this cart item */
-
-    /* Show Details button event listener and routine for this cart item */
-    var showDetailsButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.see-detail');
-    showDetailsButton.addEventListener('click', function(event) {
-      event.preventDefault();
-      /* get the sku data for this .item-cart */
-      var sku = this.parentElement.parentElement.dataset.sku;
-      var descriptiveTextDiv = document.querySelector('.item-cart[data-sku="' + sku + '"] .desc-text');
-      console.log(this.parentElement.parentElement.dataset.sku);
-
-      if (this.innerHTML == 'Show Details') {
-        descriptiveTextDiv.classList.remove('hide');
-        descriptiveTextDiv.classList.add('show');
-        this.innerHTML = 'Hide Details';
-      } else {
-        descriptiveTextDiv.classList.remove('show');
-        descriptiveTextDiv.classList.add('hide');
-        this.innerHTML = 'Show Details';
-      }
-    }); /* END Show Details button event listener and routine for this cart item */
-
-    console.log('Adding:', quantity, ' of ', sku);
-  })
-} // end for
-
-/* this will be called by the listener for the Add to cart button of a particular item */
-function addItemToCartObj(sku, quantity) {
-
-}
-
-function removeItemFromCartObj(sku) {
-
-}
-
-function removeItemButtonAddEventListener(theButton) {
-
-  theButton.addEventListener('click', function(event) {
-      event.preventDefault();
-
-      var associatedCartItem =  this.parentElement.parentElement;
+      var associatedCartItem =  forButton.parentElement.parentElement;
 
       var sku = associatedCartItem.dataset.sku;
       delete cartItems[sku];
@@ -587,127 +675,6 @@ function removeItemButtonAddEventListener(theButton) {
 
       /* remove the cart item from the DOM */
       associatedCartItem.parentElement.removeChild(associatedCartItem);
-    });
-
+    };
 }
-
-/* set up event listeners for show cart buttons/widgets */
-showCartButtonInMain.addEventListener('click', function(event) {
-  productListing.classList.add('hide');
-  cartListing.classList.remove('hide');
-  /* alert a promos message if the promos object is not empty */
-  // showPromosAlert();
-});
-/* this DOM element would normally be created dynamically when the listing
-    page gets populated dynamically;
-    in our case, it exists on initial page load, so we can reference it;
-*/
-showCartButtonInListing.addEventListener('click', function(event) {
-  productListing.classList.add('hide');
-  cartListing.classList.remove('hide');
-  /* alert a promos message if the promos object is not empty */
-  // showPromosAlert();
-});
-
-/*******************************/
-/* formerly cart.js code below */
-/*******************************/
-
-/* set up event listeners for Promotional Code anchors */
-for (i=0; i<promoCodeAnchorArray.length; i++) {
-  promoCodeAnchorArray[i].addEventListener('click', function(event) {
-    event.preventDefault();
-    clickPromosAlert();
-  })
-}
-
-/* set up listeners for Apply Promo buttons */
-for (i=0; i<applyPromoButtonsArray.length; i++) {
-  applyPromoButtonsArray[i].addEventListener('click', function(event) {
-    event.preventDefault();
-    console.log('Apply Promo clicked!');
-    applyPromoCode(this);
-  });
-}
-
-function applyPromoCode(whichButton) {
-  /* doesn't matter which button was clicked (in header or footer), the same
-      action needs to occur, however, we'll need to grab the value of the
-      specific input field associated with the particular button pressed;
-  */
-  var associatedPromoInput = whichButton.parentElement.querySelector('input.promo-code');
-  // console.log('whichButton:', whichButton, '\nassociatedPromoInput:', associatedPromoInput);
-  var inputPromoCode = '';
-
-  /* check if code is valid */
-  for (key in promos) {
-    /* upper case input value since all promos with alpha are upper case */
-    if (key == associatedPromoInput.value.toUpperCase()) {
-      /* found a valid promo code in promos corresponding to user input value */
-      inputPromoCode = associatedPromoInput.value.toUpperCase();
-    }
-  }
-  if (inputPromoCode == '') {
-    alert('Sorry, "' + associatedPromoInput.value + '", is not a valid Promotional Code');
-    /* alert available promos, if any */
-    clickPromosAlert();
-    return;
-  }
-  /* if here, have a valid promotional code - inputPromoCode */
-  /* see if it's already being used */
-  if (promos[inputPromoCode].isUsed) {
-    alert('Promotional Code ' + inputPromoCode + ' is already being used.');
-    return;
-  }
-  /* now, we have a valid, currently unused, promo code;
-      we only allow the use of one at a time, but compare the cart total
-      when attempting to use a different one and accept if the cart total
-      will be less with the "new" promo;
-  */
-  updateCartSummary(inputPromoCode);
-
-} // end function applyPromoCode(whichButton)
-
-/* event listener function for keep shopping button press */
-// function keepShopping(clickEvent) {
-//   clickEvent.preventDefault();
-//   cartListing.classList.add('hide');
-//   productListing.classList.remove('hide');
-// }
-for (i=0; i<keepShoppingButtonsArray.length; i++) {
-  keepShoppingButtonsArray[i].addEventListener('click', function(event) {
-    event.preventDefault();
-    cartListing.classList.add('hide');
-    productListing.classList.remove('hide');
-  });
-}
-
-/* cart item action elements */
-
-/* listeners for Remove buttons */
-
-
-/* Show Details/Hide Details for cart items */
-// for (i=0; i<showDetailsButtonsArray.length; i++) {
-
-//   showDetailsButtonsArray[i].addEventListener('click', function(event) {
-//     event.preventDefault();
-//     /* get the sku data for this .item-cart */
-//     var sku = this.parentElement.parentElement.dataset.sku;
-//     var descriptiveTextDiv = document.querySelector('.item-cart[data-sku="' + sku + '"] .desc-text');
-//     console.log(this.parentElement.parentElement.dataset.sku);
-
-//     if (this.innerHTML == 'Show Details') {
-//       descriptiveTextDiv.classList.remove('hide');
-//       descriptiveTextDiv.classList.add('show');
-//       this.innerHTML = 'Hide Details';
-//     } else {
-//       descriptiveTextDiv.classList.remove('show');
-//       descriptiveTextDiv.classList.add('hide');
-//       this.innerHTML = 'Show Details';
-//     }
-
-//   });
-
-// } // end for (var i=0; i<seeDetailsButtonsArray.length; i++)
 

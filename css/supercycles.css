@@ -358,14 +358,9 @@ footer p {
   }
 
   aside ul li {
-    /*text-align: center;*/
-    margin: 0 1rem;
+    /*width: 20%;*/
     margin: 0 1rem 1rem 0;
-    display: inline;
-  }
-
-  aside ul li a {
-
+    display: inline-block;
   }
 
 }
