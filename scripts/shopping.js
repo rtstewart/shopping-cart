@@ -278,7 +278,7 @@ for (i=0; i<checkoutButtonsArray.length; i++) {
 }
 
 function justTesting() {
-  alert('Hallelujah! You decided to buy something.\n\nJust wanted to test your curiosity ;-)');
+  alert('Hallelujah!\n\nYou decided to buy something.\n\nJust wanted to test your curiosity ;-)');
 }
 
 function applyPromoCode(whichButton) {
@@ -288,22 +288,28 @@ function applyPromoCode(whichButton) {
   */
   var associatedPromoInput = whichButton.parentElement.querySelector('input.promo-code');
   // console.log('whichButton:', whichButton, '\nassociatedPromoInput:', associatedPromoInput);
-  var inputPromoCode = '';
 
-  /* check if code is valid */
+  var inputPromoCode = associatedPromoInput.value.trim().toUpperCase();
+  var isPromoCodeValid = false;
+  console.log(inputPromoCode);
+  if (inputPromoCode == '') return;
+
+  /* have something input; check if code is valid */
   for (key in promos) {
     /* upper case input value since all promos with alpha are upper case */
-    if (key == associatedPromoInput.value.toUpperCase()) {
+    if (key == inputPromoCode) {
       /* found a valid promo code in promos corresponding to user input value */
-      inputPromoCode = associatedPromoInput.value.toUpperCase();
+      isPromoCodeValid = true;
     }
   }
-  if (inputPromoCode == '') {
+
+  if (!isPromoCodeValid) {
     alert('Sorry, "' + associatedPromoInput.value + '", is not a valid Promotional Code');
     /* alert available promos, if any */
     clickPromosAlert();
     return;
   }
+
   /* if here, have a valid promotional code - inputPromoCode */
   /* see if it's already being used */
   if (promos[inputPromoCode].isUsed) {
@@ -570,7 +576,7 @@ function updateCartSummary(newPromoCode) {
       to be initialized to zero in var declaration;
   */
   if (newPromoCode && newPromoCodeDiscount == 0) {
-    alert('Sorry, no discount could be applied for promo code:\n\n' + newPromoCode);
+    alert('Sorry, ' + newPromoCode + ' is a valid promo code, but no discount could be applied with it.');
   }
 
   if (newPromoCode && newPromoCodeDiscount > 0 && newPromoCodeDiscount <= existingPromoCodeDiscount) {

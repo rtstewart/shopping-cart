@@ -291,8 +291,10 @@ aside li {
 
 aside li:first-child a {
   color: yellow;
+  color: #efef00;
   font-weight: bold;
   text-shadow: 1px 1px 0 #c00;
+  text-shadow: 1px 1px 0 #000;
 }
 
 footer {
