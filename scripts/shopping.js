@@ -152,6 +152,16 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
       var associatedListingQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
 
+      if (associatedQuantityInput.value == '') {
+        /* no value supplied, so reset it to the quantity of sku now in cart */
+        for (var key in cartItems) {
+          if (key == sku) {
+            associatedQuantityInput.value = cartItems[sku];
+          }
+        }
+        return;
+      }
+
       /* update associated listing item quantity and Add to cart button */
       if (associatedQuantityInput.value == '0') {
         removeCartItem(associatedCartItem);

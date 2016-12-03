@@ -11,14 +11,23 @@
 
 var showCart = document.querySelector('.show-cart-listing');
 
+/* .show-cart-listing has been casually named Igor */
+function showIgor() {
+  showCart.classList.remove('hide');
+}
+
 window.addEventListener('scroll', function(e) {
+  /* hide showCart, then unhide after 250ms;
+      this makes the "teleportation" between states not displayed; */
+  showCart.classList.add('hide')
+  setTimeout(showIgor, 250);
   if (window.scrollY > 275) {
     if (window.innerWidth > 935) {
       showCart.classList.add('show-cart-lg-screen-fixed');
       showCart.classList.remove('show-cart-md-sm-screen-fixed');
       showCart.classList.remove('show-cart-not-fixed');
     } else {
-      showCart.classList.add('show-cart-md-sm-screen-fixed');
+        showCart.classList.add('show-cart-md-sm-screen-fixed');
         showCart.classList.remove('show-cart-lg-screen-fixed');
         showCart.classList.remove('show-cart-not-fixed');
     }
@@ -30,6 +39,8 @@ window.addEventListener('scroll', function(e) {
 });
 
 window.addEventListener('resize', function(e) {
+  showCart.classList.add('hide');
+  setTimeout(showIgor, 250);
   if (window.innerWidth > 935) {
     if (window.scrollY > 275) {
         showCart.classList.add('show-cart-lg-screen-fixed');
