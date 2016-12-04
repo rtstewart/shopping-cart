@@ -59,7 +59,9 @@ addPromo(
 addPromo(
   'TYPE-MERCHANDISE'
   , 'TYPE'
-  , 'This promo code will take 7% off of all items in the "merchandise" category.\nSuch items have an item code of the form xx-MD-xxxx, where the "MD" indicates merchandise.\nYou can search for such items by category as well using "merchandise" as a filter.'
+  , 'This promo code will take 7% off of all items in the "merchandise" category.'
+    + '<br>Such items have an item code of the form xx-MD-xxxx, where the "MD" indicates merchandise.'
+    + '<br>You can search for such items by category as well using "merchandise" as a filter.'
   , '7'
 );
 
