@@ -104,9 +104,28 @@ for (i=0; i<addToCartButtonArray.length; i++) {
 
     var sku = this.parentElement.parentElement.parentElement.dataset.sku;
     var associatedQuantityInput = this.parentElement.querySelector('.quantity');
+    /* in case a wise-guy put a leading + in value, this will get rid of it; */
+    var quantity = associatedQuantityInput.value;
+
+    if (isNaN(quantity) || !(0 < quantity && quantity < 100)) {
+      //  invalid value supplied, so reset it to the default 1
+      alert('Quantity must be 1-99.');
+      associatedQuantityInput.value = 1;
+      return;
+    } else {
+      /* in case a wise-guy put a leading + in value, this will get rid of it; */
+      quantity = parseInt(associatedQuantityInput.value);
+      associatedQuantityInput.value = '';
+      associatedQuantityInput.value = quantity;
+    }
+
+    // if (associatedQuantityInput.value == '') {
+    //   //  no value supplied, so reset it to the default 1
+    //   associatedQuantityInput.value = 1;
+    //   return;
+    // }
 
     /* change text on Add to Cart button, and disable it and the associated input */
-    var quantity = associatedQuantityInput.value;
     this.innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Item in cart';
     /* disable button and input */
     associatedQuantityInput.disabled = true;
@@ -145,6 +164,7 @@ for (i=0; i<addToCartButtonArray.length; i++) {
     updateCartButton.addEventListener('click', function(event) {
 
       var associatedQuantityInput = this.parentElement.querySelector('input.quantity');
+      var updateQuantity = associatedQuantityInput.value;
       var associatedCartItem =  this.parentElement.parentElement.parentElement;
       var sku = associatedCartItem.dataset.sku;
       var associatedCartItemSubtotalSpan = associatedCartItem.querySelector('div.item-subtotal span');
@@ -152,14 +172,23 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
       var associatedListingQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
 
-      if (associatedQuantityInput.value == '') {
-        /* no value supplied, so reset it to the quantity of sku now in cart */
+      //if (associatedQuantityInput.value == '') {
+      if (isNaN(updateQuantity) || !(-1 < updateQuantity && updateQuantity < 100)) {
+        /* invalid value supplied, so reset it to the quantity of sku now in cart */
+        alert('Quantity must be 0-99.');
         for (var key in cartItems) {
           if (key == sku) {
             associatedQuantityInput.value = cartItems[sku];
           }
         }
         return;
+      } else {
+          /* in case a wise-guy put a leading + in value, this will get rid of it; */
+          updateQuantity = parseInt(associatedQuantityInput.value);
+          /* clear it out */
+          associatedQuantityInput.value = '';
+          /* rewrite it */
+          associatedQuantityInput.value = updateQuantity;
       }
 
       /* update associated listing item quantity and Add to cart button */
@@ -193,7 +222,7 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       event.preventDefault();
 
       var associatedCartItem =  this.parentElement.parentElement;
-      console.log('associatedCartItem:', associatedCartItem);
+      // console.log('associatedCartItem:', associatedCartItem);
 
       var sku = associatedCartItem.dataset.sku;
       delete cartItems[sku];
@@ -210,7 +239,8 @@ for (i=0; i<addToCartButtonArray.length; i++) {
           Add to cart button enabled
       */
       var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
-      console.log('associatedListingItem:', associatedListingItem);
+      // console.log('associatedListingItem:', associatedListingItem);
+
       associatedListingItem.querySelector('input.quantity').value = '1';
       associatedListingItem.querySelector('input.quantity').disabled = false;
       associatedListingItem.querySelector('button.add-to-cart').innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart';
@@ -228,7 +258,7 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       /* get the sku data for this .item-cart */
       var sku = this.parentElement.parentElement.dataset.sku;
       var descriptiveTextDiv = document.querySelector('.item-cart[data-sku="' + sku + '"] .desc-text');
-      console.log(this.parentElement.parentElement.dataset.sku);
+      // console.log(this.parentElement.parentElement.dataset.sku);
 
       if (this.innerHTML == 'Show Details') {
         descriptiveTextDiv.classList.remove('hide');
@@ -241,7 +271,7 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       }
     }); /* END Show Details button event listener and routine for this cart item */
 
-    console.log('Adding:', quantity, ' of ', sku);
+    // console.log('Adding:', quantity, ' of ', sku);
 
   }); // end addToCartButtonArray[i].addEventListener
 
@@ -261,7 +291,7 @@ for (i=0; i<promoCodeAnchorArray.length; i++) {
 for (i=0; i<applyPromoButtonsArray.length; i++) {
   applyPromoButtonsArray[i].addEventListener('click', function(event) {
     event.preventDefault();
-    console.log('Apply Promo clicked!');
+    // console.log('Apply Promo clicked!');
     applyPromoCode(this);
   });
 }
@@ -301,7 +331,8 @@ function applyPromoCode(whichButton) {
 
   var inputPromoCode = associatedPromoInput.value.trim().toUpperCase();
   var isPromoCodeValid = false;
-  console.log(inputPromoCode);
+  // console.log(inputPromoCode);
+
   if (inputPromoCode == '') return;
 
   /* have something input; check if code is valid */
@@ -619,7 +650,7 @@ function updateCartSummary(newPromoCode) {
 
     /* clear out promo code input field */
     promoCodeInputArray[i].value = '';
-    console.log('promoCodeInputArray[' + i + '].value =', promoCodeInputArray[i].value);
+    // console.log('promoCodeInputArray[' + i + '].value =', promoCodeInputArray[i].value);
 
   } // end for
 
@@ -683,7 +714,8 @@ function removeItemButtonEventListenerFn(forButton) {
           Add to cart button enabled
       */
       var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
-      console.log('associatedListingItem:', associatedListingItem);
+      // console.log('associatedListingItem:', associatedListingItem);
+
       associatedListingItem.querySelector('input.quantity').value = '1';
       associatedListingItem.querySelector('input.quantity').disabled = false;
       associatedListingItem.querySelector('button.add-to-cart').innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Add to cart';

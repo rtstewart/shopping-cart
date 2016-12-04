@@ -38,7 +38,7 @@ function makeCartItemNode(sku, quantity) {
   var nodeContainer = document.createElement('div');
   nodeContainer.innerHTML = cartItemHtmlText;
   var newCartItemNode = nodeContainer.firstChild;
-  console.log(newCartItemNode);
+  // console.log(newCartItemNode);
   // return newCartItemNode;
   /* set the data-sku attribute to the appropriate sku */
   // console.log(newCartItemNode.querySelector('div.item-cart'));
