@@ -17,6 +17,11 @@
 var productListing = document.querySelector('.listing-container');
 var cartListing = document.querySelector('.shopping-cart');
 
+var alertInfoElement = document.createElement('div');
+alertInfoElement.className = 'alert-info';
+alertInfoElement.classList.add('invisible');
+console.log('alertInfoElement:', alertInfoElement);
+
 /* show cart buttons/widgets within Supercycles nav, and .listing-container */
 var showCartButtonInMain = document.querySelector('nav .show-cart-main');
 var showCartButtonInListing = document.querySelector('.listing-container .show-cart-listing');
@@ -100,17 +105,24 @@ for (i=0; i<addToCartButtonArray.length; i++) {
   addToCartButtonArray[i].addEventListener('click', function(event) {
 
     /* a <button> element by default will be treated as submit, so ... */
-    event.preventDefault();
+    // event.preventDefault();
 
     var sku = this.parentElement.parentElement.parentElement.dataset.sku;
+    /* this.parentElement is <form> */
+    var associatedAlertInfo = this.parentElement.querySelector('.alert-info');
     var associatedQuantityInput = this.parentElement.querySelector('.quantity');
     /* in case a wise-guy put a leading + in value, this will get rid of it; */
     var quantity = associatedQuantityInput.value;
 
-    if (isNaN(quantity) || !(0 < quantity && quantity < 100)) {
+    var minQuantity = parseInt(associatedQuantityInput.getAttribute('min'));
+    var maxQuantity = parseInt(associatedQuantityInput.getAttribute('max'));
+    if (quantity == '' || isNaN(quantity) || !(minQuantity <= quantity && quantity <= maxQuantity)) {
       //  invalid value supplied, so reset it to the default 1
-      alert('Quantity must be 1-99.');
+      // alert('Quantity must be 1-20.');
       associatedQuantityInput.value = 1;
+      showAlertInfo(associatedAlertInfo,
+        '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>'
+        + ' Quantity must be ' + minQuantity + '-' + maxQuantity);
       return;
     } else {
       /* in case a wise-guy put a leading + in value, this will get rid of it; */
@@ -163,8 +175,20 @@ for (i=0; i<addToCartButtonArray.length; i++) {
     var updateCartButton = document.querySelector('.shopping-cart div[data-sku="' + sku + '"] .action-cart button.update');
     updateCartButton.addEventListener('click', function(event) {
 
+      /* this.parentElement is <form> */
       var associatedQuantityInput = this.parentElement.querySelector('input.quantity');
       var updateQuantity = associatedQuantityInput.value;
+
+      /* attempt to assign .alert-info element to a variable;
+          .alert-info is placed dynamically for cart items;
+          it is the element created as alertInfoElement above; */
+      var associatedAlertInfo = this.parentElement.querySelector('.alert-info');
+      /* if .alert-info is not already there, append to <form> */
+      if (!associatedAlertInfo) {
+        this.parentElement.appendChild(alertInfoElement);
+        associatedAlertInfo = this.parentElement.querySelector('.alert-info');
+      }
+
       var associatedCartItem =  this.parentElement.parentElement.parentElement;
       var sku = associatedCartItem.dataset.sku;
       var associatedCartItemSubtotalSpan = associatedCartItem.querySelector('div.item-subtotal span');
@@ -173,9 +197,15 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       var associatedListingQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
 
       //if (associatedQuantityInput.value == '') {
-      if (isNaN(updateQuantity) || !(-1 < updateQuantity && updateQuantity < 100)) {
+      var minQuantity = parseInt(associatedQuantityInput.getAttribute('min'));
+      var maxQuantity = parseInt(associatedQuantityInput.getAttribute('max'));
+      if (updateQuantity == '' || isNaN(updateQuantity) || !(minQuantity <= updateQuantity && updateQuantity <= maxQuantity)) {
         /* invalid value supplied, so reset it to the quantity of sku now in cart */
-        alert('Quantity must be 0-99.');
+        // alert('Quantity must be 0-99.');
+         showAlertInfo(associatedAlertInfo,
+           '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>'
+           + ' Quantity must be ' + minQuantity + '-' + maxQuantity);
+
         for (var key in cartItems) {
           if (key == sku) {
             associatedQuantityInput.value = cartItems[sku];
@@ -192,7 +222,8 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       }
 
       /* update associated listing item quantity and Add to cart button */
-      if (associatedQuantityInput.value == '0') {
+      if (updateQuantity == 0) {
+        console.log('updateQuantity=', updateQuantity);
         removeCartItem(associatedCartItem);
       } else {
           /* update cartItems object with non-zero value */
@@ -311,9 +342,8 @@ for (i=0; i<checkoutButtonsArray.length; i++) {
     event.preventDefault();
     // cartListing.classList.add('hide');
     // checkout.classList.remove('hide');
-    justTesting();
-    playSound();
-    // var stallAlert = setTimeout(justTesting, 26000);
+    // justTesting();
+    // playSound();
   });
 }
 
@@ -326,8 +356,11 @@ function applyPromoCode(whichButton) {
       action needs to occur, however, we'll need to grab the value of the
       specific input field associated with the particular button pressed;
   */
+  /* whichButton.parentElement is <form> */
   var associatedPromoInput = whichButton.parentElement.querySelector('input.promo-code');
   // console.log('whichButton:', whichButton, '\nassociatedPromoInput:', associatedPromoInput);
+
+  var associatedAlertInfo = whichButton.parentElement.querySelector('.alert-info');
 
   var inputPromoCode = associatedPromoInput.value.trim().toUpperCase();
   var isPromoCodeValid = false;
@@ -345,16 +378,22 @@ function applyPromoCode(whichButton) {
   }
 
   if (!isPromoCodeValid) {
-    alert('Sorry, "' + associatedPromoInput.value + '", is not a valid Promotional Code');
+    // alert('Sorry, "' + associatedPromoInput.value + '", is not a valid Promotional Code');
+    showAlertInfo(associatedAlertInfo,
+        '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>'
+        + ' Not a valid Promotional Code');
     /* alert available promos, if any */
-    clickPromosAlert();
+    setTimeout(clickPromosAlert, 4000);
+    // clickPromosAlert();
     return;
   }
 
   /* if here, have a valid promotional code - inputPromoCode */
   /* see if it's already being used */
   if (promos[inputPromoCode].isUsed) {
-    alert('Promotional Code ' + inputPromoCode + ' is already being used.');
+    // alert('Promotional Code ' + inputPromoCode + ' is already being used.');
+    showAlertInfo(associatedAlertInfo,
+      inputPromoCode + ' is already applied.');
     return;
   }
   /* now, we have a valid, currently unused, promo code;
@@ -617,14 +656,18 @@ function updateCartSummary(newPromoCode) {
       to be initialized to zero in var declaration;
   */
   if (newPromoCode && newPromoCodeDiscount == 0) {
-    alert('Sorry, ' + newPromoCode + ' is a valid promo code, but no discount could be applied with it.');
+    // alert('Sorry, ' + newPromoCode + ' is a valid promo code, but no discount could be applied with it.');
+    showModal('<p>Sorry, <strong>' + newPromoCode + '</strong> is a valid promo code, but no discount could be applied with it.</p>')
   }
 
   if (newPromoCode && newPromoCodeDiscount > 0 && newPromoCodeDiscount <= existingPromoCodeDiscount) {
     // alert('Sorry, no greater discount could be applied for promo code:\n\n' + newPromoCode);
-    alert('Sorry, no greater discount could be applied for promo code: ' + newPromoCode
-          + '\n\n' + existingPromoCode + ' discount is $' + existingPromoCodeDiscount.toFixed(2)
-          + '\n\n' + newPromoCode + ' discount would be $' + newPromoCodeDiscount.toFixed(2));
+    // alert('Sorry, no greater discount could be applied for promo code: ' + newPromoCode
+    //       + '\n\n' + existingPromoCode + ' discount is $' + existingPromoCodeDiscount.toFixed(2)
+    //       + '\n\n' + newPromoCode + ' discount would be $' + newPromoCodeDiscount.toFixed(2));
+    showModal('<p>Sorry, no greater discount could be applied for promo code: ' + newPromoCode
+          + '<br><br>' + existingPromoCode + ' discount is $' + existingPromoCodeDiscount.toFixed(2)
+          + '<br><br>' + newPromoCode + ' discount would be $' + newPromoCodeDiscount.toFixed(2) + '</p>');
   }
 
   /* update cart summary fields */
@@ -658,11 +701,11 @@ function updateCartSummary(newPromoCode) {
 
 function removeCartItem(cartItem) {
 
+  var sku = cartItem.dataset.sku;
   var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
   var associatedListingItemQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
   var associatedListingItemAddToCartButton = associatedListingItem.querySelector('button.add-to-cart');
 
-  var sku = cartItem.dataset.sku;
   delete cartItems[sku];
 
   /* check cart and respond accordingly to total number of items,
@@ -688,6 +731,17 @@ function removeCartItem(cartItem) {
   cartItem.parentElement.removeChild(cartItem);
 
 } // end function removeCartItem()
+
+function showAlertInfo(whichAlertInfo, alertMsgHtmlText) {
+  whichAlertInfo.innerHTML = alertMsgHtmlText;
+  whichAlertInfo.classList.remove('invisible');
+  whichAlertInfo.classList.add('visible', 'z100');
+  setTimeout(function() {
+    whichAlertInfo.classList.add('invisible');
+    whichAlertInfo.classList.remove('visible', 'z100');
+  }, 4000);
+
+}
 
 /* currently not used */
 function removeItemButtonEventListenerFn(forButton) {

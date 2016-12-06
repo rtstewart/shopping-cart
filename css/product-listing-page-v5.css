@@ -13,32 +13,63 @@ body * {
   clear: both;
 }
 
+/* https://www.youtube.com/watch?v=s7JwxPnYoOw */
+.alert-info {
+  white-space: nowrap;
+  width: auto;
+  height: auto;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  position: absolute;
+  /*z-index: 99;*/
+  top: -3.3rem;
+  left: 2.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.6em;
+  color: black;
+  text-align: center;
+  transition: all 0.5s ease;
+  -webkit-filter: drop-shadow(4px 8px 6px rgba(50,50,50,0.7));
+  filter: drop-shadow(4px 8px 6px rgba(50,50,50,0.7));
+/*  -webkit-filter: drop-shadow(0px 0px 8px rgba(50,50,50,0.7));
+  filter: drop-shadow(0px 0px 8px rgba(50,50,50,0.7));*/
+}
+
+.alert-info.promo-code {
+  top: -3rem;
+  left: 7.5rem;
+}
+
+.alert-info i {
+  font-size: 1.1rem;
+  color: #ffa600;
+}
+
+.alert-info::after {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+
+  /* downward pointing "arrow" */
+  border-top: 30px solid rgb(0,0,0);
+  top: 100%;
+  /* left position of the "arrow" relative to .alert-info */
+  left: 1.2rem;
+
+  border-right: 15px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 0px solid transparent;
+}
+
 .show {
   display: block;
 }
 
-.showAnimate {
-  height: auto;
-  overflow: auto;
-  transition: 0.35s all ease;
-}
-.fadeOut {
-  opacity: 0;
-  /*transition: opacity 0.125s;*/
-}
-.fadeIn {
-  opacity: 1;
-  /*transition: opacity 0.125s;*/
-}
-
 .hide {
   display: none;
-}
-
-.hideAnimate {
-  height: 0;
-  overflow: hidden;
-  transition: 0.35s all ease;
 }
 
 .inspirations {
@@ -353,6 +384,12 @@ div.action-cart a:hover {
   margin: 0;
 }
 
+/* this is only necessary for positioning .alert-info */
+.listing-container form,
+.shopping-cart form {
+  position: relative;
+}
+
 /* this is not an issue in listing */
 .shopping-cart form {
   display: inline-block;
@@ -553,6 +590,11 @@ footer a {
     float: none;
     margin: 0px auto 8px auto;
   }
+
+  .alert-info.promo-code {
+    left: 2.5rem;
+  }
+
 }
 
 @media screen and (max-width:360px) {

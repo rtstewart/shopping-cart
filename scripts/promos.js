@@ -67,17 +67,27 @@ addPromo(
 
 function showPromosAlert() {
   /* alert a promos message if the promos object is not empty */
+  var promoMsg;
   if (Object.keys(promos).length > 0) {
-    var promoMsg = 'There are typically several types of promos available on any given day.'
-                  +'\nOnly one promo code can be applied to a purchase.'
-                  +'\nOf the promo codes you enter, the one giving the greatest discount will be applied.'
-                  +'\n\nToday\'s promo codes and descriptions are as follows:';
+    // var promoMsg = 'There are typically several types of promos available on any given day.'
+    //               +'\nOnly one promo code can be applied to a purchase.'
+    //               +'\nOf the promo codes you enter, the one giving the greatest discount will be applied.'
+    //               +'\n\nToday\'s promo codes and descriptions are as follows:';
+    var promoMsg = '<h4>Promotional Codes</h4>'
+                  + '<p>- There are typically several types of promos available on any given day.'
+                  + '<br>- Only one promo code can be applied to a purchase.'
+                  + '<br>- Of the promo codes you enter, the one giving the greatest discount will be applied.</p>'
+                  + '<p>Today\'s promo codes and descriptions are as follows:';
     for (var key in promos) {
-      promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
+      // promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
+      promoMsg += '<br><br><strong>' + promos[key].promoCode + "</strong> : " + promos[key].description;
     }
-    alert(promoMsg);
-  }
-}
+    promoMsg += '</p>';
+    // alert(promoMsg);
+    showModal(promoMsg);
+  } // end if
+
+} // end showPromosAlert
 
 function playSound() {
     var snd=document.getElementById('rejoice');

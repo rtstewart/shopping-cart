@@ -17,11 +17,11 @@ function showIgor() {
 }
 
 /* I will make the current scrolled Y position available globally */
-var scrolledY = 0;
+// var scrolledY = 0;
 
 window.addEventListener('scroll', function(e) {
-  scrolledY = window.scrollY;
-  console.log(scrolledY);
+  // scrolledY = window.scrollY;
+  // console.log(scrolledY);
   /* hide showCart, then unhide after 250ms;
       this makes the "teleportation" between states not displayed; */
   showCart.classList.add('hide')

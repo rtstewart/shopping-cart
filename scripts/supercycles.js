@@ -5,6 +5,19 @@ var modalContainer = document.querySelector('.modal-container');
 var modalContent = document.querySelector('.modal-content');
 var modalCloseAnchor = document.querySelector('.modal-footer a');
 
+/* creating and inserting a dynamic "top" rule into supercycles.css */
+// var dynamicCssRule = '.modal-container {top:' + window.scrollY + 'px;}';
+// var styleSheetsArray = document.styleSheets;
+// console.log(styleSheetsArray);
+// var supercyclesCss;
+// for (var i=0; i<styleSheetsArray.length; i++) {
+//   if (styleSheetsArray[i].ownerNode.id == 'supercycles-css') {
+//     supercyclesCss = styleSheetsArray[i];
+//   }
+// }
+// console.log(supercyclesCss);
+// supercyclesCss.insertRule(dynamicCssRule, 0);
+
 modalCloseAnchor.addEventListener('click', function(event) {
   event.preventDefault();
   hideModal();
@@ -16,26 +29,29 @@ function showModal(alertMsgHtmlText) {
   /* fill .modal-content */
   modalContent.innerHTML = alertMsgHtmlText;
 
+  /* delete "old" top css rule for dynamicCssRule as index 0 of
+      supercyclesCss;
+      then create new rule based on current scrollY and reinsert at 0; */
+  // supercyclesCss.deleteRule(0);
+  // dynamicCssRule = '.modal-container {top:' + (scrolledY + 32) + 'px;}';
+  // supercyclesCss.insertRule(dynamicCssRule, 0);
+
   /* show modal */
   modal.classList.remove('invisible');
-  modal.classList.add('visible,z99');
-
-  // var scrolledY = window.scrollY;
+  modal.classList.add('visible', 'z100');
 
   /* show modal-container */
+  /* first, set top position based on current window.scrollY; */
+  modalContainer.style.top = (window.scrollY + 32) + 'px';
   modalContainer.classList.remove('invisible');
-  modalContainer.classList.add('visible,z100');
-  modalContainer.style.top = '"' + scrolledY + 'px"';
-  // modalContainer.style.top = 200;
-  modalContainer.style.color = "red";
-  console.log('scrolledY from showModal:', scrolledY);
+  modalContainer.classList.add('visible', 'z100');
 }
 
 function hideModal() {
-  modalContainer.classList.remove('visible,z100');
+  modalContainer.classList.remove('visible', 'z100');
   modalContainer.classList.add('invisible');
 
-  modal.classList.remove('visible,z99');
+  modal.classList.remove('visible', 'z99');
   modal.classList.add('invisible');
 }
 
@@ -59,7 +75,7 @@ function clickPromosAlert() {
                   + '<p>Today\'s promo codes and descriptions are as follows:';
     for (var key in promos) {
       // promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
-      promoMsg += '<br><br>' + promos[key].promoCode + " : " + promos[key].description;
+      promoMsg += '<br><br><strong>' + promos[key].promoCode + "</strong> : " + promos[key].description;
     }
     promoMsg += '</p>';
   } else {

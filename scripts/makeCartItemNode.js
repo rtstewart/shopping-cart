@@ -18,7 +18,7 @@ var cartItemHtmlText =
   +'\n\n\t<div class="action-cart">'
   +'\n\t\t<form action="javascript: void(0);">'
   +'\n\t\t\t<label>Quantity</label><br>'
-  +'\n\t\t\t<input class="quantity" type="number" min="0" max="99" size="2">'
+  +'\n\t\t\t<input class="quantity" type="number" min="0" max="20" size="2" required>'
   +'\n\t\t\t<button class="update"><i class="fa fa-refresh" aria-hidden="true"></i> Update Cart</button>'
   +'\n\t\t</form>'
   +'\n\t\t<button class="remove"><i class="fa fa-times" aria-hidden="true"></i> Remove</button>'
