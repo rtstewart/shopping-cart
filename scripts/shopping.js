@@ -20,7 +20,7 @@ var cartListing = document.querySelector('.shopping-cart');
 var alertInfoElement = document.createElement('div');
 alertInfoElement.className = 'alert-info';
 alertInfoElement.classList.add('invisible');
-console.log('alertInfoElement:', alertInfoElement);
+// console.log('alertInfoElement:', alertInfoElement);
 
 /* show cart buttons/widgets within Supercycles nav, and .listing-container */
 var showCartButtonInMain = document.querySelector('nav .show-cart-main');
@@ -105,7 +105,7 @@ for (i=0; i<addToCartButtonArray.length; i++) {
   addToCartButtonArray[i].addEventListener('click', function(event) {
 
     /* a <button> element by default will be treated as submit, so ... */
-    // event.preventDefault();
+    event.preventDefault();
 
     var sku = this.parentElement.parentElement.parentElement.dataset.sku;
     /* this.parentElement is <form> */
@@ -130,12 +130,6 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       associatedQuantityInput.value = '';
       associatedQuantityInput.value = quantity;
     }
-
-    // if (associatedQuantityInput.value == '') {
-    //   //  no value supplied, so reset it to the default 1
-    //   associatedQuantityInput.value = 1;
-    //   return;
-    // }
 
     /* change text on Add to Cart button, and disable it and the associated input */
     this.innerHTML = '<i class="fa fa-shopping-cart" aria-hidden="true"></i> Item in cart';
