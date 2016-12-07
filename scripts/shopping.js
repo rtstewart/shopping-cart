@@ -111,7 +111,7 @@ for (i=0; i<addToCartButtonArray.length; i++) {
     /* this.parentElement is <form> */
     var associatedAlertInfo = this.parentElement.querySelector('.alert-info');
     var associatedQuantityInput = this.parentElement.querySelector('.quantity');
-    /* in case a wise-guy put a leading + in value, this will get rid of it; */
+    /* NOTE: quantity could include a leading + in value; */
     var quantity = associatedQuantityInput.value;
 
     var minQuantity = parseInt(associatedQuantityInput.getAttribute('min'));
@@ -125,7 +125,7 @@ for (i=0; i<addToCartButtonArray.length; i++) {
         + ' Quantity must be ' + minQuantity + '-' + maxQuantity);
       return;
     } else {
-      /* in case a wise-guy put a leading + in value, this will get rid of it; */
+      /* in case there is a leading + in value, this will get rid of it; */
       quantity = parseInt(associatedQuantityInput.value);
       associatedQuantityInput.value = '';
       associatedQuantityInput.value = quantity;
@@ -171,6 +171,7 @@ for (i=0; i<addToCartButtonArray.length; i++) {
 
       /* this.parentElement is <form> */
       var associatedQuantityInput = this.parentElement.querySelector('input.quantity');
+      /* NOTE: updateQuantity could include a leading + in value; */
       var updateQuantity = associatedQuantityInput.value;
 
       /* attempt to assign .alert-info element to a variable;
@@ -190,7 +191,6 @@ for (i=0; i<addToCartButtonArray.length; i++) {
       var associatedListingItem = document.querySelector('.item-listing[data-sku="' + sku + '"]');
       var associatedListingQuantityInput = associatedListingItem.querySelector('.action-listing input.quantity');
 
-      //if (associatedQuantityInput.value == '') {
       var minQuantity = parseInt(associatedQuantityInput.getAttribute('min'));
       var maxQuantity = parseInt(associatedQuantityInput.getAttribute('max'));
       if (updateQuantity == '' || isNaN(updateQuantity) || !(minQuantity <= updateQuantity && updateQuantity <= maxQuantity)) {
@@ -207,11 +207,9 @@ for (i=0; i<addToCartButtonArray.length; i++) {
         }
         return;
       } else {
-          /* in case a wise-guy put a leading + in value, this will get rid of it; */
+          /* in case there is a leading + in value, this will get rid of it; */
           updateQuantity = parseInt(associatedQuantityInput.value);
-          /* clear it out */
           associatedQuantityInput.value = '';
-          /* rewrite it */
           associatedQuantityInput.value = updateQuantity;
       }
 
