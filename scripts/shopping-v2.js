@@ -2,6 +2,10 @@
   https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Using_data_attributes
   https://developer.mozilla.org/en-US/docs/Web/API/Node
   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+  http://www.regular-expressions.info/alternation.html
+  maybe use pattern="^(promoCode1text|promoCode2text|promoCode3text)$"
+  https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+  - not sure about useCapture option for addEventListener;
 */
 
 /* the main 2 pages to alternately display/hide */
@@ -52,11 +56,7 @@ var cartPromoDiscountTdArray = document.querySelectorAll('td.cart-promo-discount
 var cartTotalTdArray = document.querySelectorAll('.shopping-cart td.cart-total');
 
 /* cart summary header/footer elements that will need event listeners */
-// var promoCodeAnchorArray = document.querySelectorAll('.shopping-cart .cart-header-footer form label a');
 var promoCodeInputArray = document.querySelectorAll('.shopping-cart input.promo-code');
-// var applyPromoButtonsArray = document.querySelectorAll('.shopping-cart .apply-promo');
-// var keepShoppingButtonsArray = document.querySelectorAll('.shopping-cart .keep-shopping');
-// var checkoutButtonsArray = document.querySelectorAll('.shopping-cart .checkout');
 
 /* set up event listeners for show cart buttons/widgets */
 showCartButtonInMain.addEventListener('click', function(event) {
@@ -126,7 +126,7 @@ productListing.addEventListener('submit', function(event) {
   showCartButtonInMain.disabled = false;
   showCartButtonInListing.disabled = false;
 
-});
+}); // end productListing.addEventListener('submit', ...)
 
 productListing.addEventListener('click', function(event) {
   /* want to ignore clicking on "Add to cart" button which
@@ -135,7 +135,7 @@ productListing.addEventListener('click', function(event) {
       it exists, such as if I add a "Show Details/Hide Details"
       button; */
     /* get the button/element that was clicked */
-});
+}); // end productListing.addEventListener('click', ...)
 
 cartListing.addEventListener('submit', function(event) {
   /* submit event already filters out non-form buttons */
@@ -156,32 +156,52 @@ cartListing.addEventListener('submit', function(event) {
     /* event.target is <form> */
     updateCartFromForm(event.target);
   } else if (submitButton.classList.contains('apply-promo')) {
-    applyPromoCode(submitButton);
+    // applyPromoCode(submitButton);
   } // end if (submitButton.classList.contains('quantity'))
 
-});
+}); // end cartListing.addEventListener('submit',...)
 
 cartListing.addEventListener('click', function(event) {
-  /* address click event for buttons other than "Update Cart"; */
+  /* address click event for buttons/elements other than "Update Cart"; */
 
   /* get the button/element that was clicked */
   var clickedElement = event.target;
   var associatedCartItem = clickedElement.parentElement.parentElement;
 
-  if (clickedElement.classList.contains('keep-shopping')) {
-    cartListing.classList.add('hide');
-    productListing.classList.remove('hide');
+  if (clickedElement.classList.contains('apply-promo')) {
+    var associatedInput = clickedElement.parentElement.querySelector('input.promo-code');
+    if (associatedInput.value.trim() == '') {
+       associatedInput.setCustomValidity('Please supply a Promo Code to apply.');
+    } else if (associatedInput.value.trim().toUpperCase() in promos) {
+        /* we have a valid input promo code here; */
+        associatedInput.setCustomValidity('');
+        if (promos[associatedInput.value.trim().toUpperCase()].isUsed) {
+          /* promo code is already being used, so don't submit */
+          associatedInput.setCustomValidity(associatedInput.value.trim().toUpperCase() + ' is already being used.');
+          setTimeout(clearInputValue(associatedInput), 1000);
+        } else {
+            /* update cart summary using the valid, unused promo code */
+            updateCartSummary(associatedInput.value.trim().toUpperCase());
+            // setTimeout(function() {associatedInput.value = '';}, 2000);
+        }
+    } else {
+        associatedInput.setCustomValidity(associatedInput.value + ' is not a valid Promotional Code.');
+        setTimeout(clickPromosAlert, 4000);
+    }
+  } else if (clickedElement.classList.contains('keep-shopping')) {
+      cartListing.classList.add('hide');
+      productListing.classList.remove('hide');
   } else if (clickedElement.classList.contains('checkout')) {
-
+      justTesting();
   } else if (clickedElement.classList.contains('remove')) {
-    removeCartItem(associatedCartItem);
+      removeCartItem(associatedCartItem);
   } else if (clickedElement.classList.contains('see-detail')) {
-    showHideItemDetail(clickedElement);
+      showHideItemDetail(clickedElement);
   } else if (clickedElement.innerHTML == 'Promotional Code:') {
-    clickPromosAlert();
+      clickPromosAlert();
   }
 
-});
+}); // end cartListing.addEventListener('click', ...)
 
 function showHideItemDetail(clickedButton) {
   /* get the sku data for this .item-cart */
@@ -198,7 +218,7 @@ function showHideItemDetail(clickedButton) {
     descriptiveTextDiv.classList.add('hide');
     clickedButton.innerHTML = 'Show Details';
   }
-} // end showHideItemDetail
+} // end function showHideItemDetail
 
 
 function updateCartFromForm(theFormElement) {
@@ -241,65 +261,12 @@ function updateCartFromForm(theFormElement) {
 
   updateCartSummary();
 
-} // end function updateCartFromForm()
+} // end function updateCartFromForm
 
 function justTesting() {
-  alert('Hallelujah!\n\nYou decided to buy something.\n\nJust wanted to test your curiosity ;-)');
-}
-
-function applyPromoCode(whichButton) {
-  /* doesn't matter which button was clicked (in header or footer), the same
-      action needs to occur, however, we'll need to grab the value of the
-      specific input field associated with the particular button pressed;
-  */
-  /* whichButton.parentElement is <form> */
-  var associatedPromoInput = whichButton.parentElement.querySelector('input.promo-code');
-  // console.log('whichButton:', whichButton, '\nassociatedPromoInput:', associatedPromoInput);
-
-  var associatedAlertInfo = whichButton.parentElement.querySelector('.alert-info');
-
-  var inputPromoCode = associatedPromoInput.value.trim().toUpperCase();
-  var isPromoCodeValid = false;
-  // console.log(inputPromoCode);
-
-  if (inputPromoCode == '') return;
-
-  /* have something input; check if code is valid */
-  for (key in promos) {
-    /* upper case input value since all promos with alpha are upper case */
-    if (key == inputPromoCode) {
-      /* found a valid promo code in promos corresponding to user input value */
-      isPromoCodeValid = true;
-    }
-  }
-
-  if (!isPromoCodeValid) {
-    // alert('Sorry, "' + associatedPromoInput.value + '", is not a valid Promotional Code');
-    showAlertInfo(associatedAlertInfo,
-        '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>'
-        + ' Not a valid Promotional Code');
-    /* alert available promos, if any */
-    setTimeout(clickPromosAlert, 4000);
-    // clickPromosAlert();
-    return;
-  }
-
-  /* if here, have a valid promotional code - inputPromoCode */
-  /* see if it's already being used */
-  if (promos[inputPromoCode].isUsed) {
-    // alert('Promotional Code ' + inputPromoCode + ' is already being used.');
-    showAlertInfo(associatedAlertInfo,
-      inputPromoCode + ' is already applied.');
-    return;
-  }
-  /* now, we have a valid, currently unused, promo code;
-      we only allow the use of one at a time, but compare the cart total
-      when attempting to use a different one and accept if the cart total
-      will be less with the "new" promo;
-  */
-  updateCartSummary(inputPromoCode);
-
-} // end function applyPromoCode(whichButton)
+  playSound();
+  showModal('<h4>Hallelujah!</h4><p>You decided to buy something.<br><br>Just wanted to test your curiosity ;-)</p>');
+} // end function justTesting
 
 function checkCartItemsQuantity() {
   /* this will check and update globally available things that
@@ -382,7 +349,7 @@ function checkCartItemsQuantity() {
   /* just in case I want to retrieve the numerical result */
   return cartNumItems;
 
-} // end function checkCartItemsQuantity()
+} // end function checkCartItemsQuantity
 
 function getCartItemsQuantity() {
   /* get total number of items in cartItems object */
@@ -391,7 +358,7 @@ function getCartItemsQuantity() {
     cartNumItems += parseInt(cartItems[key]);
   }
   return cartNumItems;
-}
+} // end function getCartItemsQuantity
 
 function updateCartSummary(newPromoCode) {
   /* newPromoCode only gets sent in when it is valid, and currently not used;
@@ -552,15 +519,10 @@ function updateCartSummary(newPromoCode) {
       to be initialized to zero in var declaration;
   */
   if (newPromoCode && newPromoCodeDiscount == 0) {
-    // alert('Sorry, ' + newPromoCode + ' is a valid promo code, but no discount could be applied with it.');
     showModal('<p>Sorry, <strong>' + newPromoCode + '</strong> is a valid promo code, but no discount could be applied with it.</p>')
   }
 
   if (newPromoCode && newPromoCodeDiscount > 0 && newPromoCodeDiscount <= existingPromoCodeDiscount) {
-    // alert('Sorry, no greater discount could be applied for promo code:\n\n' + newPromoCode);
-    // alert('Sorry, no greater discount could be applied for promo code: ' + newPromoCode
-    //       + '\n\n' + existingPromoCode + ' discount is $' + existingPromoCodeDiscount.toFixed(2)
-    //       + '\n\n' + newPromoCode + ' discount would be $' + newPromoCodeDiscount.toFixed(2));
     showModal('<p>Sorry, no greater discount could be applied for promo code: ' + newPromoCode
           + '<br><br>' + existingPromoCode + ' discount is $' + existingPromoCodeDiscount.toFixed(2)
           + '<br><br>' + newPromoCode + ' discount would be $' + newPromoCodeDiscount.toFixed(2) + '</p>');
@@ -588,12 +550,23 @@ function updateCartSummary(newPromoCode) {
     cartTotalTdArray[i].innerHTML = '$' + cartTotal.toFixed(2);
 
     /* clear out promo code input field */
-    promoCodeInputArray[i].value = '';
+    /* NOTE: without using the slight delay to clear out the input field,
+        a validation message would come up indicating that the field was empty;
+        I assume this happened because the field was still in the 'submit' state
+        since the delay remedied it; */
+    setTimeout(clearInputValue(promoCodeInputArray[i]), 250);
+    // promoCodeInputArray[i].value = '';
     // console.log('promoCodeInputArray[' + i + '].value =', promoCodeInputArray[i].value);
 
   } // end for
 
-} // end function updateCartSummary()
+} // end function updateCartSummary
+
+function clearInputValue(inputElement) {
+  return  function() {
+            inputElement.value = '';
+          };
+} // end function clearInputValue
 
 function removeCartItem(cartItem) {
 
@@ -626,15 +599,4 @@ function removeCartItem(cartItem) {
   /* remove the cart item from the DOM */
   cartItem.parentElement.removeChild(cartItem);
 
-} // end function removeCartItem()
-
-function showAlertInfo(whichAlertInfo, alertMsgHtmlText) {
-  whichAlertInfo.innerHTML = alertMsgHtmlText;
-  whichAlertInfo.classList.remove('invisible');
-  whichAlertInfo.classList.add('visible', 'z100');
-  setTimeout(function() {
-    whichAlertInfo.classList.add('invisible');
-    whichAlertInfo.classList.remove('visible', 'z100');
-  }, 4000);
-
-} // end showAlertInfo()
+} // end function removeCartItem

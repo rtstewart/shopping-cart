@@ -89,14 +89,6 @@ function showPromosAlert() {
 
 } // end showPromosAlert
 
-function playSound() {
-    var snd=document.getElementById('rejoice');
-    canPlayMP3 = (typeof snd.canPlayType === "function" && snd.canPlayType("audio/mpeg") !== "");
-    snd.src=canPlayMP3?'Hallelujah-Chorus-short.mp3':'Hallelujah-Chorus-short.ogg';
-    snd.load();
-    snd.play();
-}
-
 /* alert promotional code information when
     the document is finished loading */
 // window.addEventListener('load', function(e) {

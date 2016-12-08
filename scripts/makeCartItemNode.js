@@ -71,6 +71,11 @@ function makeCartItemNode(sku, quantity) {
 
   newCartItemNode.querySelector('input.quantity').value = quantity;
 
+  newCartItemNode.querySelector('input.quantity').setAttribute('title',
+    'Update cart quantity must be '
+    + newCartItemNode.querySelector('input.quantity').getAttribute('min')
+    + ' to ' + newCartItemNode.querySelector('input.quantity').getAttribute('max'));
+
   return newCartItemNode;
 
 }
