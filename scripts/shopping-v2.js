@@ -63,7 +63,7 @@ showCartButtonInMain.addEventListener('click', function(event) {
   productListing.classList.add('hide');
   cartListing.classList.remove('hide');
 });
-/* this DOM element would normally be created dynamically when the listing
+/* this DOM element might normally be created dynamically when the listing
     page gets populated dynamically;
     in our case, it exists on initial page load, so we can reference it;
 */
@@ -148,16 +148,26 @@ cartListing.addEventListener('submit', function(event) {
   /* the submit event could only have been triggered by the submit button
       in the form element (event.target), so address that; */
 
+  /* we will only get to execute below, if the form has validated as valid; */
+
+  /* event.target is <form> in here */
   /* see which button was used to submit */
   var submitButton = event.target.querySelector('button');
 
   if (submitButton.classList.contains('update')) {
-    /* now we know it was an "Update Cart" button */
-    /* event.target is <form> */
+    /* here, we know it was an "Update Cart" button */
+    /* no custom validation was done for this form */
     updateCartFromForm(event.target);
   } else if (submitButton.classList.contains('apply-promo')) {
-    // applyPromoCode(submitButton);
+    /* here, we know it was an "Apply Promo" button */
+    /* custom validation was done for this form */
+    /* prior validation has determined that the trimmed, uppercased-value
+        is a valid and currently unused promotional code, so pass the
+        trimmed, uppercased-value to updateCartSummary() */
+    updateCartSummary(event.target.querySelector('input.promo-code').value.trim().toUpperCase());
   } // end if (submitButton.classList.contains('quantity'))
+
+  console.log()
 
 }); // end cartListing.addEventListener('submit',...)
 
@@ -169,24 +179,30 @@ cartListing.addEventListener('click', function(event) {
   var associatedCartItem = clickedElement.parentElement.parentElement;
 
   if (clickedElement.classList.contains('apply-promo')) {
+    /* we are "intercepting" the Apply promo submission, by listening for the
+        'click' event on that element, to do custom validation; */
     var associatedInput = clickedElement.parentElement.querySelector('input.promo-code');
     if (associatedInput.value.trim() == '') {
        associatedInput.setCustomValidity('Please supply a Promo Code to apply.');
     } else if (associatedInput.value.trim().toUpperCase() in promos) {
         /* we have a valid input promo code here; */
-        associatedInput.setCustomValidity('');
+        // associatedInput.setCustomValidity('');
         if (promos[associatedInput.value.trim().toUpperCase()].isUsed) {
           /* promo code is already being used, so don't submit */
           associatedInput.setCustomValidity(associatedInput.value.trim().toUpperCase() + ' is already being used.');
           setTimeout(clearInputValue(associatedInput), 1000);
         } else {
-            /* update cart summary using the valid, unused promo code */
-            updateCartSummary(associatedInput.value.trim().toUpperCase());
-            // setTimeout(function() {associatedInput.value = '';}, 2000);
+            /* we now know we have a valid, currently-unused promo code; */
+            /* since clicking the .apply-promo button submits the parent form
+                we setCustomValidity('') so the form validates to valid;
+                we then call updateCartSummary from the 'submit' event listener
+                so that the cart only gets updated upon submission of a valid and
+                currently-unused promo code */
+            associatedInput.setCustomValidity('');
         }
     } else {
         associatedInput.setCustomValidity(associatedInput.value + ' is not a valid Promotional Code.');
-        setTimeout(clickPromosAlert, 4000);
+        setTimeout(clickPromosAlert, 2500);
     }
   } else if (clickedElement.classList.contains('keep-shopping')) {
       cartListing.classList.add('hide');

@@ -16,7 +16,7 @@ var cartItemHtmlText =
   +'\n\t\t<div class="price clear-fix"><span title="sale price" tabindex="0">$<span class="item-sale-price"></span></span><span title="regular price" tabindex="0">$<span class="item-regular-price"></span></span></div>'
   +'\n\t</div> <!-- end .item-info-cart -->'
   +'\n\n\t<div class="action-cart">'
-  +'\n\t\t<form action="javascript: void(0);">'
+  +'\n\t\t<form>'
   +'\n\t\t\t<label>Quantity</label><br>'
   +'\n\t\t\t<input class="quantity" type="number" min="0" max="20" size="2" required>'
   +'\n\t\t\t<button class="update"><i class="fa fa-refresh" aria-hidden="true"></i> Update Cart</button>'
