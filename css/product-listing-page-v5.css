@@ -14,6 +14,7 @@ body * {
 }
 
 /* https://www.youtube.com/watch?v=s7JwxPnYoOw */
+/* in case I want to show my own custom messages similar to validation messages */
 .alert-info {
   white-space: nowrap;
   width: auto;
@@ -111,9 +112,7 @@ body * {
   width: auto; /* this works since position: fixed/absolute; collapses to content */
   border-radius: 2px;
   /* only apply transitions to properties we want to change as such */
-  transition: right 0.25s, padding 0.25s;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),
-              0 2px 10px 0 rgba(0,0,0,0.12);
+  transition: right 0.25s, padding 0.25s, background-color 0.25s;
 }
 
 /* this is the initial class for .show-cart on page load */
@@ -157,18 +156,11 @@ body * {
   cursor: pointer;
   /*right: 0;   fully expose */
   padding: .25rem .75rem 0 .75rem;
-  box-shadow: inset 0 0 6px 6px rgba(235, 174, 20, 0.9);
-  box-shadow: inset 0 0 6px 6px rgba(235, 174, 20, 0.9),
-              0 5px 11px 0 rgba(0,0,0,0.18),
-              0 4px 15px 0 rgba(0,0,0,0.15);
-  box-shadow: inset 0 0 6px 6px rgba(255, 255, 0, 0.8),
-              0 4px 8px 0 rgba(0,0,0,0.18),
-              0 2px 4px 0 rgba(0,0,0,0.15);
+  background-color: rgb(255, 255, 0);
 }
 
 .show-cart-listing:hover:active {
-  box-shadow: 0 8px 17px 0 rgba(0,0,0,0.20),
-              0 6px 20px 0 rgba(0,0,0,0.18);
+  background-color: rgb(255, 255, 0);
 }
 
 .show-cart-listing:hover .cart-quantity-all {
@@ -384,7 +376,8 @@ div.action-cart a:hover {
   margin: 0;
 }
 
-/* this is only necessary for positioning .alert-info */
+/* this is only necessary for positioning .alert-info,
+    or in case I need positioning within otherwise; */
 .listing-container form,
 .shopping-cart form {
   position: relative;
@@ -399,7 +392,7 @@ div.action-cart a:hover {
   border: 1px solid rgb(125,125,125);
   height: 32px;
   border-radius: 2px;
-  text-align: right;
+  /*text-align: right;*/
   padding: 0 4px;
   margin-bottom: 16px;
   margin-right: 16px;
