@@ -74,6 +74,32 @@ body * {
   display: none;
 }
 
+.goaway {
+  animation: disappear 0.2s;
+}
+
+.comeback {
+  animation: reappear 0.2s;
+}
+
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes reappear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .inspirations {
   margin: 16px;
 }

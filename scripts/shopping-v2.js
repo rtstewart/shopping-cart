@@ -58,19 +58,52 @@ var cartTotalTdArray = document.querySelectorAll('.shopping-cart td.cart-total')
 /* cart summary header/footer elements that will need event listeners */
 var promoCodeInputArray = document.querySelectorAll('.shopping-cart input.promo-code');
 
+productListing.addEventListener('animationend', function(event) {
+  if (this.classList.contains('goaway')) {
+    this.style.display = 'none';
+    cartListing.classList.remove('goaway');
+    cartListing.style.display = 'block';
+    cartListing.classList.add('comeback');
+  }
+}, false);
+
+cartListing.addEventListener('animationend', function(event) {
+  if (this.classList.contains('goaway')) {
+    this.style.display = 'none';
+    productListing.classList.remove('goaway');
+    productListing.style.display = 'block';
+    productListing.classList.add('comeback');
+  }
+}, false);
+
+function hideProductListing(event) {
+    productListing.classList.remove('comeback');
+    productListing.classList.add('goaway');
+}
+
+function hideCartListing(event) {
+    cartListing.classList.remove('comeback');
+    cartListing.classList.add('goaway');
+}
+
+showCartButtonInMain.addEventListener('click', hideProductListing, false);
+
+showCartButtonInListing.addEventListener('click', hideProductListing, false);
+
 /* set up event listeners for show cart buttons/widgets */
-showCartButtonInMain.addEventListener('click', function(event) {
-  productListing.classList.add('hide');
-  cartListing.classList.remove('hide');
-});
+// showCartButtonInMain.addEventListener('click', function(event) {
+//   productListing.classList.add('hide');
+//   cartListing.classList.remove('hide');
+// });
+
 /* this DOM element might normally be created dynamically when the listing
     page gets populated dynamically;
     in our case, it exists on initial page load, so we can reference it;
 */
-showCartButtonInListing.addEventListener('click', function(event) {
-  productListing.classList.add('hide');
-  cartListing.classList.remove('hide');
-});
+// showCartButtonInListing.addEventListener('click', function(event) {
+//   productListing.classList.add('hide');
+//   cartListing.classList.remove('hide');
+// });
 
 /* listen for submit and click events in .listing-container */
 productListing.addEventListener('submit', function(event) {
@@ -203,8 +236,9 @@ cartListing.addEventListener('click', function(event) {
         setTimeout(clickPromosAlert, 2500);
     }
   } else if (clickedElement.classList.contains('keep-shopping')) {
-      cartListing.classList.add('hide');
-      productListing.classList.remove('hide');
+      // cartListing.classList.add('hide');
+      // productListing.classList.remove('hide');
+      hideCartListing();
   } else if (clickedElement.classList.contains('checkout')) {
       justTesting();
   } else if (clickedElement.classList.contains('remove')) {
@@ -311,8 +345,9 @@ function checkCartItemsQuantity() {
     showCartButtonInListing.disabled = true;
 
     /* display product listing, and hide cart */
-    productListing.classList.remove('hide');
-    cartListing.classList.add('hide');
+    // productListing.classList.remove('hide');
+    // cartListing.classList.add('hide');
+    hideCartListing();
   }
 
   if (cartNumItems > 0) {
