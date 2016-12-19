@@ -167,8 +167,6 @@ cartListing.addEventListener('submit', function(event) {
     updateCartSummary(event.target.querySelector('input.promo-code').value.trim().toUpperCase());
   } // end if (submitButton.classList.contains('quantity'))
 
-  console.log()
-
 }); // end cartListing.addEventListener('submit',...)
 
 cartListing.addEventListener('click', function(event) {

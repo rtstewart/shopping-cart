@@ -1,4 +1,5 @@
 /* || General setup */
+/* CSS easing: https://matthewlein.com/ceaser/ */
 * {
   box-sizing: border-box;
 }
@@ -347,6 +348,7 @@ main {
 article {
   /*flex: 4;*/
   /* ?? removing float: left; decreases space above "Product Listing" */
+  position: relative;
   float: left;
   width: 78%;
   padding: 0;

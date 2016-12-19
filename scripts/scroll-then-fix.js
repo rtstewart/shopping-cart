@@ -1,6 +1,7 @@
 /* https://css-tricks.com/scroll-fix-content/ */
 /* https://developer.mozilla.org/en-US/docs/Web/Events/scroll */
 /* https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop */
+
 /* below is for the simple case where showCart is always on the RHS
     of the viewport */
 // if (window.scrollY > 220) {
