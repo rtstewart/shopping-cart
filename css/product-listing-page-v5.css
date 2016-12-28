@@ -74,12 +74,19 @@ body * {
   display: none;
 }
 
+/* https://matthewlein.com/ceaser/ */
 .goaway {
-  animation: disappear 0.2s;
+  /* easeInOutCubic */
+  /*animation: disappear 0.4s cubic-bezier(0.645, 0.045, 0.355, 1.000);*/
+  /* linear */
+  animation: disappear 0.3s cubic-bezier(0.250, 0.250, 0.750, 0.750);
 }
 
 .comeback {
-  animation: reappear 0.2s;
+  /* easeInOutCubic */
+  /*animation: reappear 0.4s cubic-bezier(0.645, 0.045, 0.355, 1.000);*/
+  /* linear */
+  animation: reappear 0.3s cubic-bezier(0.250, 0.250, 0.750, 0.750);
 }
 
 @keyframes disappear {

@@ -58,23 +58,35 @@ var cartTotalTdArray = document.querySelectorAll('.shopping-cart td.cart-total')
 /* cart summary header/footer elements that will need event listeners */
 var promoCodeInputArray = document.querySelectorAll('.shopping-cart input.promo-code');
 
-productListing.addEventListener('animationend', function(event) {
+function hideListShowCart() {
   if (this.classList.contains('goaway')) {
-    this.style.display = 'none';
+    // this.style.display = 'none';
+    this.classList.remove('show');
+    this.classList.add('hide');
     cartListing.classList.remove('goaway');
-    cartListing.style.display = 'block';
+    // cartListing.style.display = 'block';
+    cartListing.classList.remove('hide');
+    cartListing.classList.add('show');
     cartListing.classList.add('comeback');
   }
-}, false);
+}
 
-cartListing.addEventListener('animationend', function(event) {
+productListing.addEventListener('animationend', hideListShowCart, false);
+
+function hideCartShowList() {
   if (this.classList.contains('goaway')) {
-    this.style.display = 'none';
+    // this.style.display = 'none';
+    this.classList.remove('show');
+    this.classList.add('hide');
     productListing.classList.remove('goaway');
-    productListing.style.display = 'block';
+    // productListing.style.display = 'block';
+    productListing.classList.remove('hide');
+    productListing.classList.add('show');
     productListing.classList.add('comeback');
   }
-}, false);
+}
+
+cartListing.addEventListener('animationend', hideCartShowList, false);
 
 function hideProductListing(event) {
     productListing.classList.remove('comeback');
