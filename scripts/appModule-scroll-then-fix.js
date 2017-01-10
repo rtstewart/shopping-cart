@@ -16,21 +16,21 @@ app.scrollThenFix = (function() {
 
   function init() {
     showCart = document.querySelector('.show-cart-listing');
-    addListeners();
+    _addListeners();
   }
 
-  /* .show-cart-listing has been casually named Igor */
-  function showIgor() {
+  /* .show-cart-listing has been "affectionately" named Igor */
+  function _showIgor() {
     showCart.classList.remove('hide');
   }
 
-  function onWindowScroll(event) {
-   // scrolledY = window.scrollY;
+  function _onWindowScroll(event) {
+    // scrolledY = window.scrollY;
     // console.log(scrolledY);
     /* hide showCart, then unhide after 250ms;
         this makes the "teleportation" between states not displayed; */
     showCart.classList.add('hide')
-    setTimeout(showIgor, 250);
+    setTimeout(_showIgor, 250);
     if (window.scrollY > 275) {
       if (window.innerWidth > 935) {
         showCart.classList.add('show-cart-lg-screen-fixed');
@@ -47,11 +47,11 @@ app.scrollThenFix = (function() {
         showCart.classList.remove('show-cart-md-sm-screen-fixed');
     } // end if (window.scrollY > 275)
 
-  } // end onWindowScroll
+  } // end _onWindowScroll
 
-  function onWindowResize(event) {
+  function _onWindowResize(event) {
     showCart.classList.add('hide');
-    setTimeout(showIgor, 250);
+    setTimeout(_showIgor, 250);
     if (window.innerWidth > 935) {
       if (window.scrollY > 275) {
           showCart.classList.add('show-cart-lg-screen-fixed');
@@ -72,13 +72,13 @@ app.scrollThenFix = (function() {
         showCart.classList.remove('show-cart-lg-screen-fixed');
     } // end if (window.innerWidth > 935)
 
-  } // end onWindowResize
+  } // end _onWindowResize
 
-  function addListeners() {
+  function _addListeners() {
 
-    window.addEventListener('scroll', onWindowScroll);
+    window.addEventListener('scroll', _onWindowScroll);
 
-    window.addEventListener('resize', onWindowResize);
+    window.addEventListener('resize', _onWindowResize);
 
   }
 

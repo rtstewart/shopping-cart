@@ -34,9 +34,9 @@
   <div class="modal invisible"></div>
   <div class="modal-container invisible" id="modal-container">
     <div class="modal-content">
-        <h4>h4 Heading</h4>
-        <p> &lt;p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut quos expedita reiciendis fuga, distinctio? Minus consequatur officia hic qui perspiciatis nam non, et perferendis ipsum repellendus corporis, error atque natus.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut quos expedita reiciendis fuga, distinctio? Minus consequatur officia hic qui perspiciatis nam non, et perferendis ipsum repellendus corporis, error atque natus.</p>
+        <h4>&lt;h4>Heading&lt;/h4></h4>
+        <p>&lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut quos expedita reiciendis fuga, distinctio? Minus consequatur officia hic qui perspiciatis nam non, et perferendis ipsum repellendus corporis, error atque natus.&lt;/p></p>
+        <p>&lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut quos expedita reiciendis fuga, distinctio? Minus consequatur officia hic qui perspiciatis nam non, et perferendis ipsum repellendus corporis, error atque natus.&lt;/p></p>
     </div>
     <div class="modal-footer">
         <a href="#modal-container"><i class="fa fa-times" aria-hidden="true"></i></a>
@@ -569,18 +569,21 @@
     </main>
 
     <footer>
-      <p>© Copyright 2050 by SuperCycles. All rights reversed.</p>
+      <p>&copy; 2016 - <script>document.write(new Date().getFullYear());</script> <a href="https://github.com/rtstewart" target="_blank" title="Robert T. Stewart / goodtiming.com">Robert T. Stewart / goodtiming.com</a><br><br>All rights reserved.</p>
     </footer>
 
     <script type="text/javascript">
       var app = {};
     </script>
 
-    <script src="scripts/scroll-then-fix-appModule.js" type="text/javascript"></script>
-    <script src="scripts/shopping-v2-appModule.js" type="text/javascript"></script>
-    <script src="scripts/supercycles-main-appModule.js" type="text/javascript"></script>
+    <script src="scripts/appModule-scroll-then-fix.js" type="text/javascript"></script>
+    <script src="scripts/appModule-shopping-v2.js" type="text/javascript"></script>
+    <script src="scripts/appModule-supercycles-main.js" type="text/javascript"></script>
 
     <script>
+      /* below console.log redefinition is just in case I've left console.logs
+         in .js files;
+        To disable their output, uncomment below; */
       //console.log = (function(){});
       app.main.init();
     </script>
