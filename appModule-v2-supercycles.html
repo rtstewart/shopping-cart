@@ -31,18 +31,6 @@
 
   <audio id="rejoice"></audio>
 
-  <div class="modal invisible"></div>
-  <div class="modal-container invisible" id="modal-container">
-    <div class="modal-content">
-        <h4>&lt;h4>Heading&lt;/h4></h4>
-        <p>&lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut quos expedita reiciendis fuga, distinctio? Minus consequatur officia hic qui perspiciatis nam non, et perferendis ipsum repellendus corporis, error atque natus.&lt;/p></p>
-        <p>&lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut quos expedita reiciendis fuga, distinctio? Minus consequatur officia hic qui perspiciatis nam non, et perferendis ipsum repellendus corporis, error atque natus.&lt;/p></p>
-    </div>
-    <div class="modal-footer">
-        <a href="#modal-container"><i class="fa fa-times" aria-hidden="true"></i></a>
-    </div>
-  </div><!-- end .modal-container -->
-
     <header>
       <h1>SuperCycles</h1>
 
@@ -571,6 +559,22 @@
     <footer>
       <p>&copy; 2016 - <script>document.write(new Date().getFullYear());</script> <a href="https://github.com/rtstewart" target="_blank" title="Robert T. Stewart / goodtiming.com">Robert T. Stewart / goodtiming.com</a><br><br>All rights reserved.</p>
     </footer>
+
+    <!-- NOTE: the .modal and .modal-container divs were placed at the bottom
+          here because of IE 11 behavior which seemed to ignore z-index for
+          .modal and .modal-container if at the beginning of the html, just
+          under <audio> tags; -->
+    <div class="modal invisible"></div>
+    <div class="modal-container invisible" id="modal-container">
+      <div class="modal-content">
+          <h4>&lt;h4>Heading&lt;/h4></h4>
+          <p>&lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut quos expedita reiciendis fuga, distinctio? Minus consequatur officia hic qui perspiciatis nam non, et perferendis ipsum repellendus corporis, error atque natus.&lt;/p></p>
+          <p>&lt;p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut quos expedita reiciendis fuga, distinctio? Minus consequatur officia hic qui perspiciatis nam non, et perferendis ipsum repellendus corporis, error atque natus.&lt;/p></p>
+      </div>
+      <div class="modal-footer">
+          <a href="#modal-container"><i class="fa fa-times" aria-hidden="true"></i></a>
+      </div>
+    </div> <!-- end .modal-container -->
 
     <script type="text/javascript">
       var app = {};
