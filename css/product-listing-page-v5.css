@@ -15,7 +15,11 @@ body * {
 }
 
 /* https://www.youtube.com/watch?v=s7JwxPnYoOw */
-/* in case I want to show my own custom messages similar to validation messages */
+/* in case I want to show my own custom messages similar to validation messages;
+    this is what the following html is for within the appropriate <form>
+    elements that have inputs to be validated:
+    <div class="alert-info invisible"></div>
+*/
 .alert-info {
   white-space: nowrap;
   width: auto;
@@ -143,7 +147,7 @@ body * {
   text-align: center;
   padding: .25rem 1.25rem 0 .25rem;
   font-size: 2.5rem;
-  width: auto; /* this works since position: fixed/absolute; collapses to content */
+  /*width: auto;  this works since position: fixed/absolute; collapses to content */
   border-radius: 2px;
   /* only apply transitions to properties we want to change as such */
   transition: right 0.25s, padding 0.25s, background-color 0.25s;
@@ -153,7 +157,7 @@ body * {
 .show-cart-not-fixed {
   position: absolute;
   top: 5rem; /* this value should be where we want this to be when page is first loaded */
-  right: -2rem;  /* half- hidden */
+  right: -2rem;  /* half-hidden */
 }
 .show-cart-not-fixed:hover {
   right: 0;
@@ -197,17 +201,36 @@ body * {
   background-color: rgb(255, 255, 0);
 }
 
+/* NOTE: from http://caniuse.com/#search=calc under 'Known Issues'
+  "IE10, IE11, and Edge < 14 don't support using calc() inside a transform."
+  Sweet and simple solution: http://stackoverflow.com/questions/21142923/ie-10-11-css-transitions-with-calc-do-not-work
+  This:
+      transform: translateX(90%) translateX(-4rem);
+  is equivalent to this:;
+      transform: translateX(calc(90% - 4rem));
+*/
 .show-cart-listing:hover .cart-quantity-all {
-  transform: translate(calc(-50% - .75rem), calc(-50% - .25rem));
+  /*transform: translate(calc(-50% - .75rem), calc(-50% - .25rem));*/
+  transform: translateX(-50%) translateX(-0.75rem) translateY(-50%) translateY(-0.25rem);
 }
 
 /* this is the small circular item in the upper left-hand corner
     of .show-cart, that will contain the number of items in the
     shopping cart;
 */
+/* NOTE: from http://caniuse.com/#search=calc under 'Known Issues'
+  "IE10, IE11, and Edge < 14 don't support using calc() inside a transform."
+  Sweet and simple solution: http://stackoverflow.com/questions/21142923/ie-10-11-css-transitions-with-calc-do-not-work
+  This:
+      transform: translateX(90%) translateX(-4rem);
+  is equivalent to this:;
+      transform: translateX(calc(90% - 4rem));
+*/
 .cart-quantity-all-listing {
   position: absolute;
-  transform: translate(calc(-50% - .25rem), calc(-50% - .25rem));
+  /* directly below rule did not work in IE 11; the one following did! */
+  /*transform: translate(calc(-50% - .25rem), calc(-50% - .25rem));*/
+  transform: translateX(-50%) translateX(-0.25rem) translateY(-50%) translateY(-0.25rem);
   width: 1.5rem;
   height: 1.5rem;
   line-height: 1.5rem;
