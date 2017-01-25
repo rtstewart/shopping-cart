@@ -31,7 +31,13 @@ app.scrollThenFix = (function() {
         this makes the "teleportation" between states not displayed; */
     showCart.classList.add('hide')
     setTimeout(_showIgor, 250);
-    if (window.scrollY > 275) {
+    /*
+      http://www.w3schools.com/jsref/prop_win_pagexoffset.asp
+      https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollY
+      "For cross-browser compatibility, use window.pageYOffset instead of window.scrollY."
+    */
+    // if (window.scrollY > 275) {
+    if (window.pageYOffset > 275) {
       if (window.innerWidth > 935) {
         showCart.classList.add('show-cart-lg-screen-fixed');
         showCart.classList.remove('show-cart-md-sm-screen-fixed');
@@ -45,7 +51,7 @@ app.scrollThenFix = (function() {
         showCart.classList.add('show-cart-not-fixed');
         showCart.classList.remove('show-cart-lg-screen-fixed');
         showCart.classList.remove('show-cart-md-sm-screen-fixed');
-    } // end if (window.scrollY > 275)
+    } // end if (window.scrollY/pageYOffset > 275)
 
   } // end _onWindowScroll
 
@@ -53,7 +59,8 @@ app.scrollThenFix = (function() {
     showCart.classList.add('hide');
     setTimeout(_showIgor, 250);
     if (window.innerWidth > 935) {
-      if (window.scrollY > 275) {
+      // if (window.scrollY > 275) {
+      if (window.pageYOffset > 275) {
           showCart.classList.add('show-cart-lg-screen-fixed');
           showCart.classList.remove('show-cart-md-sm-screen-fixed');
           showCart.classList.remove('show-cart-not-fixed');
@@ -62,7 +69,8 @@ app.scrollThenFix = (function() {
           showCart.classList.remove('show-cart-md-sm-screen-fixed');
           showCart.classList.remove('show-cart-lg-screen-fixed');
       }
-    } else if (window.scrollY > 275) {
+    // } else if (window.scrollY > 275) {
+    } else if (window.pageYOffset > 275) {
         showCart.classList.add('show-cart-md-sm-screen-fixed');
         showCart.classList.remove('show-cart-not-fixed');
         showCart.classList.remove('show-cart-lg-screen-fixed');
