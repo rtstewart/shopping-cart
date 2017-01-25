@@ -10,7 +10,7 @@
 
 app.shopping = (function(products, promos, cartItemHtmlText) {
 
-  var clickEvent;
+  // var clickEvent;
 
   /* items previously in supercycles.js below */
   var promosAnchor;
@@ -66,7 +66,11 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
   var promoCodeInputArray;
 
   function init() {
-    clickEvent = new Event('click');
+    /* Internet Explorer 9, 10 & 11 Event constructor doesn't work:
+        http://stackoverflow.com/questions/26596123/internet-explorer-9-10-11-event-constructor-doesnt-work
+    */
+    // clickEvent = new Event('click');
+
     /* items previously in supercycles.js below */
     promosAnchor = document.querySelector('aside ul li a:first-child');
 
@@ -262,13 +266,20 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
 
     /* show modal-container */
     /* first, set top position based on current window.scrollY; */
-    modalContainer.style.top = (window.scrollY + 32) + 'px';
+    /*
+      http://www.w3schools.com/jsref/prop_win_pagexoffset.asp
+      https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollY
+      "For cross-browser compatibility, use window.pageYOffset instead of window.scrollY."
+    */
+    // modalContainer.style.top = (window.scrollY + 32) + 'px';
+    modalContainer.style.top = (window.pageYOffset + 32) + 'px';
     modalContainer.classList.remove('invisible');
     modalContainer.classList.add('visible', 'z100');
   } // end _showModal
 
   function _hideModal(event) {
     event.preventDefault();
+
     modalContainer.classList.remove('visible', 'z100');
     modalContainer.classList.add('invisible');
 
@@ -276,18 +287,18 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
     modal.classList.add('invisible');
   } // end _hideModal
 
-  function _clickPromosAlert(event) {
+  function _clickPromosAlert() {
     /* this function differs from _showPromosAlert in shopping in that it will
         show a message indicating that there are no promos available if the
         promos object is empty, _showPromosAlert does not, it only shows a
-        message at all if there are any */
+        message at all if there are any promos in the promos object; */
     /* In order to leave event.preventDefault() in here, not really necessary,
         but for the sake of handling the situation, I chose to leave it, I have
         established the 'clickEvent' event, whereby I can dispatch a 'click'
         event and attach the event to the 'promosAnchor' to respond with this
         function, which is the listener function attached to the 'promosAnchor'
         'click' event; */
-    event.preventDefault();
+    // event.preventDefault();
     /* alert a promos message if the promos object is not empty */
     var promoMsg;
     if (Object.keys(promos.getPromoKeys()).length > 0) {
@@ -437,12 +448,18 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
           }
       } else {
           associatedInput.setCustomValidity(associatedInput.value + ' is not a valid Promotional Code.');
-          // setTimeout(_clickPromosAlert, 2000);
-          setTimeout((function() {
-            return function() {
-              promosAnchor.dispatchEvent(clickEvent);
-            }
-          })(), 2000);
+          /* in order to use the setTimeout below, _clickPromosAlert cannot have
+              'event' as its parameter;
+              if you need to have 'event' as a parameter for _clickPromosAlert,
+              then use the IIFE/closure below, along the the var clickEvent and
+              associated initialization, but must add fix for IE 9, 10, 11, as
+              indicated above near commented out initialization for clickEvent; */
+          setTimeout(_clickPromosAlert, 2000);
+          // setTimeout((function() {
+          //   return function() {
+          //     promosAnchor.dispatchEvent(clickEvent);
+          //   }
+          // })(), 2000);
       }
     } else if (clickedElement.classList.contains('keep-shopping')) {
         // cartListing.classList.add('hide');
@@ -455,8 +472,10 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
     } else if (clickedElement.classList.contains('see-detail')) {
         _showHideItemDetail(clickedElement);
     } else if (clickedElement.innerHTML == 'Promotional Code:') {
-        // _clickPromosAlert();
-        promosAnchor.dispatchEvent(clickEvent);
+        /* see comments above re: using _clickPromosAlert NOT as a function of
+            'event' */
+        _clickPromosAlert();
+        // promosAnchor.dispatchEvent(clickEvent);
     }
 
   } // end _cartButtonsClick
