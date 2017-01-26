@@ -68,6 +68,7 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
   function init() {
     /* Internet Explorer 9, 10 & 11 Event constructor doesn't work:
         http://stackoverflow.com/questions/26596123/internet-explorer-9-10-11-event-constructor-doesnt-work
+        leaving this here FYI;
     */
     // clickEvent = new Event('click');
 
@@ -121,35 +122,59 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
       // console.log(new Date());
       if (document.readyState == 'complete') {
           clearInterval(checkDOMLoaded);
-          _showPromosAlert();
+          /* only show promos modal on page load if there are any promos */
+          if (Object.keys(promos.getPromoKeys()).length > 0) {
+            _clickPromosAlert2();
+          }
         }
-    }, 1000);
+    }, 500);
 
   } // end init
 
-  function _showPromosAlert() {
+  function _clickPromosAlert2(event) {
+    /* this function will show a message indicating that there are no promos
+      available if the promos object is empty;
+      otherwise, it will display the promos available in the .modal-container
+      modal if there are any promos in the promos object; */
+    /* In order to leave event.preventDefault() in here, not really necessary,
+        but for the sake of handling the situation, I chose to leave it;
+        I had previously established the 'clickEvent' event, whereby I can
+        dispatch a 'click' event and attach the event to the 'promosAnchor'
+        to respond with this function, which is the listener function attached
+        to the 'promosAnchor' 'click' event;
+        However, IE 11 did not support the clickEvent = new Event('click');
+        line in init, so I reworked this function to handle the case where an
+        event is not passed (undefined) and respond accordingly;
+        With event.preventDefault() for an anchor click, this prevents the page
+        jump that would occur otherwise unless something like href="#!" is used;
+        If an event is not passed, and event.preventDefault() is called, an
+        error would occur; */
+    if (event) {
+      event.preventDefault();
+      console.log('event.type:', event.type);
+    }
     /* alert a promos message if the promos object is not empty */
     var promoMsg;
     if (Object.keys(promos.getPromoKeys()).length > 0) {
-      // var promoMsg = 'There are typically several types of promos available on any given day.'
-      //               +'\nOnly one promo code can be applied to a purchase.'
-      //               +'\nOf the promo codes you enter, the one giving the greatest discount will be applied.'
-      //               +'\n\nToday\'s promo codes and descriptions are as follows:';
       var promoMsg = '<h4>Promotional Codes</h4>'
                     + '<p>- There are typically several types of promos available on any given day.'
                     + '<br>- Only one promo code can be applied to a purchase.'
                     + '<br>- Of the promo codes you enter, the one giving the greatest discount will be applied.</p>'
                     + '<p>Today\'s promo codes and descriptions are as follows:';
-      for (var key in promos.getPromoKeys() ) {
-        // promoMsg += '\n\n' + promos[key].promoCode + " : " + promos[key].description;
+      for (var key in promos.getPromoKeys()) {
         promoMsg += '<br><br><strong>' + promos.getPromo(key).promoCode + "</strong> : " + promos.getPromo(key).description;
       }
       promoMsg += '</p>';
-      // alert(promoMsg);
-      _showModal(promoMsg);
-    } // end if
-
-  } // end _showPromosAlert
+    } else {
+        /* only want to show this if "Promos/Promotional Code" anchor was clicked; */
+        promoMsg = '<h4>No Promotions Today</h4>'
+                    + '<p>Sorry, there are no promotions available today.'
+                    + '<br><br>We typically add promotions daily though.'
+                    + '<br><br>Please continue shopping at SuperCycles.</p>';
+    }
+    // alert(promoMsg);
+    _showModal(promoMsg);
+  } // end _clickPromosAlert2
 
   /* https://developer.mozilla.org/en-US/docs/Web/API/Document/createDocumentFragment */
   /* https://developer.mozilla.org/en-US/docs/Web/API/Element */
@@ -161,6 +186,7 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
     /* this technique works for creating the new node */
     var nodeContainer = document.createElement('div');
     nodeContainer.innerHTML = cartItemHtmlText;
+    /* I only really want the results from cartItemHtmlText within nodeContainer. */
     var newCartItemNode = nodeContainer.firstChild;
     // console.log(newCartItemNode);
 
@@ -286,40 +312,6 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
     modal.classList.remove('visible', 'z99');
     modal.classList.add('invisible');
   } // end _hideModal
-
-  function _clickPromosAlert() {
-    /* this function differs from _showPromosAlert in shopping in that it will
-        show a message indicating that there are no promos available if the
-        promos object is empty, _showPromosAlert does not, it only shows a
-        message at all if there are any promos in the promos object; */
-    /* In order to leave event.preventDefault() in here, not really necessary,
-        but for the sake of handling the situation, I chose to leave it, I have
-        established the 'clickEvent' event, whereby I can dispatch a 'click'
-        event and attach the event to the 'promosAnchor' to respond with this
-        function, which is the listener function attached to the 'promosAnchor'
-        'click' event; */
-    // event.preventDefault();
-    /* alert a promos message if the promos object is not empty */
-    var promoMsg;
-    if (Object.keys(promos.getPromoKeys()).length > 0) {
-      var promoMsg = '<h4>Promotional Codes</h4>'
-                    + '<p>- There are typically several types of promos available on any given day.'
-                    + '<br>- Only one promo code can be applied to a purchase.'
-                    + '<br>- Of the promo codes you enter, the one giving the greatest discount will be applied.</p>'
-                    + '<p>Today\'s promo codes and descriptions are as follows:';
-      for (var key in promos.getPromoKeys()) {
-        promoMsg += '<br><br><strong>' + promos.getPromo(key).promoCode + "</strong> : " + promos.getPromo(key).description;
-      }
-      promoMsg += '</p>';
-    } else {
-        promoMsg = '<h4>No Promotions Today</h4>'
-                    + '<p>Sorry, there are no promotions available today.'
-                    + '<br><br>Please check back tomorrow, as we often add promotions daily.'
-                    + '<br><br>Thank you for shopping at SuperCycles.</p>';
-    }
-    // alert(promoMsg);
-    _showModal(promoMsg);
-  } // end _clickPromosAlert
 
   /* items previously in supercycles.js above */
 
@@ -448,13 +440,8 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
           }
       } else {
           associatedInput.setCustomValidity(associatedInput.value + ' is not a valid Promotional Code.');
-          /* in order to use the setTimeout below, _clickPromosAlert cannot have
-              'event' as its parameter;
-              if you need to have 'event' as a parameter for _clickPromosAlert,
-              then use the IIFE/closure below, along the the var clickEvent and
-              associated initialization, but must add fix for IE 9, 10, 11, as
-              indicated above near commented out initialization for clickEvent; */
-          setTimeout(_clickPromosAlert, 2000);
+          setTimeout(_clickPromosAlert2, 2000);
+          // below was just left in for FYI regarding dispatching events;
           // setTimeout((function() {
           //   return function() {
           //     promosAnchor.dispatchEvent(clickEvent);
@@ -472,9 +459,7 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
     } else if (clickedElement.classList.contains('see-detail')) {
         _showHideItemDetail(clickedElement);
     } else if (clickedElement.innerHTML == 'Promotional Code:') {
-        /* see comments above re: using _clickPromosAlert NOT as a function of
-            'event' */
-        _clickPromosAlert();
+        _clickPromosAlert2();
         // promosAnchor.dispatchEvent(clickEvent);
     }
 
@@ -884,11 +869,11 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
 
     /* items previously in supercycles.js below */
     modalCloseAnchor.addEventListener('click', _hideModal);
-    promosAnchor.addEventListener('click', _clickPromosAlert);
+    promosAnchor.addEventListener('click', _clickPromosAlert2);
     /* items previously in supercycles.js above */
 
     /* listen for submit and click events in .listing-container */
-    productListing.addEventListener('submit', _addToCartSubmit); // end productListing.addEventListener('submit', ...)
+    productListing.addEventListener('submit', _addToCartSubmit);
 
     productListing.addEventListener('click', function(event) {
       /* want to ignore clicking on "Add to cart" button which
@@ -899,9 +884,9 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
         /* get the button/element that was clicked */
     }); // end productListing.addEventListener('click', ...)
 
-    cartListing.addEventListener('submit', _updateCartSubmit); // end cartListing.addEventListener('submit',...)
+    cartListing.addEventListener('submit', _updateCartSubmit);
 
-    cartListing.addEventListener('click', _cartButtonsClick); // end cartListing.addEventListener('click', ...)
+    cartListing.addEventListener('click', _cartButtonsClick);
 
   } // end _addListeners
 
