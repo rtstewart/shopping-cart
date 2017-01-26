@@ -884,6 +884,7 @@ app.shopping = (function(products, promos, cartItemHtmlText) {
         /* get the button/element that was clicked */
     }); // end productListing.addEventListener('click', ...)
 
+    /* listen for submit and click events in .shopping-cart */
     cartListing.addEventListener('submit', _updateCartSubmit);
 
     cartListing.addEventListener('click', _cartButtonsClick);
