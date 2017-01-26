@@ -325,9 +325,19 @@ nav button {
     of .show-cart, that will contain the number of items in the
     shopping cart;
 */
+/* NOTE: from http://caniuse.com/#search=calc under 'Known Issues'
+  "IE10, IE11, and Edge < 14 don't support using calc() inside a transform."
+  Sweet and simple solution: http://stackoverflow.com/questions/21142923/ie-10-11-css-transitions-with-calc-do-not-work
+  This:
+      transform: translateX(90%) translateX(-4rem);
+  is equivalent to this:;
+      transform: translateX(calc(90% - 4rem));
+*/
 .cart-quantity-all-main {
   position: absolute;
-  transform: translate(calc(-50% - .75rem), calc(-50% - .25rem));
+  /* directly below rule did not work in IE 11; the one following did! */
+  /*transform: translate(calc(-50% - .75rem), calc(-50% - .25rem));*/
+  transform: translateX(-50%) translateX(-0.75rem) translateY(-50%) translateY(-0.25rem);
   width: 1.5rem;
   height: 1.5rem;
   line-height: 1.5rem;
@@ -343,12 +353,10 @@ nav button {
 /* || main layout */
 
 main {
-  /*display: flex;*/
   position: relative;
 }
 
 article {
-  /*flex: 4;*/
   /* ?? removing float: left; decreases space above "Product Listing" */
   position: relative;
   float: left;
@@ -439,11 +447,6 @@ footer p {
   }
 
   article {
-    /* ?? commenting out float: none; returns desired margin around h2
-        of Product Listing, and Shopping Cart headers;
-
-        ?? using clear: both; resolved the issue */
-    /*float: none;*/
     clear: both;
     width: 100%;
   }
